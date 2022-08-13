@@ -1,0 +1,9 @@
+# Elm
+elm-stuff
+
+#IDEA
+.idea
+*.iml
+
+# OS
+.DS_Store
