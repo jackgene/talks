@@ -151,22 +151,23 @@ inScope =
       "Errors That A Strong Type System Can Prevent"
       ( let
           listStyle : Style
-          listStyle = Css.batch [ width (pct 50), float left ]
+          listStyle = Css.batch [ width (pct 48), float left ]
         in
         div []
         [ p []
           [ text "The following are some classes of errors a type system can prevent:"
           , ul
-            [ css [ displayFlex, flexDirection column, flexWrap wrap, height (vw 25) ] ]
-            --, li [ css [ listStyle ] ] [ text "Buffer Overflows" ] ]
-            [ li [ css [ listStyle ] ] [ text "Type Mismatches" ]
+            [ css [ displayFlex, flexDirection column, flexWrap wrap, height (vw 28) ] ]
+            [ li [ css [ listStyle ] ] [ text "Memork Leak" ]
+            , li [ css [ listStyle ] ] [ text "Buffer Overflow" ]
+            , li [ css [ listStyle ] ] [ text "Type Mismatch" ]
             , li [ css [ listStyle ] ] [ text "Null Pointer Dereference" ]
             , li [ css [ listStyle ] ] [ text "Out Of Bounds Array Access" ]
             , li [ css [ listStyle ] ] [ text "Type Conversion Failure" ]
-            , li [ css [ listStyle ] ] [ text "Unhandled Recoverable Errors" ]
-            , li [ css [ listStyle ] ] [ text "Inexhaustive Matches" ]
+            , li [ css [ listStyle ] ] [ text "Unhandled Recoverable Error" ]
+            , li [ css [ listStyle ] ] [ text "Inexhaustive Match" ]
             , li [ css [ listStyle ] ] [ text "State Data Corruption" ]
-            , li [ css [ listStyle ] ] [ text "Race Conditions" ]
+            , li [ css [ listStyle ] ] [ text "Race Condition" ]
             ]
           ]
         ]
