@@ -1,0 +1,620 @@
+module Deck.Slide.NullSafety exposing
+  ( introduction
+  , unsafeGo, unsafeGoRun
+  , safePythonNonNull, safePythonNonNullInvalid, safePythonNullableInvalid, safePythonNullable
+  , safeTypeScriptNonNull, safeTypeScriptNonNullInvalid, safeTypeScriptNullableInvalid, safeTypeScriptNullable
+  , safeKotlinNullable, unsafeKotlin
+  , safeSwiftNullable, safeSwiftNullableFun, unsafeSwift
+  )
+
+import Deck.Slide.Common exposing (..)
+import Deck.Slide.SyntaxHighlight exposing (..)
+import Deck.Slide.Template exposing (standardSlideView)
+import Deck.Slide.TypeSystemProperties as TypeSystemProperties
+import Dict exposing (Dict)
+import Html.Styled exposing (Html, div, p, text)
+import SyntaxHighlight.Model exposing
+  ( ColumnEmphasis, ColumnEmphasisType(..), LineEmphasis(..) )
+
+
+-- Constants
+heading : String
+heading = TypeSystemProperties.heading ++ ": Null Safety"
+
+subheadingGo : String
+subheadingGo = "Go Is Not Null Safe"
+
+subheadingPython : String
+subheadingPython = "Python Can Be Null Safe"
+
+subheadingTypeScript : String
+subheadingTypeScript = "TypeScript Can Be Null Safe"
+
+subheadingKotlin : String
+subheadingKotlin = "Kotlin Is Null Safe (With Options to Be Unsafe)"
+
+subheadingSwift : String
+subheadingSwift = "Swift Is Null Safe (With Options to Be Unsafe)"
+
+
+-- Slides
+introduction : UnindexedSlideModel
+introduction =
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading
+      "Prevents Null Pointer Dereferences"
+      ( div []
+        [ p []
+          [ text "Null-safe languages make it "
+          , mark [] [ text "impossible to dereference null pointers" ]
+          , text "."
+          ]
+        , p []
+          [ text "Nullable pointers must be null-checked before access." ]
+        , p []
+          [ text "Non-nullable pointers are required to always have a value, "
+          , text "and can be accessed without null-checking."
+          ]
+        ]
+      )
+    )
+  }
+
+
+unsafeGo : UnindexedSlideModel
+unsafeGo =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Go Dict.empty Dict.empty []
+      """
+package main
+
+func main() {
+    var name *string = nil // clearly nil
+    println(*name)         // unchecked pointer access - panic!
+}
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingGo
+      ( div []
+        [ p []
+          [ text "Consider the following program that accesses a pointer without checking for "
+          , syntaxHighlightedCodeSnippet Go "nil"
+          , text ":" ]
+        , div [] [ codeBlock ]
+        , p []
+          [ text "The Go compiler happily allows it:" ]
+        , console
+          """
+% go build null_safety/unsafe.go; echo $?
+0
+"""
+        ]
+      )
+    )
+  }
+
+
+unsafeGoRun : UnindexedSlideModel
+unsafeGoRun =
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingGo
+      ( div []
+        [ p [] [ text "But the program immediately panics when run:" ]
+        , console
+          """
+% null_safety/unsafe
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x1054cb6]
+
+goroutine 1 [running]:
+main.main()
+    /strongly-typed/null_safety/unsafe.go:5 +0x16
+"""
+        ]
+      )
+    )
+  }
+
+
+safePythonNonNull : UnindexedSlideModel
+safePythonNonNull =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Python Dict.empty Dict.empty []
+      """
+text: str = "Lorem Ipsum"
+
+print(text.upper())
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingPython
+      ( div []
+        [ p []
+          [ text "Variables are non-nullable (cannot be "
+          , syntaxHighlightedCodeSnippet Python "None"
+          , text ") by default:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safePythonNonNullInvalid : UnindexedSlideModel
+safePythonNonNullInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Python
+      ( Dict.fromList [ (0, Deletion), (1, Addition) ] )
+      ( Dict.fromList [ (1, [ ColumnEmphasis Error 12 4 ] ) ] )
+      [ CodeBlockError 0 17
+        [ div []
+          [ text """Expression of type "None" cannot be assigned to declared type "str" """ ]
+        ]
+      ]
+      """
+text: str = "Lorem Ipsum"
+text: str = None
+
+print(text.upper())
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingPython
+      ( div []
+        [ p []
+          [ text "Attempting to assign "
+          , syntaxHighlightedCodeSnippet Python "None"
+          , text " results in a type error:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safePythonNullableInvalid : UnindexedSlideModel
+safePythonNullableInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Python
+      ( Dict.fromList
+        [ (0, Addition)
+        , (2, Deletion), (3, Addition)
+        ]
+      )
+      ( Dict.fromList [ (5, [ ColumnEmphasis Error 11 7 ] ) ] )
+      [ CodeBlockError 4 19
+        [ div []
+          [ text """"upper" is not a known member of "None" """ ]
+        ]
+      ]
+      """
+from typing import Optional
+
+text: str = None
+text: Optional[str] = None
+
+print(text.upper())
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingPython
+      ( div []
+        [ p []
+          [ text "Nullable variables must be explicitly annotated "
+          , syntaxHighlightedCodeSnippet Python ": Optional[str]"
+          , text ", and if so cannot be accessed directly:"
+          ]
+        , div [] [] -- To disable transition animation
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safePythonNullable : UnindexedSlideModel
+safePythonNullable =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Python
+      ( Dict.fromList
+        [ (4, Deletion), (5, Addition), (6, Addition)
+        ]
+      )
+      Dict.empty []
+      """
+from typing import Optional
+
+text: Optional[str] = None
+
+print(text.upper())
+if text is not None:
+    print(text.upper())
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingPython
+      ( div []
+        [ p []
+          [ text "Before accessing a nullable variable, the programmer is required to check that it is not "
+          , syntaxHighlightedCodeSnippet Python "None"
+          , text ":"
+          ]
+        , div [] [ codeBlock ]
+        , p []
+          [ text "Note that in Python, "
+          , syntaxHighlightedCodeSnippet Python ": Optional[str]"
+          , text " is a type alias for "
+          , syntaxHighlightedCodeSnippet Python ": Union[str, None]"
+          , text ", or in Python 3.10 "
+          , syntaxHighlightedCodeSnippet Python ": str | None"
+          , text "."
+          ]
+        ]
+      )
+    )
+  }
+
+
+safeTypeScriptNonNull : UnindexedSlideModel
+safeTypeScriptNonNull =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock TypeScript Dict.empty Dict.empty []
+      """
+const text: string = "Lorem Ipsum";
+
+alert(text.toUpperCase());
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingTypeScript
+      ( div []
+        [ p []
+          [ text "TypeScript variables are non-nullable by default: "
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
+safeTypeScriptNonNullInvalid : UnindexedSlideModel
+safeTypeScriptNonNullInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock TypeScript Dict.empty
+      ( Dict.fromList [ (0, [ ColumnEmphasis Error 21 4 ] ) ] )
+      [ CodeBlockError -1 26
+        [ div []
+          [ text """TS2322: Type 'null' is not assignable to type 'string'.""" ]
+        ]
+      ]
+      """
+const text: string = null;
+
+alert(text.toUpperCase());
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingTypeScript
+      ( div []
+        [ p []
+          [ text "As with all languages with modern type-systems, variables in TypeScript are non-nullable by default. "
+          , text "Attempting to assign "
+          , syntaxHighlightedCodeSnippet TypeScript "null"
+          , text " results in a type error:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeTypeScriptNullableInvalid : UnindexedSlideModel
+safeTypeScriptNullableInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock TypeScript
+      ( Dict.fromList [ (0, Deletion), (1, Addition) ] )
+      ( Dict.fromList [ (3, [ ColumnEmphasis Error 6 4 ] ) ] )
+      [ CodeBlockError 3 5
+        [ div []
+          [ text """TS2531: Object is possibly 'null'. """ ]
+        ]
+      ]
+      """
+const text: string = null;
+const text: string | null = null;
+
+alert(text.toUpperCase());
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingTypeScript
+      ( div []
+        [ p []
+          [ text "Nullable variables work the same way in TypeScript as in Python, "
+          , text "but with a slightly different type annotation syntax:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeTypeScriptNullable : UnindexedSlideModel
+safeTypeScriptNullable =
+  let
+    codeBlock1 : Html msg
+    codeBlock1 =
+      syntaxHighlightedCodeBlock TypeScript
+      ( Dict.fromList
+        [ (2, Deletion), (3, Addition)
+        ]
+      )
+      Dict.empty []
+      """
+const text: string | null = null;
+
+alert(text.toUpperCase());
+if (text !== null) alert(text.toUpperCase());
+"""
+
+    codeBlock2 : Html msg
+    codeBlock2 =
+      syntaxHighlightedCodeBlock TypeScript
+      ( Dict.fromList
+        [ (0, Deletion), (1, Addition)
+        ]
+      )
+      Dict.empty []
+      """
+alert(text.toUpperCase());
+alert(text?.toUpperCase() ?? "(text was null)");
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingTypeScript
+      ( div []
+        [ p []
+          [ text "As with Python, an explicit check for "
+          , syntaxHighlightedCodeSnippet TypeScript "null"
+          , text " ("
+          , syntaxHighlightedCodeSnippet TypeScript "text !== null"
+          , text ") is required before the value is access. "
+          ]
+        , div [] [ codeBlock1 ]
+        , p []
+          [ text "However, TypeScript also offers syntactic sugar to simplify nullable value access:"
+          ]
+        , div [] [ codeBlock2 ]
+        ]
+      )
+    )
+  }
+
+
+safeKotlinNullable : UnindexedSlideModel
+safeKotlinNullable =
+  let
+    codeBlock1 : Html msg
+    codeBlock1 =
+      syntaxHighlightedCodeBlock Kotlin Dict.empty Dict.empty []
+      """
+val text: String? = null
+
+if (text != null) println(text.uppercase())
+"""
+
+    codeBlock2 : Html msg
+    codeBlock2 =
+      syntaxHighlightedCodeBlock Kotlin Dict.empty Dict.empty []
+      """
+val text: String? = null
+
+println(text?.uppercase() ?: "(text was null)")
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingKotlin
+      ( div []
+        [ p []
+          [ text "Kotlin shares all of TypeScript’s null safety features. "
+          , text "The primary difference is syntax, to designate a type as optional in Kotlin, "
+          , text "a question mark "
+          , syntaxHighlightedCodeSnippet Kotlin "?"
+          , text " is appended to the type annotation:"
+          ]
+        , div [] [ codeBlock1 ]
+        , p []
+          [ text "Like TypeScript, there’s syntactic sugar to make things more succinct:"]
+        , div [] [ codeBlock2 ]
+        ]
+      )
+    )
+  }
+
+
+unsafeKotlin : UnindexedSlideModel
+unsafeKotlin =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Kotlin Dict.empty Dict.empty []
+      """
+val text: String? = null
+
+println(text!!.uppercase())
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingKotlin
+      ( div []
+        [ p []
+          [ text "Unfortunately, Kotlin does offer a non-null assertion operator ("
+          , syntaxHighlightedCodeSnippet Kotlin "!!"
+          , text "). "
+          , text "Per Kotlin documentation, it is for “NullPointerException-lovers”:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeSwiftNullable : UnindexedSlideModel
+safeSwiftNullable =
+  let
+    codeBlock1 : Html msg
+    codeBlock1 =
+      syntaxHighlightedCodeBlock Swift Dict.empty Dict.empty []
+      """
+let text: String? = nil
+
+if let text = text {
+    print(text.uppercased())
+}
+"""
+
+    codeBlock2 : Html msg
+    codeBlock2 =
+      syntaxHighlightedCodeBlock Swift Dict.empty Dict.empty []
+      """
+let text: String? = nil
+
+print(text?.uppercased() ?? "(text was nil)")
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingSwift
+      ( div []
+        [ p []
+          [ text "Swift and Kotlin’s null safety syntax differs only subtly:"
+          ]
+        , div [] [ codeBlock1 ]
+        , p []
+          [ text "Swift’s sugared null safe access is identical to TypeScript’s:"
+          ]
+        , div [] [ codeBlock2 ]
+        ]
+      )
+    )
+  }
+
+
+safeSwiftNullableFun : UnindexedSlideModel
+safeSwiftNullableFun =
+  let
+    codeBlockFun : Html msg
+    codeBlockFun =
+      syntaxHighlightedCodeBlock Swift Dict.empty Dict.empty []
+      """
+let text: String? = "xyz"
+let numsByText: [String: Int] = [ "xyz": 42 ]
+let num: Int? = text
+    .flatMap { numsByText[$0] }
+    .map { $0 * 2 }
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingSwift
+      ( div []
+        [ p []
+          [ text "Because Swift’s nilable types are really implemented as "
+          , syntaxHighlightedCodeSnippet Swift "_: Optional<Wrapped>" -- TODO not highlighting
+          , text "s, they can be chained in a functional way:"
+          ]
+        , div [] [ codeBlockFun ]
+        , p []
+          [ text "It is also possible to nest them "
+          , syntaxHighlightedCodeSnippet Swift ": String??"
+          , text ", should the need arise."
+          ]
+        ]
+      )
+    )
+  }
+
+
+unsafeSwift : UnindexedSlideModel
+unsafeSwift =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Swift Dict.empty Dict.empty []
+      """
+let text: String? = nil
+print(text!.uppercased())
+
+let unsafeText: String! = nil
+print(unsafeText.uppercased())
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingSwift
+      ( div []
+        [ p []
+          [ text "Now the bad news: Like Kotlin, Swift offers unsafe nil access. "
+          , text "In fact, it offers 2 options."
+          ]
+        , p []
+          [ text "There’s arguably no reason to use them these days, but they are there:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
