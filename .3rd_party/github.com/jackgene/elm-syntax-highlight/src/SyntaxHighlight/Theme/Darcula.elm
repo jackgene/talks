@@ -15,8 +15,8 @@ theme =
   in
   { default = noEmphasis (rgb 163 183 198) (rgb 43 43 43)
   , selection = backgroundColor (rgb 50 50 50)
-  , addition = backgroundColor (rgb 42 53 47)
-  , deletion = strikeThrough (rgb 163 183 198) (backgroundColor (rgb 53 42 47))
+  , addition = backgroundColor (rgb 41 68 54)
+  , deletion = strikeThrough (rgb 163 183 198) (backgroundColor (rgb 72 43 43))
   , error = squigglyUnderline (rgba 236 70 66 0.75) noStyle --(rgb 188 63 60)
   , warning = squigglyUnderline (rgba 218 218 156 0.75) noStyle --(rgb 174 174 128)
   , comment = textColor (rgb 120 120 120)
