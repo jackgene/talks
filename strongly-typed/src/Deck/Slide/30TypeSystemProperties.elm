@@ -93,7 +93,7 @@ typeSystemProperties =
       --    , ( "Swift", scoreDefeatable )
       --    ]
       --  )
-      [ ( "Type Safety", "Type Mismatches"
+      [ ( "Type Safety", "Type Mismatch"
         , Dict.fromList
           [ ( "Go", scoreRequired )
           , ( "Python", scoreOptional )
@@ -129,7 +129,7 @@ typeSystemProperties =
           , ( "Swift", scoreDefeatable )
           ]
         )
-      , ( "Exception Safety", "Unhandled Recoverable Errors"
+      , ( "Exception Safety", "Unhandled Recoverable Error"
         , Dict.fromList
           [ ( "Go", scoreUnsupported )
           , ( "Python", scorePartialAndOptional )
@@ -138,7 +138,7 @@ typeSystemProperties =
           , ( "Swift", scoreDefeatable )
           ]
         )
-      , ( "Exhaustiveness Checking", "Inexhaustive Matches"
+      , ( "Exhaustiveness Checking", "Inexhaustive Match"
         , Dict.fromList
           [ ( "Go", scoreUnsupported )
           , ( "Python", scoreOptional )
@@ -165,7 +165,7 @@ typeSystemProperties =
           , ( "Swift", scoreOptional )
           ]
         )
-      --, ( "Data Race Free", "Race Condition"
+      --, ( "Data Race Freedom", "Data Race"
       --  , Dict.fromList
       --    [ ( "Go", scoreUnsupported )
       --    , ( "Python", scoreUnsupported )
@@ -517,8 +517,8 @@ errorPreventionReport language =
 
         errorsAndScores : List (String, Score)
         errorsAndScores =
-          [ ("Memory Leaks", scoreRequired)
-          , ("Buffer Overflow Exploits", scoreRequired)
+          [ ("Memory Leak", scoreRequired)
+          , ("Buffer Overflow", scoreRequired)
           ]
           ++( List.filterMap
               ( \{ problem, individualScores } ->
@@ -528,10 +528,10 @@ errorPreventionReport language =
               )
               typeSystemProperties
             )
-          ++[ ("Data Races", if language == "TypeScript" then scoreRequired else scoreUnsupported)
-            , ("Arithmetic Errors", scoreUnsupported)
-            , ("Infinite Loops", scoreUnsupported)
-            , ("Functional Errors", scoreUnsupported)
+          ++[ ("Data Race", if language == "TypeScript" then scoreRequired else scoreUnsupported)
+            , ("Arithmetic Error", scoreUnsupported)
+            , ("Infinite Loop", scoreUnsupported)
+            , ("Functional Error", scoreUnsupported)
             , ("Others", scoreUnsupported)
             ]
 
