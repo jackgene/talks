@@ -167,7 +167,7 @@ inScope =
             , li [ css [ listStyle ] ] [ text "Unhandled Recoverable Error" ]
             , li [ css [ listStyle ] ] [ text "Inexhaustive Match" ]
             , li [ css [ listStyle ] ] [ text "State Data Corruption" ]
-            , li [ css [ listStyle ] ] [ text "Race Condition" ]
+            , li [ css [ listStyle ] ] [ text "Data Race" ]
             ]
           ]
         ]
