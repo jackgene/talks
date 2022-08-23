@@ -6,7 +6,7 @@ module Deck.Slide.Graphics exposing
   )
 
 import Css exposing (fontSize, px, vw)
-import Deck.Slide.Common exposing (black, darkGray, numberFontFamily, red)
+import Deck.Slide.Common exposing (black, darkGray, numberFontFamily, primary)
 import Dict exposing (Dict)
 import Html.Styled exposing (span)
 import Html.Styled.Attributes exposing (attribute)
@@ -40,14 +40,14 @@ coverBackgroundGraphic =
   [ css [ Css.width (vw (coverBackgroundViewBox * 100 / 160)) ]
   , viewBox ("0 0 " ++ (toString coverBackgroundViewBox) ++ " 90")
   ]
-  [ rect [ width "52", height "90", css [ Css.fill black ] ] [] ]
+  [ rect [ width "52", height "90", css [ Css.fill primary ] ] [] ]
 
 
 numberedDisc : String -> Float -> List (Attribute msg) -> Svg msg
 numberedDisc num fontSizePct attributes =
   svg
   ( viewBox "-50 -50 100 100" :: attributes )
-  [ circle [ r "50", css [ Css.fill red ] ] []
+  [ circle [ r "50", css [ Css.fill primary ] ] []
   , text_
     [ alignmentBaseline "middle", textAnchor "middle", y "5"
     , css [ numberFontFamily, Css.fill black, fontSize (px fontSizePct) ]

@@ -46,7 +46,7 @@ horizontalBarView value maxValue =
     , width (pct (100 * (toFloat value / toFloat maxValue)))
     , height (vw 2.5)
     , color black
-    , backgroundColor red, opacity (num 0.75)
+    , backgroundColor primary, opacity (num 0.75)
     , textAlign center
     , fontWeight (int 900)
     , transition [ Css.Transitions.width3 transitionDurationMs 0 easeInOut ]

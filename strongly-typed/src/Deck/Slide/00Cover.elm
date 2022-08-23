@@ -23,7 +23,7 @@ cover =
   { baseSlideModel
   | view =
     ( \_ _ ->
-      div [ css [ backgroundColor red ] ]
+      div []
       [ coverBackgroundGraphic
       , div
         [ css

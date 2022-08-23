@@ -53,8 +53,8 @@ black : Color
 black = rgb 0 0 0
 
 
-red : Color
-red = rgb 237 30 36
+primary : Color
+primary = rgb 224 229 249
 
 
 blackTranslucent : Color
@@ -98,7 +98,7 @@ headerStyle =
     , display block, float left
     , width (em 0.2), height (em 1.2)
     , marginRight (em 1.875)
-    , backgroundColor red
+    , backgroundColor primary
     ]
   ]
 
