@@ -396,8 +396,8 @@ enum Status {
 }
 
 enum Membership {
-    case myrx
-    case gold
+    case basic
+    case premium
 }
 """
   in
@@ -427,10 +427,10 @@ safeSwift =
       """
 func doWork(status: Status, membership: Membership) -> String {
     switch (status, membership) {
-    case (.active, .myrx): return "Perform MyRx API calls, ..."
-    case (.active, .gold): return "Perform Gold API calls, ..."
-    case (.inactive, .myrx): return "Skipping..."
-    case (.inactive, .gold): return "Skipping..."
+    case (.active, .basic): return "Perform MyRx API calls, ..."
+    case (.active, .premium): return "Perform Gold API calls, ..."
+    case (.inactive, .basic): return "Skipping..."
+    case (.inactive, .premium): return "Skipping..."
     }
 }
 """
@@ -463,17 +463,17 @@ safeSwiftInvalid =
       ( Dict.fromList [ (1, [ ColumnEmphasis Error 4 6 ] ) ] )
       [ CodeBlockError 0 29
         [ div []
-          [ text "switch must be exhaustive: add missing case: '(.inactive, .gold)"
+          [ text "switch must be exhaustive: add missing case: '(.inactive, .premium)"
           ]
         ]
       ]
       """
 func doWork(status: Status, membership: Membership) -> String {
     switch (status, membership) {
-    case (.active, .myrx): return "Perform MyRx API calls, ..."
-    case (.active, .gold): return "Perform Gold API calls, ..."
-    case (.inactive, .myrx): return "Skipping..."
-    case (.inactive, .gold): return "Skipping..."
+    case (.active, .basic): return "Perform MyRx API calls, ..."
+    case (.active, .premium): return "Perform Gold API calls, ..."
+    case (.inactive, .basic): return "Skipping..."
+    case (.inactive, .premium): return "Skipping..."
     }
 }
 """
@@ -508,9 +508,9 @@ safeSwiftAlt =
       """
 func doWork(status: Status, membership: Membership) -> String {
     switch (status, membership) {
-    case (.active, .myrx): return "Perform MyRx API calls, ..."
-    case (.active, .gold): return "Perform Gold API calls, ..."
-    case (.inactive, .myrx): return "Skipping..."
+    case (.active, .basic): return "Perform MyRx API calls, ..."
+    case (.active, .premium): return "Perform Gold API calls, ..."
+    case (.inactive, .basic): return "Skipping..."
     case (.inactive, _): return "Skipping..."
     }
 }
