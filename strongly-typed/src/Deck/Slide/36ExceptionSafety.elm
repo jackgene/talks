@@ -1,8 +1,8 @@
 module Deck.Slide.ExceptionSafety exposing
   ( introduction
   , introGo, unsafeGoExplicit, unsafeGoVariableReuse
-  , unsafePython, unsafePythonRun, safePython
-  , unsafeTypeScript, safeTypeScript
+  , unsafePython, unsafePythonRun, safePython, safePythonInvalid
+  , unsafeTypeScript, safeTypeScript, safeTypeScriptInvalid
   , unsafeKotlin, safeKotlin, safeKotlinInvalid
   , safeSwift, safeSwiftInvalid, safeSwiftInvocation, unsafeSwift
   , safeSwiftMonadic, safeSwiftMonadicInvalid
@@ -250,7 +250,7 @@ def safe_unquote(quoted: str) -> str | Exception:
     except Exception as e:
         return e
 
-unquoted_or_err = safe_unquote("bad%c3url")
+unquoted_or_err: str | Exception = safe_unquote("bad%c3url")
 if not isinstance(unquoted_or_err, Exception):
     print(unquoted_or_err.lower())
 """
@@ -263,6 +263,49 @@ if not isinstance(unquoted_or_err, Exception):
         [ p []
           [ text "Python can be made exception safe by returning the exception instead of raising:"
           ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safePythonInvalid : UnindexedSlideModel
+safePythonInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Python
+      ( Dict.fromList [ (9, Deletion) ] )
+      ( Dict.fromList [ (10, [ ColumnEmphasis Error 22 7 ] ) ] )
+      [ CodeBlockError 10 20
+        [ div []
+          [ text """Cannot access member "lower" for type "Exception" """ ]
+        ]
+      ]
+      """
+from urllib.parse import unquote
+
+def safe_unquote(quoted: str) -> str | Exception:
+    try:
+        return unquote(quoted, errors="strict")
+    except Exception as e:
+        return e
+
+unquoted_or_err: str | Exception = safe_unquote("bad%c3url")
+if not isinstance(unquoted_or_err, Exception):
+print(unquoted_or_err.lower())
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingPython
+      ( div []
+        [ p []
+          [ text "Python can be made exception safe by returning the exception instead of raising:"
+          ]
+        , div [] [] -- Skip transition animation
         , div [] [ codeBlock ]
         ]
       )
@@ -303,6 +346,7 @@ global code@exception_safety/unsafe.js:1:20
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -317,12 +361,12 @@ function safeDecodeURI(encodedURI: string): string | Error {
   try {
     return decodeURI(encodedURI);
   } catch (e: any) {
-    if (e instanceof Error) return e;
-    else return Error(e);
+    return e instanceof Error ? e : Error(e);
   }
 }
-const urlOrEr = safeDecodeURI("bad%url");
-if (urlOrEr instanceof string) console.log(urlOrEr.toLowerCase());
+const urlOrErr: string | Error = safeDecodeURI("bad%url");
+if (urlOrErr instanceof string)
+  console.log(urlOrErr.toLowerCase());
 """
   in
   { baseSlideModel
@@ -337,6 +381,50 @@ if (urlOrEr instanceof string) console.log(urlOrEr.toLowerCase());
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
+safeTypeScriptInvalid : UnindexedSlideModel
+safeTypeScriptInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock TypeScript
+      ( Dict.fromList [ (8, Deletion) ] )
+      ( Dict.fromList [ (9, [ ColumnEmphasis Error 21 13 ] ) ] )
+      [ CodeBlockError 9 20
+        [ div []
+          [ text "TS2339: Property 'toLowerCase' does not exist on type 'string | Error'." ]
+        ]
+      ]
+      """
+function safeDecodeURI(encodedURI: string): string | Error {
+  try {
+    return decodeURI(encodedURI);
+  } catch (e: any) {
+    return e instanceof Error ? e : Error(e);
+  }
+}
+const urlOrErr: string | Error = safeDecodeURI("bad%url");
+if (urlOrErr instanceof string)
+console.log(urlOrErr.toLowerCase());
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingTypeScript
+      ( div []
+        [ p []
+          [ text "The use of union types ensures that success and error conditions are accounted for:"
+          ]
+        , div [] [] -- Skip transition animation
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -374,6 +462,7 @@ escape (%) pattern - Error at index 0 in: "ur"
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -408,6 +497,7 @@ urlRes.fold(
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -448,6 +538,7 @@ urlRes.fold(
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
