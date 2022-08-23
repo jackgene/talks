@@ -127,6 +127,7 @@ func main() {
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -222,6 +223,7 @@ if isinstance(thing, str):
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -254,6 +256,7 @@ if is_str_array(nums):
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -292,6 +295,7 @@ if is_str_array(nums):
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -316,6 +320,7 @@ AttributeError: 'int' object has no attribute 'upper'
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -354,6 +359,7 @@ AttributeError: 'int' object has no attribute 'upper'
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -394,6 +400,7 @@ if (typeof(thing) === "string") {
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -434,6 +441,7 @@ nums.forEach(num => alert(num.toUpperCase()));
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -472,6 +480,7 @@ if (isStringArray(nums)) {
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -510,6 +519,7 @@ if (isStringArray(nums)) {
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -534,6 +544,7 @@ global code@safe_type_cast/unsafe_predicate.js:7:17
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -569,6 +580,7 @@ Exception: TypeError: text.toUpperCase is not a function. (In
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -608,6 +620,7 @@ if (thing is String) {
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -639,6 +652,7 @@ if (text != null) {
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -677,6 +691,7 @@ java.lang.ClassCastException: class java.lang.Integer cannot be cast to class ja
         ]
       )
     )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 

@@ -156,8 +156,10 @@ preQuestionSlides =
   , ExceptionSafety.unsafePython
   , ExceptionSafety.unsafePythonRun
   , ExceptionSafety.safePython
+  , ExceptionSafety.safePythonInvalid
   , ExceptionSafety.unsafeTypeScript
   , ExceptionSafety.safeTypeScript
+  , ExceptionSafety.safeTypeScriptInvalid
   , ExceptionSafety.unsafeKotlin
   , ExceptionSafety.safeKotlin
   , ExceptionSafety.safeKotlinInvalid
