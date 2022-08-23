@@ -43009,7 +43009,7 @@ var _jackgene$talks$Deck_Slide_ExhaustivenessChecking$safeSwiftPrep = function (
 		_elm_lang$core$Dict$empty,
 		_elm_lang$core$Dict$empty,
 		{ctor: '[]'},
-		'\nenum Status {\n    case active\n    case inactive\n}\n\nenum Membership {\n    case myrx\n    case gold\n}\n');
+		'\nenum Status {\n    case active\n    case inactive\n}\n\nenum Membership {\n    case basic\n    case premium\n}\n');
 	return _elm_lang$core$Native_Utils.update(
 		_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 		{
@@ -43064,7 +43064,7 @@ var _jackgene$talks$Deck_Slide_ExhaustivenessChecking$safeSwift = function () {
 		_elm_lang$core$Dict$empty,
 		_elm_lang$core$Dict$empty,
 		{ctor: '[]'},
-		'\nfunc doWork(status: Status, membership: Membership) -> String {\n    switch (status, membership) {\n    case (.active, .myrx): return \"Perform MyRx API calls, ...\"\n    case (.active, .gold): return \"Perform Gold API calls, ...\"\n    case (.inactive, .myrx): return \"Skipping...\"\n    case (.inactive, .gold): return \"Skipping...\"\n    }\n}\n');
+		'\nfunc doWork(status: Status, membership: Membership) -> String {\n    switch (status, membership) {\n    case (.active, .basic): return \"Perform MyRx API calls, ...\"\n    case (.active, .premium): return \"Perform Gold API calls, ...\"\n    case (.inactive, .basic): return \"Skipping...\"\n    case (.inactive, .premium): return \"Skipping...\"\n    }\n}\n');
 	return _elm_lang$core$Native_Utils.update(
 		_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 		{
@@ -43156,14 +43156,14 @@ var _jackgene$talks$Deck_Slide_ExhaustivenessChecking$safeSwiftInvalid = functio
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _rtfeldman$elm_css$Html_Styled$text('switch must be exhaustive: add missing case: \'(.inactive, .gold)'),
+							_0: _rtfeldman$elm_css$Html_Styled$text('switch must be exhaustive: add missing case: \'(.inactive, .premium)'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
 				}),
 			_1: {ctor: '[]'}
 		},
-		'\nfunc doWork(status: Status, membership: Membership) -> String {\n    switch (status, membership) {\n    case (.active, .myrx): return \"Perform MyRx API calls, ...\"\n    case (.active, .gold): return \"Perform Gold API calls, ...\"\n    case (.inactive, .myrx): return \"Skipping...\"\n    case (.inactive, .gold): return \"Skipping...\"\n    }\n}\n');
+		'\nfunc doWork(status: Status, membership: Membership) -> String {\n    switch (status, membership) {\n    case (.active, .basic): return \"Perform MyRx API calls, ...\"\n    case (.active, .premium): return \"Perform Gold API calls, ...\"\n    case (.inactive, .basic): return \"Skipping...\"\n    case (.inactive, .premium): return \"Skipping...\"\n    }\n}\n');
 	return _elm_lang$core$Native_Utils.update(
 		_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 		{
@@ -43235,7 +43235,7 @@ var _jackgene$talks$Deck_Slide_ExhaustivenessChecking$safeSwiftAlt = function ()
 			}),
 		_elm_lang$core$Dict$empty,
 		{ctor: '[]'},
-		'\nfunc doWork(status: Status, membership: Membership) -> String {\n    switch (status, membership) {\n    case (.active, .myrx): return \"Perform MyRx API calls, ...\"\n    case (.active, .gold): return \"Perform Gold API calls, ...\"\n    case (.inactive, .myrx): return \"Skipping...\"\n    case (.inactive, _): return \"Skipping...\"\n    }\n}\n');
+		'\nfunc doWork(status: Status, membership: Membership) -> String {\n    switch (status, membership) {\n    case (.active, .basic): return \"Perform MyRx API calls, ...\"\n    case (.active, .premium): return \"Perform Gold API calls, ...\"\n    case (.inactive, .basic): return \"Skipping...\"\n    case (.inactive, _): return \"Skipping...\"\n    }\n}\n');
 	return _elm_lang$core$Native_Utils.update(
 		_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 		{
