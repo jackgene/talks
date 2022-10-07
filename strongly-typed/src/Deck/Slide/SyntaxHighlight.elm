@@ -133,7 +133,7 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
                   , top (vw (codeFontSizeVw * 1.325 * (toFloat line + 1) + 0.125))
                   , left (vw (codeFontSizeVw * 0.6125 * (toFloat column) + 5))
                   , padding2 (em 0.0625) (em 0.125), border3 (em 0.1) solid (rgb 209 71 21)
-                  , fontSize (em 0.75), color (rgb 209 71 21), backgroundColor (rgba 160 123 122 0.5)
+                  , fontSize (em 0.75), color (rgb 209 71 21), backgroundColor (rgba 192 160 160 9.5)
                   , transition
                     [ Css.Transitions.opacity3 transitionDurationMs (transitionDurationMs / 2) easeInOut ]
                   ]
