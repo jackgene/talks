@@ -212,14 +212,14 @@ update msg model =
           , Cmd.none
           )
 
-        Ok (Questions questionsReversed) ->
+        Ok (Questions questions) ->
           let
             -- Event updates slide being displayed
             isCurrentQuestion : Bool
             isCurrentQuestion =
               case model.currentSlide of
                 Slide slideModel ->
-                  (slideModel.index - firstQuestionIndex + 1) == List.length questionsReversed
+                  (slideModel.index - firstQuestionIndex + 1) == List.length questions
 
             questionUpdatedModel : Model
             questionUpdatedModel =
@@ -229,11 +229,11 @@ update msg model =
                   typingSpeedMultiplier *
                   ( Maybe.withDefault 0
                     ( Maybe.map String.length
-                      (List.head questionsReversed)
+                      ( List.head (List.reverse questions) )
                     )
                   )
                 else 0
-              , questions = Array.fromList (List.reverse questionsReversed)
+              , questions = Array.fromList questions
               }
 
             activeNavigation : Array Navigation
