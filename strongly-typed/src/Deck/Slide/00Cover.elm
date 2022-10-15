@@ -4,9 +4,9 @@ import Css exposing
   -- Container
   ( left, position, top, width, margin, margin2
   -- Content
-  , backgroundColor, fontSize, fontWeight
+  , fontSize, fontWeight
   -- Units
-  , em, int, vw, zero
+  , em, vw, zero
   -- Alignments & Positions
   , absolute
   -- Other values
