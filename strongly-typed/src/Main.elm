@@ -74,7 +74,7 @@ init location =
 
 -- Update
 type EventBody
-  = TokensByCount (List (Int, (List String)))
+  = TokensAndCounts (List (Int, (List String)))
   | Questions (List String)
 
 
@@ -85,8 +85,8 @@ eventBodyDecoder =
     ( Decode.field "chatText"
       (Decode.list Decode.string)
     )
-  , Decode.map TokensByCount
-    ( Decode.field "tokensByCount"
+  , Decode.map TokensAndCounts
+    ( Decode.field "tokensAndCounts"
       ( Decode.list
         ( Decode.map2 (\l r -> (l, r))
           (Decode.index 0 Decode.int)
@@ -167,7 +167,7 @@ update msg model =
 
     Event body ->
       case Decode.decodeString eventBodyDecoder body of
-        Ok (TokensByCount langsByCount) ->
+        Ok (TokensAndCounts langsByCount) ->
           let
             langsAndCounts : List (String, Int)
             langsAndCounts =
