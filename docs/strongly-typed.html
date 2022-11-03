@@ -46432,8 +46432,8 @@ var _jackgene$talks$Deck$init = function (location) {
 var _jackgene$talks$Deck$Questions = function (a) {
 	return {ctor: 'Questions', _0: a};
 };
-var _jackgene$talks$Deck$LanguagesByCount = function (a) {
-	return {ctor: 'LanguagesByCount', _0: a};
+var _jackgene$talks$Deck$TokensAndCounts = function (a) {
+	return {ctor: 'TokensAndCounts', _0: a};
 };
 var _jackgene$talks$Deck$eventBodyDecoder = _elm_lang$core$Json_Decode$oneOf(
 	{
@@ -46449,19 +46449,22 @@ var _jackgene$talks$Deck$eventBodyDecoder = _elm_lang$core$Json_Decode$oneOf(
 			ctor: '::',
 			_0: A2(
 				_elm_lang$core$Json_Decode$map,
-				_jackgene$talks$Deck$LanguagesByCount,
-				_elm_lang$core$Json_Decode$list(
-					A3(
-						_elm_lang$core$Json_Decode$map2,
-						F2(
-							function (l, r) {
-								return {ctor: '_Tuple2', _0: l, _1: r};
-							}),
-						A2(_elm_lang$core$Json_Decode$index, 0, _elm_lang$core$Json_Decode$int),
-						A2(
-							_elm_lang$core$Json_Decode$index,
-							1,
-							_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string))))),
+				_jackgene$talks$Deck$TokensAndCounts,
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'tokensAndCounts',
+					_elm_lang$core$Json_Decode$list(
+						A3(
+							_elm_lang$core$Json_Decode$map2,
+							F2(
+								function (l, r) {
+									return {ctor: '_Tuple2', _0: l, _1: r};
+								}),
+							A2(_elm_lang$core$Json_Decode$index, 0, _elm_lang$core$Json_Decode$int),
+							A2(
+								_elm_lang$core$Json_Decode$index,
+								1,
+								_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)))))),
 			_1: {ctor: '[]'}
 		}
 	});
@@ -46542,7 +46545,7 @@ var _jackgene$talks$Deck$update = F2(
 				var _p24 = _p7._0;
 				var _p11 = A2(_elm_lang$core$Json_Decode$decodeString, _jackgene$talks$Deck$eventBodyDecoder, _p24);
 				if (_p11.ctor === 'Ok') {
-					if (_p11._0.ctor === 'LanguagesByCount') {
+					if (_p11._0.ctor === 'TokensAndCounts') {
 						var langsAndCounts = A3(
 							_elm_lang$core$Dict$foldr,
 							F3(
@@ -46625,9 +46628,9 @@ var _jackgene$talks$Deck$update = F2(
 									A2(
 										_elm_lang$core$Maybe$map,
 										_elm_lang$core$String$length,
-										_elm_lang$core$List$head(_p22)))) : 0,
-								questions: _elm_lang$core$Array$fromList(
-									_elm_lang$core$List$reverse(_p22))
+										_elm_lang$core$List$head(
+											_elm_lang$core$List$reverse(_p22))))) : 0,
+								questions: _elm_lang$core$Array$fromList(_p22)
 							});
 						var activeNavigation = _jackgene$talks$Deck_Slide$activeNavigationOf(questionUpdatedModel);
 						return {
