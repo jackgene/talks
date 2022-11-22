@@ -20497,6 +20497,25 @@ var _jackgene$live_deck$Deck_Slide_Common$console = function (output) {
 		});
 };
 var _jackgene$live_deck$Deck_Slide_Common$white = A3(_rtfeldman$elm_css$Css$rgb, 255, 255, 255);
+var _jackgene$live_deck$Deck_Slide_Common$coverStyle = _rtfeldman$elm_css$Css$batch(
+	{
+		ctor: '::',
+		_0: A4(
+			_rtfeldman$elm_css$Css$textShadow4,
+			_rtfeldman$elm_css$Css$zero,
+			_rtfeldman$elm_css$Css$zero,
+			_rtfeldman$elm_css$Css$em(0.25),
+			A3(_rtfeldman$elm_css$Css$rgb, 64, 64, 64)),
+		_1: {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css$color(_jackgene$live_deck$Deck_Slide_Common$white),
+			_1: {
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$live_deck$Deck_Slide_Common$tertiary),
+				_1: {ctor: '[]'}
+			}
+		}
+	});
 var _jackgene$live_deck$Deck_Slide_Common$languages = _elm_lang$core$Set$fromList(
 	{
 		ctor: '::',
@@ -27936,12 +27955,8 @@ var _jackgene$live_deck$Deck_Slide_Template$sectionCoverSlideView = F2(
 				_0: _rtfeldman$elm_css$Svg_Styled_Attributes$css(
 					{
 						ctor: '::',
-						_0: _rtfeldman$elm_css$Css$color(_jackgene$live_deck$Deck_Slide_Common$white),
-						_1: {
-							ctor: '::',
-							_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$live_deck$Deck_Slide_Common$tertiary),
-							_1: {ctor: '[]'}
-						}
+						_0: _jackgene$live_deck$Deck_Slide_Common$coverStyle,
+						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
 			},
@@ -27971,19 +27986,15 @@ var _jackgene$live_deck$Deck_Slide_Template$sectionCoverSlideView = F2(
 													_rtfeldman$elm_css$Css$vw(6)),
 												_1: {
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$color(_jackgene$live_deck$Deck_Slide_Common$white),
+													_0: _jackgene$live_deck$Deck_Slide_Common$numberFontFamily,
 													_1: {
 														ctor: '::',
-														_0: _jackgene$live_deck$Deck_Slide_Common$numberFontFamily,
+														_0: _rtfeldman$elm_css$Css$fontWeight(_rtfeldman$elm_css$Css$normal),
 														_1: {
 															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$fontWeight(_rtfeldman$elm_css$Css$normal),
-															_1: {
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$fontSize(
-																	_rtfeldman$elm_css$Css$vw(35)),
-																_1: {ctor: '[]'}
-															}
+															_0: _rtfeldman$elm_css$Css$fontSize(
+																_rtfeldman$elm_css$Css$vw(35)),
+															_1: {ctor: '[]'}
 														}
 													}
 												}
@@ -28198,12 +28209,8 @@ var _jackgene$live_deck$Deck_Slide_Cover$cover = _elm_lang$core$Native_Utils.upd
 						_0: _rtfeldman$elm_css$Html_Styled_Attributes$css(
 							{
 								ctor: '::',
-								_0: _rtfeldman$elm_css$Css$color(_jackgene$live_deck$Deck_Slide_Common$white),
-								_1: {
-									ctor: '::',
-									_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$live_deck$Deck_Slide_Common$tertiary),
-									_1: {ctor: '[]'}
-								}
+								_0: _jackgene$live_deck$Deck_Slide_Common$coverStyle,
+								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
 					},
@@ -30010,7 +30017,7 @@ var _jackgene$live_deck$Deck_Slide_SectionCover$introduction = _elm_lang$core$Na
 				return A2(_jackgene$live_deck$Deck_Slide_Template$sectionCoverSlideView, 1, 'Introduction');
 			})
 	});
-var _jackgene$live_deck$Deck_Slide_Introduction$heading = 'What is “Strongly Typed”?';
+var _jackgene$live_deck$Deck_Slide_Introduction$heading = 'What is “Strong Typing”?';
 var _jackgene$live_deck$Deck_Slide_Introduction$wikipediaDefinitions = _elm_lang$core$Native_Utils.update(
 	_jackgene$live_deck$Deck_Slide_Common$baseSlideModel,
 	{
