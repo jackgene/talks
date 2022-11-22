@@ -43219,7 +43219,7 @@ var _jackgene$live_deck$Deck_Slide_NullSafety$safeScalaNullable = function () {
 			}),
 		_elm_lang$core$Dict$empty,
 		{ctor: '[]'},
-		'\nval textOpt: Option[String] = None\n\nprintln(textOpt.toUpperCase)\ntextOpt match\n  case Some(text: String) => println(text.toUpperCase)\n');
+		'\nval textOpt: Option[String] = None\n\nprintln(textOpt.toUpperCase)\ntextOpt.foreach { text: String => println(text.toUpperCase) }\n');
 	return _elm_lang$core$Native_Utils.update(
 		_jackgene$live_deck$Deck_Slide_Common$baseSlideModel,
 		{
