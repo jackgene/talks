@@ -29269,7 +29269,7 @@ var _jackgene$live_deck$Deck_Slide_AudiencePoll$poll = _elm_lang$core$Native_Uti
 															_elm_lang$core$List$length(model.languagesAndCounts));
 														return A2(
 															_elm_lang$core$Basics_ops['++'],
-															'The Top ',
+															'Audience’s Top ',
 															A2(
 																_elm_lang$core$Basics_ops['++'],
 																(_elm_lang$core$Native_Utils.cmp(topLanguages, 1) > 0) ? A2(
@@ -29279,10 +29279,7 @@ var _jackgene$live_deck$Deck_Slide_AudiencePoll$poll = _elm_lang$core$Native_Uti
 																A2(
 																	_elm_lang$core$Basics_ops['++'],
 																	'Programming Language',
-																	A2(
-																		_elm_lang$core$Basics_ops['++'],
-																		(_elm_lang$core$Native_Utils.cmp(topLanguages, 1) > 0) ? 's' : '',
-																		' of Choice:'))));
+																	(_elm_lang$core$Native_Utils.cmp(topLanguages, 1) > 0) ? 's' : '')));
 													}()),
 												_1: {ctor: '[]'}
 											}),
@@ -31660,7 +31657,7 @@ var _jackgene$live_deck$Deck_Slide_TypeSystemProperties$methodology = _elm_lang$
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _rtfeldman$elm_css$Html_Styled$text('We’ll go through each type system property '),
+									_0: _rtfeldman$elm_css$Html_Styled$text('We will go through each type system property '),
 									_1: {
 										ctor: '::',
 										_0: _rtfeldman$elm_css$Html_Styled$text('and evaluates how they apply to a number of popular languages. '),
@@ -43219,7 +43216,7 @@ var _jackgene$live_deck$Deck_Slide_NullSafety$safeScalaNullable = function () {
 			}),
 		_elm_lang$core$Dict$empty,
 		{ctor: '[]'},
-		'\nval textOpt: Option[String] = None\n\nprintln(textOpt.toUpperCase)\ntextOpt.foreach { text: String => println(text.toUpperCase) }\n');
+		'\nval textOpt: Option[String] = None\n\nprintln(textOpt.toUpperCase)\ntextOpt.foreach { (text: String) => println(text.toUpperCase) }\n');
 	return _elm_lang$core$Native_Utils.update(
 		_jackgene$live_deck$Deck_Slide_Common$baseSlideModel,
 		{
