@@ -103,10 +103,8 @@ unsafeGo =
     codeBlock =
       syntaxHighlightedCodeBlock Go Dict.empty
       ( Dict.fromList [ (8, [ ColumnEmphasis Error 0 1 ] ) ] )
-      [ CodeBlockError 8 0
-        [ div []
-          [ text "missing return at end of function" ]
-        ]
+      [ CodeBlockError 7 1
+        [ div [] [ text "missing return at end of function" ] ]
       ]
       """
 package exhaustiveness

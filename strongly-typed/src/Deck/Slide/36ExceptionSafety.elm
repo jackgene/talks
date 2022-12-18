@@ -295,6 +295,7 @@ def safe_unquote(quoted: str) -> str | Exception:
 unquoted_or_err: str | Exception = safe_unquote("bad%c3url")
 if not isinstance(unquoted_or_err, Exception):
 print(unquoted_or_err.lower())
+\xAD
 """
   in
   { baseSlideModel
@@ -409,6 +410,7 @@ function safeDecodeURI(encodedURI: string): string | Error {
 const urlOrErr: string | Error = safeDecodeURI("bad%url");
 if (urlOrErr instanceof string)
 console.log(urlOrErr.toLowerCase());
+\xAD
 """
   in
   { baseSlideModel
@@ -509,10 +511,8 @@ safeKotlinInvalid =
       syntaxHighlightedCodeBlock Kotlin
       ( Dict.fromList [ (6, Deletion) ] )
       ( Dict.fromList [ (7, [ ColumnEmphasis Error 0 1 ] ) ] )
-      [ CodeBlockError 7 0
-        [ div []
-          [ text "no value passed for parameter 'onFailure'" ]
-        ]
+      [ CodeBlockError 6 1
+        [ div [] [ text "no value passed for parameter 'onFailure'" ] ]
       ]
       """
 fun safeDecodeUrl(s: String, enc: String): Result<String> =

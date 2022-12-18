@@ -466,7 +466,7 @@ languageReport propertyIndex =
                       , right (pct (-0.375 + 100 * (toFloat numTypeSystemProperties - score.upper) / toFloat numTypeSystemProperties))
                       , width (pct (0.75 + 100 * (score.range / toFloat numTypeSystemProperties)))
                       , height (vw 2.5)
-                      , backgroundColor primary, opacity (num 0.75)
+                      , backgroundColor primaryBackground, opacity (num 0.75)
                       , transition
                         [ Css.Transitions.right3 (transitionDurationMs * 2) 0 easeInOut
                         , Css.Transitions.width3 (transitionDurationMs * 2) 0 easeInOut

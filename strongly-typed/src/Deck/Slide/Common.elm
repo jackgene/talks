@@ -53,8 +53,16 @@ black : Color
 black = rgb 0 0 0
 
 
-primary : Color
-primary = rgb 224 229 249
+primaryForeground : Color
+primaryForeground = rgb 34 31 58
+
+
+primaryBackground : Color
+primaryBackground = rgb 37 164 242
+
+
+secondaryBackground : Color
+secondaryBackground = rgb 111 194 246
 
 
 blackTranslucent : Color
@@ -89,6 +97,11 @@ codeFontFamily : Style
 codeFontFamily = Css.batch [ fontFamilies [ "Fira Code" ], fontWeight (int 500) ]
 
 
+coverStyle : Style
+coverStyle =
+  Css.batch [ backgroundColor secondaryBackground ]
+
+
 headerStyle : Style
 headerStyle =
   Css.batch
@@ -98,7 +111,7 @@ headerStyle =
     , display block, float left
     , width (em 0.2), height (em 1.2)
     , marginRight (em 1.875)
-    , backgroundColor primary
+    , backgroundColor primaryBackground
     ]
   ]
 

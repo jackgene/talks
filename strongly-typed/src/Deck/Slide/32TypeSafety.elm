@@ -128,6 +128,8 @@ func Multiply(num1 float64, num2 float64) float64 {
 
 var product float64 = Multiply(42, 2.718)
 var product float64 = Multiply("42", true)
+\xAD
+\xAD
 """
   in
   { baseSlideModel
@@ -233,6 +235,7 @@ def multiply(num1: float, num2: float) -> float:
     return num1 * num2
 
 product: float = multiply(42, 2.718)
+\xAD
 """
   in
   { baseSlideModel
@@ -270,6 +273,7 @@ def multiply(num1: float, num2: float) -> float:
 
 product: float = multiply(42, 2.718)
 product: float = multiply("42", True)
+\xAD
 """
   in
   { baseSlideModel
@@ -422,6 +426,8 @@ def multiply(num1: str, num2: str) -> str:
 
 
 print(multiply(42, 2.718))
+\xAD
+\xAD
 """
   in
   { baseSlideModel
@@ -524,6 +530,8 @@ function multiply(num1: number, num2: number): number {
 
 const product: number = multiply(42, 2.718);
 const product: number = multiply("42", true);
+\xAD
+\xAD
 """
   in
   { baseSlideModel
@@ -698,6 +706,8 @@ fun multiply(num1: Double, num2: Double): Double = num1 * num2
 
 val product: Double = multiply(42.0, 2.718)
 val product: Double = multiply("42", true)
+\xAD
+\xAD
 """
   in
   { baseSlideModel
@@ -842,6 +852,8 @@ func multiply(_ num1: Double, _ num2: Double) -> Double {
 
 let product: Double = multiply(42, 2.718)
 let product: Double = multiply("42", true)
+\xAD
+\xAD
 """
   in
   { baseSlideModel

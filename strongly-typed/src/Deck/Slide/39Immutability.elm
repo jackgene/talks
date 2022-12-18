@@ -389,6 +389,7 @@ class Circle {
 let unitCircle = new Circle(1.0);
 unitCircle.radius = 2.0;
 Math.PI = 0.0;
+\xAD
 """
   in
   { baseSlideModel
@@ -440,6 +441,7 @@ data class Circle(val radius: Double) {
 val unitCircle = Circle(radius = 1.0)
 unitCircle.radius = 2.0
 PI = 0.0
+\xAD
 """
   in
   { baseSlideModel
@@ -490,6 +492,7 @@ struct Circle {
 let unitCircle = Circle(radius: 1.0)
 unitCircle.radius = 2.0
 Double.pi = 0.0
+\xAD
 """
   in
   { baseSlideModel

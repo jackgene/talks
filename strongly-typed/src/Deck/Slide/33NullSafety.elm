@@ -364,6 +364,7 @@ const text: string = null;
 const text: string | null = null;
 
 alert(text.toUpperCase());
+\xAD
 """
   in
   { baseSlideModel

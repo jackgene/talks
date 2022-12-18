@@ -45,8 +45,8 @@ horizontalBarView value maxValue =
     [ left zero
     , width (pct (100 * (toFloat value / toFloat maxValue)))
     , height (vw 2.5)
-    , color black
-    , backgroundColor primary, opacity (num 0.75)
+    , color primaryForeground
+    , backgroundColor primaryBackground, opacity (num 0.75)
     , textAlign center
     , fontWeight (int 900)
     , transition [ Css.Transitions.width3 transitionDurationMs 0 easeInOut ]
@@ -97,11 +97,11 @@ poll =
                   topLanguages : Int
                   topLanguages = min maxDisplayCount (List.length model.languagesAndCounts)
                 in
-                "The Top "
+                "Audience’s Top "
                 ++(if topLanguages > 1 then toString topLanguages ++ " " else "")
                 ++"Programming Language"
                 ++(if topLanguages > 1 then "s" else "")
-                ++" of Choice:"
+                ++":"
               )
             ]
           , ( Keyed.node "div" [ css [ position relative ] ]
