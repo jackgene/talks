@@ -12,11 +12,12 @@ import Css exposing
   , em, int, rgb, rgba, vw, zero
   -- Alignments & Positions
   -- Other values
-  , block, italic
+  , block, italic, textShadow4
   )
 import Deck.Common exposing (Model, Msg)
 import Html.Styled as Html exposing (Attribute, Html, text)
 import Html.Styled.Attributes exposing (css)
+import Set exposing (Set)
 
 
 -- Model
@@ -44,6 +45,11 @@ baseSlideModel =
   }
 
 
+languages : Set String
+languages =
+  Set.fromList ["Go", "Python", "Scala", "Swift"]
+
+
 -- Styles
 white : Color
 white = rgb 255 255 255
@@ -54,7 +60,15 @@ black = rgb 0 0 0
 
 
 primary : Color
-primary = rgb 224 229 249
+primary = rgb 35 132 198
+
+
+secondary : Color
+secondary = rgb 28 173 226
+
+
+tertiary : Color
+tertiary = rgb 39 206 215
 
 
 blackTranslucent : Color
@@ -87,6 +101,14 @@ paragraphFontFamily = fontFamilies [ "Open Sans" ]
 
 codeFontFamily : Style
 codeFontFamily = Css.batch [ fontFamilies [ "Fira Code" ], fontWeight (int 500) ]
+
+
+coverStyle : Style
+coverStyle =
+  Css.batch
+  [ textShadow4 zero zero (em 0.25) (rgb 64 64 64)
+  , color white, backgroundColor tertiary
+  ]
 
 
 headerStyle : Style

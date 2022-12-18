@@ -25,6 +25,7 @@ import Deck.Slide.Template exposing (standardSlideView)
 import Dict exposing (Dict)
 import Html.Styled exposing (Html, text, div, p, table, td, th, tr)
 import Html.Styled.Attributes exposing (css)
+import Set
 import Svg.Styled.Attributes as SvgAttributes
 
 
@@ -84,6 +85,13 @@ typeSystemProperties =
   let
     nameProblemAndScores : List (String, String, Dict String Score)
     nameProblemAndScores =
+      List.map
+      ( \(name, description, scores) ->
+        ( name
+        , description
+        , Dict.filter ( \lang _ -> Set.member lang languages ) scores
+        )
+      )
       --[ ( "Memory Safety", "Memory Leaks, Buffer Overlow"
       --  , Dict.fromList
       --    [ ( "Go", scoreDefeatable )
@@ -98,6 +106,7 @@ typeSystemProperties =
           [ ( "Go", scoreRequired )
           , ( "Python", scoreOptional )
           , ( "TypeScript", scorePartialAndOptional )
+          , ( "Scala", scoreRequired )
           , ( "Kotlin", scoreRequired )
           , ( "Swift", scoreRequired )
           ]
@@ -107,6 +116,7 @@ typeSystemProperties =
           [ ( "Go", scoreUnsupported )
           , ( "Python", scoreOptional )
           , ( "TypeScript", scoreOptional )
+          , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreDefeatable )
           , ( "Swift", scoreDefeatable )
           ]
@@ -116,6 +126,7 @@ typeSystemProperties =
           [ ( "Go", scoreUnsupported )
           , ( "Python", scorePartialAndOptional )
           , ( "TypeScript", scoreOptional )
+          , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scorePartialAndOptional )
           ]
@@ -125,6 +136,7 @@ typeSystemProperties =
           [ ( "Go", scorePartialAndOptional )
           , ( "Python", scorePartialAndOptional )
           , ( "TypeScript", scorePartialAndOptional )
+          , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreDefeatable )
           , ( "Swift", scoreDefeatable )
           ]
@@ -134,6 +146,7 @@ typeSystemProperties =
           [ ( "Go", scoreUnsupported )
           , ( "Python", scorePartialAndOptional )
           , ( "TypeScript", scorePartialAndOptional )
+          , ( "Scala", scorePartialAndOptional )
           , ( "Kotlin", scorePartialAndOptional )
           , ( "Swift", scoreDefeatable )
           ]
@@ -143,6 +156,7 @@ typeSystemProperties =
           [ ( "Go", scoreUnsupported )
           , ( "Python", scoreOptional )
           , ( "TypeScript", scoreOptional )
+          , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scoreOptional )
           ]
@@ -152,6 +166,7 @@ typeSystemProperties =
           [ ( "Go", scoreOptional )
           , ( "Python", scoreOptional )
           , ( "TypeScript", scoreOptional )
+          , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scoreOptional )
           ]
@@ -161,6 +176,7 @@ typeSystemProperties =
           [ ( "Go", scorePartialAndOptional )
           , ( "Python", scorePartialAndOptional  )
           , ( "TypeScript", scoreOptional )
+          , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scoreOptional )
           ]
@@ -344,7 +360,7 @@ methodology =
       "Analysis of Some Popular Languages"
       ( div []
         [ p []
-          [ text "We’ll go through each type system property "
+          [ text "We will go through each type system property "
           , text "and evaluates how they apply to a number of popular languages. "
           ]
         , p []
@@ -416,7 +432,7 @@ languageReport propertyIndex =
       ( div []
         [ p [] [ text "Type system strengths of the languages we are evaluating:" ]
         , div [ css [ width (pct 90), margin2 zero auto ] ]
-          [ div [ css [ position relative, height (em 10) ] ]
+          [ div [ css [ position relative, height (em (2 * toFloat (Dict.size property.cumulativeScores))) ] ]
             ( -- Vertical lines
               List.map
               ( \score ->

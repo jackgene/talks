@@ -21,13 +21,13 @@ import Svg.Styled.Attributes exposing (css)
 
 sectionCoverSlideView : Int -> String -> Html msg
 sectionCoverSlideView number title =
-  div []
+  div [ css [ coverStyle ] ]
   [ coverBackgroundGraphic
   , h1
     [ css
       [ position absolute, margin zero
-      , top (vw 5), left (vw 6)
-      , color primary, numberFontFamily, fontWeight normal, fontSize (vw 35)
+      , top (vw 4), left (vw 6)
+      , numberFontFamily, fontWeight normal, fontSize (vw 35)
       ]
     ]
     [ text (toString number) ]
@@ -59,7 +59,7 @@ standardSlideView page heading subheading content =
         ]
       ]
       [ div [ css [ display inlineBlock, position absolute, right zero ] ]
-        [ text "What Does It Mean for a Programming Language to Be Strongly Typed?"
+        [ text "Strong Typing and the Errors It Prevents"
         , numberedDisc (toString page) 50
           [ css [ width (vw 2.5), margin4 zero zero (em 0.1) (em 0.4), verticalAlign middle ] ]
         ]

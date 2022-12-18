@@ -16,8 +16,8 @@ import Css exposing
 import Css.Transitions exposing (easeInOut, transition)
 import Deck.Slide.Common exposing (..)
 import Deck.Slide.Graphics exposing
-  ( languageGoLogo, languageKotlinLogo, languagePythonLogo, languageSwiftLogo
-  , languageTypeScriptLogo
+  ( languageGoLogo, languageKotlinLogo, languagePythonLogo
+  , languageScalaLogo, languageSwiftLogo, languageTypeScriptLogo
   )
 import Dict exposing (Dict)
 import Html.Styled exposing (Attribute, Html, div, text)
@@ -51,7 +51,7 @@ type alias CodeBlockError msg =
   }
 
 
-type Language = Go | Kotlin | Python | Swift | TypeScript | XML
+type Language = Go | Kotlin | Python | Scala | Swift | TypeScript | XML
 
 
 -- Functions
@@ -65,6 +65,7 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
           Go -> Language.go
           Kotlin -> Language.kotlin
           Python -> Language.python
+          Scala -> Language.scala
           Swift -> Language.swift
           TypeScript -> Language.typeScript
           XML -> Language.xml
@@ -105,6 +106,7 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
             Go -> languageGoLogo
             Kotlin -> languageKotlinLogo
             Python -> languagePythonLogo
+            Scala -> languageScalaLogo
             Swift -> languageSwiftLogo
             TypeScript -> languageTypeScriptLogo
             XML -> svg [] []
@@ -114,6 +116,7 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
       ( [ if language == Go then codeBlock else emptyPlaceholder
         , if language == Kotlin then codeBlock else emptyPlaceholder
         , if language == Python then codeBlock else emptyPlaceholder
+        , if language == Scala then codeBlock else emptyPlaceholder
         , if language == Swift then codeBlock else emptyPlaceholder
         , if language == TypeScript then codeBlock else emptyPlaceholder
         , div
@@ -132,8 +135,8 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
                   [ display inlineBlock, position absolute
                   , top (vw (codeFontSizeVw * 1.325 * (toFloat line + 1) + 0.125))
                   , left (vw (codeFontSizeVw * 0.6125 * (toFloat column) + 5))
-                  , padding2 (em 0.0625) (em 0.125), border3 (em 0.1) solid (rgb 209 71 21)
-                  , fontSize (em 0.75), color (rgb 209 71 21), backgroundColor (rgba 192 160 160 9.5)
+                  , padding2 (em 0.0625) (em 0.125), border3 (em 0.1) solid (rgb 54 55 55)
+                  , fontSize (em 0.75), color (rgb 191 191 191), backgroundColor (rgba 75 77 77 0.75)
                   , transition
                     [ Css.Transitions.opacity3 transitionDurationMs (transitionDurationMs / 2) easeInOut ]
                   ]
@@ -158,6 +161,7 @@ syntaxHighlightedCodeSnippet language source =
           Go -> Language.go
           Kotlin -> Language.kotlin
           Python -> Language.python
+          Scala -> Language.scala
           Swift -> Language.swift
           TypeScript -> Language.typeScript
           XML -> Language.xml

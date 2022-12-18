@@ -3,6 +3,7 @@ module Deck.Slide.NullSafety exposing
   , unsafeGo, unsafeGoRun
   , safePythonNonNull, safePythonNonNullInvalid, safePythonNullableInvalid, safePythonNullable
   , safeTypeScriptNonNull, safeTypeScriptNonNullInvalid, safeTypeScriptNullableInvalid, safeTypeScriptNullable
+  , safeScalaNullableInvalid, safeScalaNullable, safeScalaNullableFun, safeScalaNullableFor, unsafeScala
   , safeKotlinNullable, unsafeKotlin
   , safeSwiftNullable, safeSwiftNullableFun, unsafeSwift
   )
@@ -29,6 +30,9 @@ subheadingPython = "Python Can Be Null Safe"
 
 subheadingTypeScript : String
 subheadingTypeScript = "TypeScript Can Be Null Safe"
+
+subheadingScala : String
+subheadingScala = "Scala Can Be Null Safe"
 
 subheadingKotlin : String
 subheadingKotlin = "Kotlin Is Null Safe (With Options to Be Unsafe)"
@@ -364,6 +368,7 @@ const text: string = null;
 const text: string | null = null;
 
 alert(text.toUpperCase());
+\xAD
 """
   in
   { baseSlideModel
@@ -430,6 +435,218 @@ alert(text?.toUpperCase() ?? "(text was null)");
           [ text "However, TypeScript also offers syntactic sugar to simplify nullable value access:"
           ]
         , div [] [ codeBlock2 ]
+        ]
+      )
+    )
+  }
+
+
+safeScalaNullableInvalid : UnindexedSlideModel
+safeScalaNullableInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty
+      ( Dict.fromList [ (2, [ ColumnEmphasis Error 8 19 ] ) ] )
+      [ CodeBlockError 2 5
+        [ div []
+          [ text """value toUpperCase is not a member of Option[String]""" ]
+        ]
+      ]
+      """
+val textOpt: Option[String] = None
+
+println(textOpt.toUpperCase)
+\xAD
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Scala achieves null-safety using the "
+          , syntaxHighlightedCodeSnippet Scala "_: Option[+A]"
+          , text " type in its standard library:"
+          ]
+        , div [] [ codeBlock ]
+        , p []
+          [ text "As it is a different type, its content cannot be accessed directly."
+          ]
+        ]
+      )
+    )
+  }
+
+
+safeScalaNullable : UnindexedSlideModel
+safeScalaNullable =
+  let
+    codeBlock1 : Html msg
+    codeBlock1 =
+      syntaxHighlightedCodeBlock Scala
+      ( Dict.fromList
+        [ (2, Deletion), (3, Addition), (4, Addition)
+        ]
+      )
+      Dict.empty []
+      """
+val textOpt: Option[String] = None
+
+println(textOpt.toUpperCase)
+textOpt.foreach { (text: String) => println(text.toUpperCase) }
+"""
+
+    codeBlock2 : Html msg
+    codeBlock2 =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+val textOpt: Option[String] = None
+
+println(textOpt.map(_.toUpperCase).getOrElse("(text was null)"))
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Scala achieves null-safety using the "
+          , syntaxHighlightedCodeSnippet Scala "_: Option[+A]"
+          , text " type in its standard library:"
+          ]
+        , div [] [ codeBlock1 ]
+        , p []
+          [ text "It has a very expressive API, allowing for succinct code:"
+          ]
+        , div [] [ codeBlock2 ]
+        ]
+      )
+    )
+  }
+
+
+safeScalaNullableFun : UnindexedSlideModel
+safeScalaNullableFun =
+  let
+    codeBlockFun : Html msg
+    codeBlockFun =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+val textOpt: Option[String] = Some("xyz")
+val numsByText: Map[String,Int] = Map("xyz" -> 42)
+
+val num: Option[Int] =
+  textOpt.flatMap { numsByText.get }.map { _ * 2 }
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Scala "
+          , syntaxHighlightedCodeSnippet Scala "_: Option[+A]"
+          , text "s are consistent with other Scala container types, leading to powerful, and familiar, usage patterns:"
+          ]
+        , div [] [] -- Skip transition animation
+        , div [] [ codeBlockFun ]
+        ]
+      )
+    )
+  }
+
+
+safeScalaNullableFor : UnindexedSlideModel
+safeScalaNullableFor =
+  let
+    codeBlockFun : Html msg
+    codeBlockFun =
+      syntaxHighlightedCodeBlock Scala
+      ( Dict.fromList
+        [ (4, Deletion), (5, Addition), (6, Addition), (7, Addition), (8, Addition)
+        ]
+      )
+      Dict.empty []
+      """
+val textOpt: Option[String] = Some("xyz")
+val numsByText: Map[String,Int] = Map("xyz" -> 42)
+
+val num: Option[Int] =
+  textOpt.flatMap { numsByText.get }.map { _ * 2 }
+  for
+    text: String <- textOpt
+    mapped: Int <- numsByText.get(text)
+  yield mapped * 2
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Or if you prefer "
+          , syntaxHighlightedCodeSnippet Scala "for"
+          , text "-comprehensions:"
+          ]
+        , div [] [] -- Skip transition animation
+        , div [] [ codeBlockFun ]
+        , p []
+          [ text "It is also possible to nest them "
+          , syntaxHighlightedCodeSnippet Scala ": Option[Option[String]]"
+          , text ", if needed."
+          ]
+        ]
+      )
+    )
+  }
+
+
+unsafeScala : UnindexedSlideModel
+unsafeScala =
+  let
+    codeBlock1 : Html msg
+    codeBlock1 =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+val text: String = null
+println(text.toUpperCase) // NullPointerException!
+"""
+
+    codeBlock2 : Html msg
+    codeBlock2 =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+val textOpt: Option[String] = None
+println(textOpt.orNull.toUpperCase) // NullPointerException!
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Unfortunately, for compatibility with Java, all references can be "
+          , syntaxHighlightedCodeSnippet Scala "null"
+          , text ":"
+          ]
+        , div [] [ codeBlock1 ]
+        , p []
+          [ text "And "
+          , syntaxHighlightedCodeSnippet Scala "_: Option[+A]"
+          , text "s can be converted to their unsafe-equivalents:"
+          ]
+        , div [] [ codeBlock2 ]
+        , p []
+          [ text "Though with the "
+          , syntaxHighlightedCodeSnippet XML "-Yexplicit-nulls"
+          , text " compiler flag, new to Scala 3, the above do not compile."
+          ]
         ]
       )
     )
@@ -572,7 +789,7 @@ let num: Int? = text
       ( div []
         [ p []
           [ text "Because Swift’s nilable types are really implemented as "
-          , syntaxHighlightedCodeSnippet Swift "_: Optional<Wrapped>" -- TODO not highlighting
+          , syntaxHighlightedCodeSnippet Swift "_: Optional<Wrapped>"
           , text "s, they can be chained in a functional way:"
           ]
         , div [] [ codeBlockFun ]
