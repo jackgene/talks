@@ -3,6 +3,7 @@ module Deck.Slide.Encapsulation exposing
   , safeGoPrep, safeGo
   , safePython
   , safeTypeScript
+  , safeScala
   , safeKotlin
   , safeSwift
   )
@@ -29,6 +30,9 @@ subheadingPython = "Python Can Enforce Encapsulation"
 
 subheadingTypeScript : String
 subheadingTypeScript = "TypeScript Can Enforce Encapsulation"
+
+subheadingScala : String
+subheadingScala = "Scala Can Enforce Encapsulation"
 
 subheadingKotlin : String
 subheadingKotlin = "Kotlin Can Enforce Encapsulation"
@@ -216,6 +220,49 @@ console.log("Count:", c.count)
       ( div []
         [ p []
           [ text "TypeScript prevents external access to private members:" ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeScala : UnindexedSlideModel
+safeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty
+      ( Dict.fromList
+        [ (7, [ ColumnEmphasis Error 2 6 ] )
+        ]
+      )
+      [ CodeBlockError 7 2
+        [ div []
+          [ text "variable _count cannot be accessed as a member of (c : Counter)"
+          ]
+        ]
+      ]
+      """
+class Counter {
+  private var _count: Int = 0
+  def count = _count
+  def increment() = _count += 1
+}
+
+val c = new Counter()
+c._count = -1
+
+println("Count: " + c.count)
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Scala prevents external access to private members:" ]
         , div [] [ codeBlock ]
         ]
       )

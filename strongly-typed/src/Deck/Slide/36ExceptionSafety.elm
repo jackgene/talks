@@ -3,6 +3,7 @@ module Deck.Slide.ExceptionSafety exposing
   , introGo, unsafeGoExplicit, unsafeGoVariableReuse
   , unsafePython, unsafePythonRun, safePython, safePythonInvalid
   , unsafeTypeScript, safeTypeScript, safeTypeScriptInvalid
+  , unsafeScala, safeScala, safeScalaInvalid
   , unsafeKotlin, safeKotlin, safeKotlinInvalid
   , safeSwift, safeSwiftInvalid, safeSwiftInvocation, unsafeSwift
   , safeSwiftMonadic, safeSwiftMonadicInvalid
@@ -30,6 +31,9 @@ subheadingPython = "Python Is Not Exception Safe (But Can Be Made Safer)"
 
 subheadingTypeScript : String
 subheadingTypeScript = "TypeScript Is Not Exception Safe (But Can Be Made Safer)"
+
+subheadingScala : String
+subheadingScala = "Scala Is Not Exception Safe (But Includes a Safer Option)"
 
 subheadingKotlin : String
 subheadingKotlin = "Kotlin Is Not Exception Safe (But Includes a Safer Option)"
@@ -295,6 +299,7 @@ def safe_unquote(quoted: str) -> str | Exception:
 unquoted_or_err: str | Exception = safe_unquote("bad%c3url")
 if not isinstance(unquoted_or_err, Exception):
 print(unquoted_or_err.lower())
+\xAD
 """
   in
   { baseSlideModel
@@ -409,6 +414,7 @@ function safeDecodeURI(encodedURI: string): string | Error {
 const urlOrErr: string | Error = safeDecodeURI("bad%url");
 if (urlOrErr instanceof string)
 console.log(urlOrErr.toLowerCase());
+\xAD
 """
   in
   { baseSlideModel
@@ -418,6 +424,123 @@ console.log(urlOrErr.toLowerCase());
       ( div []
         [ p []
           [ text "The use of union types ensures that success and error conditions are accounted for:"
+          ]
+        , div [] [] -- Skip transition animation
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
+unsafeScala : UnindexedSlideModel
+unsafeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+val url: String = java.net.URLDecoder.decode("bad%url", "UTF-8")
+println(url)
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "For compatibility, Scala inherits Java’s exception handling, "
+          , text "and for various reasons, made all exceptions unchecked:"
+          ]
+        , div [] [ codeBlock ]
+        , p []
+          [ text "This program compiles, but crashes at runtime:"
+          ]
+        , console
+          """
+java.lang.IllegalArgumentException: URLDecoder: Illegal hex characters in
+escape (%) pattern - Error at index 0 in: "ur"
+  at java.base/java.net.URLDecoder.decode(URLDecoder.java:232)
+  at java.base/java.net.URLDecoder.decode(URLDecoder.java:142)
+  ... 43 elided% kotlinc -script unsafe.kts
+"""
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
+safeScala : UnindexedSlideModel
+safeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+import scala.util.Try
+
+def safeDecodeUrl(s: String, enc: String): Try[String] =
+  Try { java.net.URLDecoder.decode(s, enc) }
+
+safeDecodeUrl("bad%url", "UTF-8").fold(
+  (_: Throwable) => println("Unable to decode URL"),
+  (url: String) => println(url)
+)
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "However, it provides an exception safe option, in the form of "
+          , syntaxHighlightedCodeSnippet Scala "_: Try[+T]"
+          , text ":"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
+safeScalaInvalid : UnindexedSlideModel
+safeScalaInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala
+      ( Dict.fromList [ (6, Deletion) ] )
+      ( Dict.fromList [ (7, [ ColumnEmphasis Error 2 29 ] ) ] )
+      [ CodeBlockError 6 31
+        [ div [] [ text "Found:    String => Unit" ]
+        , div [] [ text "Required: Throwable => Unit" ]
+        ]
+      ]
+      """
+import scala.util.Try
+
+def safeDecodeUrl(s: String, enc: String): Try[String] =
+  Try { java.net.URLDecoder.decode(s, enc) }
+
+safeDecodeUrl("bad%url", "UTF-8").fold(
+  (_: Throwable) => println("Unable to decode URL"),
+  (url: String) => println(url)
+)
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Not accounting for the failure case results in a compile error:"
           ]
         , div [] [] -- Skip transition animation
         , div [] [ codeBlock ]
@@ -509,10 +632,8 @@ safeKotlinInvalid =
       syntaxHighlightedCodeBlock Kotlin
       ( Dict.fromList [ (6, Deletion) ] )
       ( Dict.fromList [ (7, [ ColumnEmphasis Error 0 1 ] ) ] )
-      [ CodeBlockError 7 0
-        [ div []
-          [ text "no value passed for parameter 'onFailure'" ]
-        ]
+      [ CodeBlockError 6 1
+        [ div [] [ text "no value passed for parameter 'onFailure'" ] ]
       ]
       """
 fun safeDecodeUrl(s: String, enc: String): Result<String> =
