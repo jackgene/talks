@@ -29,7 +29,7 @@ kotlin =
     , "if"
     , "import"
     , "in", "!in"
-    , "inint"
+    , "init"
     , "interface"
     , "is", "!is"
     , "object"
@@ -58,7 +58,7 @@ kotlin =
     ]
   , declarationKeywords = Set.fromList [ "val", "var"
     -- Remove
-    , "class", "data", "abstract", "enum", "import", "protocol", "struct", "package"
+    , "class", "data", "abstract", "enum", "import", "package"
     , "actual", "annotation", "companion", "const", "crossinline", "expect", "external", "final", "infix"
     , "inline", "inner", "internal", "lateinit", "noinline", "open", "operator", "out", "override", "reified"
     , "sealed", "suspend", "tailrec", "vararg"
