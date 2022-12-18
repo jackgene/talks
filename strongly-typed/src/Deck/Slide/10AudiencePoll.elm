@@ -97,11 +97,10 @@ poll =
                   topLanguages : Int
                   topLanguages = min maxDisplayCount (List.length model.languagesAndCounts)
                 in
-                "The Top "
+                "Audience’s Top "
                 ++(if topLanguages > 1 then toString topLanguages ++ " " else "")
                 ++"Programming Language"
                 ++(if topLanguages > 1 then "s" else "")
-                ++" of Choice:"
               )
             ]
           , ( Keyed.node "div" [ css [ position relative ] ]

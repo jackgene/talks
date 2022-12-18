@@ -6,6 +6,7 @@ import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Dict exposing (Dict)
 import Html.Styled exposing (Html, b, div, p, text, ul)
+import Set
 
 
 heading : String
@@ -41,32 +42,50 @@ enableStricterTypeChecking =
         [ p []
           [ text "Simplest solution: Have the compiler perform stricter type checks:"
           , ul []
-            [ li []
-              [ b [] [ text "Python" ]
-              , text " - Different type checkers take different flags: "
-              , ul []
-                [ li []
-                  [ text "mypy: "
-                  , syntaxHighlightedCodeSnippet XML "--disallow-any-generics --disallow-untyped-calls ..."
+            ( ( if not (Set.member "Python" languages) then []
+                else
+                  [ li []
+                    [ b [] [ text "Python" ]
+                    , text " - Different type checkers take different flags: "
+                    , ul []
+                      [ li []
+                        [ text "mypy: "
+                        , syntaxHighlightedCodeSnippet XML "--disallow-any-generics --disallow-untyped-calls ..."
+                        ]
+                      , li []
+                        [ text "Pyre: "
+                        , syntaxHighlightedCodeSnippet XML "--strict"
+                        ]
+                      , li []
+                        [ text "Pyright: "
+                        , syntaxHighlightedCodeSnippet TypeScript """ "typeCheckingMode": "strict" """
+                        , text " in "
+                        , syntaxHighlightedCodeSnippet XML "pyrightconfig.json"
+                        ]
+                      ]
+                    ]
                   ]
-                , li []
-                  [ text "Pyre: "
-                  , syntaxHighlightedCodeSnippet XML "--strict"
+              )
+            ++( if not (Set.member "TypeScript" languages) then []
+                else
+                  [ li []
+                    [ b [] [ text "TypeScript" ]
+                    , text " - "
+                    , syntaxHighlightedCodeSnippet XML "tsc --strict --noUncheckedIndexedAccess"
+                    ]
                   ]
-                , li []
-                  [ text "Pyright: "
-                  , syntaxHighlightedCodeSnippet TypeScript """ "typeCheckingMode": "strict" """
-                  , text " in "
-                  , syntaxHighlightedCodeSnippet XML "pyrightconfig.json"
+              )
+            ++( if not (Set.member "Scala" languages) then []
+                else
+                  [ li []
+                    [ b [] [ text "Scala" ]
+                    , text " - "
+                    , syntaxHighlightedCodeSnippet XML
+                      "-Xfatal-warnings -Yexplicit-nulls -Wdead-code -Wextra-implicit -Wnumeric-widen -Woctal-literal"
+                    ]
                   ]
-                ]
-              ]
-            , li []
-              [ b [] [ text "TypeScript" ]
-              , text " - "
-              , syntaxHighlightedCodeSnippet XML "tsc --strict --noUncheckedIndexedAccess"
-              ]
-            ]
+              )
+            )
           ]
         ]
       )

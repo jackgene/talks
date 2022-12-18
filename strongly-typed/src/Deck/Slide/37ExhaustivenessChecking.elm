@@ -3,6 +3,7 @@ module Deck.Slide.ExhaustivenessChecking exposing
   , unsafeGoPrep, unsafeGo
   , safePython, safePythonInvalid
   , safeTypeScript, safeTypeScriptInvalid
+  , safeScalaPrep, safeScala, safeScalaInvalid, safeScalaAlt
   , safeKotlin, safeKotlinInvalid
   , safeSwiftPrep, safeSwift, safeSwiftInvalid, safeSwiftAlt
   )
@@ -29,6 +30,9 @@ subheadingPython = "Python Can Have Exhaustiveness Checking"
 
 subheadingTypeScript : String
 subheadingTypeScript = "TypeScript Can Have Exhaustiveness Checking"
+
+subheadingScala : String
+subheadingScala = "Scala Can Have Exhaustiveness Checking"
 
 subheadingKotlin : String
 subheadingKotlin = "Kotlin Can Have Exhaustiveness Checking"
@@ -103,10 +107,8 @@ unsafeGo =
     codeBlock =
       syntaxHighlightedCodeBlock Go Dict.empty
       ( Dict.fromList [ (8, [ ColumnEmphasis Error 0 1 ] ) ] )
-      [ CodeBlockError 8 0
-        [ div []
-          [ text "missing return at end of function" ]
-        ]
+      [ CodeBlockError 7 1
+        [ div [] [ text "missing return at end of function" ] ]
       ]
       """
 package exhaustiveness
@@ -298,6 +300,156 @@ function doWork(status: AccountStatus): string {
           , syntaxHighlightedCodeSnippet TypeScript "switch"
           , text "es inexhaustive:"
           ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeScalaPrep : UnindexedSlideModel
+safeScalaPrep =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+enum Status:
+  case Active, Inactive
+
+enum Membership:
+  case Basic, Premium
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Scala’s exhaustiveness checking is more comprehensive, consider these "
+          , syntaxHighlightedCodeSnippet Scala "enum"
+          , text "s:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeScala : UnindexedSlideModel
+safeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+import Status._
+import Membership._
+
+def doWork(status: Status, membership: Membership): String =
+  (status, membership) match
+    case (Active, Basic) => "Perform MyRx API calls, ..."
+    case (Active, Premium) => "Perform Gold API calls, ..."
+    case (Inactive, Basic) => "Skipping..."
+    case (Inactive, Premium) => "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "The Scala compiler is able to check for exhaustiveness even across "
+          , syntaxHighlightedCodeSnippet Scala "enum"
+          , text " combinations:"
+          ]
+        , div [] [] -- Skip transition animation
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeScalaInvalid : UnindexedSlideModel
+safeScalaInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala
+      ( Dict.fromList [ (8, Deletion) ] )
+      ( Dict.fromList [ (4, [ ColumnEmphasis Warning 2 20 ] ) ] )
+      [ CodeBlockError 3 29
+        [ div [] [ text "match may not be exhaustive." ]
+        , div [] [ text "It would fail on pattern case: (Inactive, Premium)" ]
+        ]
+      ]
+      """
+import Status._
+import Membership._
+
+def doWork(status: Status, membership: Membership): String =
+  (status, membership) match
+    case (Active, Basic) => "Perform MyRx API calls, ..."
+    case (Active, Premium) => "Perform Gold API calls, ..."
+    case (Inactive, Basic) => "Skipping..."
+    case (Inactive, Premium) => "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Removing a "
+          , syntaxHighlightedCodeSnippet Scala "case"
+          , text " in the "
+          , syntaxHighlightedCodeSnippet Scala "match"
+          , text " results in a compile warning:"
+          ]
+        , div [] [ codeBlock ]
+        , p []
+          [ text "Scala compiler warnings can be upgraded to errors using "
+          , syntaxHighlightedCodeSnippet XML "-Xfatal-warnings"
+          , text "."
+          ]
+        ]
+      )
+    )
+  }
+
+
+safeScalaAlt : UnindexedSlideModel
+safeScalaAlt =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala
+      ( Dict.fromList [ (7, Deletion), (8, Addition) ] )
+      Dict.empty []
+      """
+import Status._
+import Membership._
+
+def doWork(status: Status, membership: Membership): String =
+  (status, membership) match
+    case (Active, Basic) => "Perform MyRx API calls, ..."
+    case (Active, Premium) => "Perform Gold API calls, ..."
+    case (Inactive, Basic) => "Skipping..."
+    case (Inactive, _) => "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "The Scala compiler even accounts for wildcards when checking exhaustiveness:" ]
         , div [] [ codeBlock ]
         ]
       )

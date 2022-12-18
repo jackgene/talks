@@ -17,6 +17,7 @@ import Css exposing
 import Deck.Common exposing (Model, Msg)
 import Html.Styled as Html exposing (Attribute, Html, text)
 import Html.Styled.Attributes exposing (css)
+import Set exposing (Set)
 
 
 -- Model
@@ -42,6 +43,11 @@ baseSlideModel =
   , eventsWsPath = Nothing
   , animationFrames = always 0
   }
+
+
+languages : Set String
+languages =
+  Set.fromList ["Go", "Python", "TypeScript", "Scala", "Kotlin", "Swift"]
 
 
 -- Styles

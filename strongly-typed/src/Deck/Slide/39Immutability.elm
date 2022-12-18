@@ -3,6 +3,7 @@ module Deck.Slide.Immutability exposing
   , unsafeGoPrep, unsafeGo, safeGoPrep, safeGo
   , safePythonPrep, safePython, unsafePythonFrozenMutation, unsafePythonConstantMutation
   , safeTypeScript
+  , safeScala
   , safeKotlin
   , safeSwift
   )
@@ -29,6 +30,9 @@ subheadingPython = "Python Has Partial Support for Immutability"
 
 subheadingTypeScript : String
 subheadingTypeScript = "TypeScript Can Have Immutability"
+
+subheadingScala : String
+subheadingScala = "Scala Can Have Immutability"
 
 subheadingKotlin : String
 subheadingKotlin = "Kotlin Can Have Immutability"
@@ -389,6 +393,7 @@ class Circle {
 let unitCircle = new Circle(1.0);
 unitCircle.radius = 2.0;
 Math.PI = 0.0;
+\xAD
 """
   in
   { baseSlideModel
@@ -400,6 +405,58 @@ Math.PI = 0.0;
           [ text "Declare a field as "
           , syntaxHighlightedCodeSnippet TypeScript "readonly"
           , text " and the TypeScript compiler guarantees that it is:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeScala : UnindexedSlideModel
+safeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty
+      ( Dict.fromList
+        [ (7, [ ColumnEmphasis Error 11 6 ] )
+        , (8, [ ColumnEmphasis Error 0 2 ] )
+        ]
+      )
+      [ CodeBlockError 7 11
+        [ div []
+          [ text "Reassignment to val radius"
+          ]
+        ]
+      , CodeBlockError 8 0
+        [ div []
+          [ text "Reassignment to val Pi"
+          ]
+        ]
+      ]
+      """
+import scala.math.Pi
+
+case class Circle(radius: Double) {
+  val area: Double = Pi * radius * radius
+}
+
+val unitCircle = Circle(radius = 1.0)
+unitCircle.radius = 2.0
+Pi = 0.0
+\xAD
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Scala encourages immutability. Values, declared using "
+          , syntaxHighlightedCodeSnippet Kotlin "val"
+          , text " are immutable:"
           ]
         , div [] [ codeBlock ]
         ]
@@ -440,6 +497,7 @@ data class Circle(val radius: Double) {
 val unitCircle = Circle(radius = 1.0)
 unitCircle.radius = 2.0
 PI = 0.0
+\xAD
 """
   in
   { baseSlideModel
@@ -490,6 +548,7 @@ struct Circle {
 let unitCircle = Circle(radius: 1.0)
 unitCircle.radius = 2.0
 Double.pi = 0.0
+\xAD
 """
   in
   { baseSlideModel

@@ -3,6 +3,7 @@ module Deck.Slide.SafeArrayAccess exposing
   , unsafeGo, unsafeGoRun
   , unsafePython, safePython
   , unsafeTypeScript, safeTypeScriptInvalid, safeTypeScript
+  , unsafeScala, safeScala
   , unsafeKotlin, safeKotlin
   , unsafeSwift, safeSwift
   )
@@ -30,6 +31,9 @@ subheadingPython = "Python Does Not Have Safe Array Access (But Can Be Made Safe
 
 subheadingTypeScript : String
 subheadingTypeScript = "TypeScript Can Have Safe Array Access"
+
+subheadingScala : String
+subheadingScala = "Scala Has Safe Array Access (But With Options to Be Unsafe)"
 
 subheadingKotlin : String
 subheadingKotlin = "Kotlin Has Safe Array Access (But With Options to Be Unsafe)"
@@ -237,6 +241,7 @@ safeTypeScriptInvalid =
       """
 const words: string[] = ["one", "two", "three"];
 const word: string = words[-1].toUpperCase();
+\xAD
 """
   in
   { baseSlideModel
@@ -247,7 +252,7 @@ const word: string = words[-1].toUpperCase();
         [ p []
           [ text "The exact same code can by made array access safe, just by adding the "
           , br [] []
-          , syntaxHighlightedCodeSnippet TypeScript "--noUncheckedIndexedAccess"
+          , syntaxHighlightedCodeSnippet XML "--noUncheckedIndexedAccess"
           , text " compile option:"
           ]
         , div [] [ codeBlock ]
@@ -289,6 +294,75 @@ const word: string | null = words[-1]?.toUpperCase() ?? null;
         ]
       )
     )
+  }
+
+
+unsafeScala : UnindexedSlideModel
+unsafeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+val words: Seq[String] = Seq("one", "two", "three")
+val word: String = words(-1).toUpperCase
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Scala’s collection access is unsafe by default:" ]
+        , div [] [ codeBlock ]
+        , p []
+          [ text "This compiles and fails at runtime:"
+          ]
+        , console
+          """
+java.lang.IndexOutOfBoundsException: -1
+  at scala.collection.LinearSeqOps.apply(LinearSeq.scala:115)
+  at scala.collection.LinearSeqOps.apply$(LinearSeq.scala:114)
+  at scala.collection.immutable.List.apply(List.scala:79)
+  ... 43 elided
+"""
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
+safeScala : UnindexedSlideModel
+safeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala
+      ( Dict.fromList [ (1, Deletion), (2, Addition) ] )
+      Dict.empty []
+      """
+val words: Seq[String] = Seq("one", "two", "three")
+val word: String = words(-1).toUpperCase
+val word: Option[String] = words.lift(-1).map(_.toUpperCase)
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "For safe array access, use the built-in "
+          , syntaxHighlightedCodeSnippet Scala "lift(Int)"
+          , text " method:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 

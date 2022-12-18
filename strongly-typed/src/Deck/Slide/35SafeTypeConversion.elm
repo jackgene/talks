@@ -5,6 +5,7 @@ module Deck.Slide.SafeTypeConversion exposing
   , unsafePythonBadGuard, unsafePythonBadGuardRun, unsafePythonCast
   , safeTypeScript, unsafeTypeScriptGoodPredicateInvalid, unsafeTypeScriptGoodPredicate, unsafeTypeScriptCast
   , unsafeTypeScriptBadPredicate, unsafeTypeScriptBadPredicateRun
+  , safeScala, unsafeScala
   , safeKotlinSmart, safeKotlinExplicit, unsafeKotlin
   , safeSwift, unsafeSwift
   )
@@ -31,6 +32,9 @@ subheadingPython = "Python Is Not Type Conversion Safe (With Safe Options)"
 
 subheadingTypeScript : String
 subheadingTypeScript = "TypeScript Is Not Type Conversion Safe (With Safe Options)"
+
+subheadingScala : String
+subheadingScala = "Scala Is Not Type Conversion Safe (With Safe Options)"
 
 subheadingKotlin : String
 subheadingKotlin = "Kotlin Is Type Conversion Safe (With Options to Be Unsafe)"
@@ -427,7 +431,7 @@ const nums: (number | string)[] = [1, 2, 3];
 
 nums.forEach(num => alert(num.toUpperCase()));
 
-                                      //
+\xAD
 """
   in
   { baseSlideModel
@@ -584,6 +588,81 @@ Exception: TypeError: text.toUpperCase is not a function. (In
   }
 
 
+safeScala : UnindexedSlideModel
+safeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty
+      ( Dict.fromList [ (4, [ ColumnEmphasis Error 0 17 ] ) ] )
+      [ CodeBlockError 4 2
+        [ div [] [ text "value toUpperCase is not a member of Int | String" ] ]
+      ]
+      """
+val thing: Int | String =
+  if (util.Random.nextBoolean) 42
+  else "forty-two"
+
+thing.toUpperCase
+
+thing match
+  case str: String => str.toUpperCase
+  case _ =>
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "Type casts are rarely necessary in Scala, and when they are, can be done safely:" ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
+unsafeScala : UnindexedSlideModel
+unsafeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
+      """
+val text: String = 42\xAD.asInstanceOf[String] // ClassCastException!
+text.toUpperCase
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "An explicit cast is also available, but is unsafe:"
+          ]
+        , div [] [] -- Skip transition animation
+        , div [] [ codeBlock ]
+        , p []
+          [ text "This compiles, but is guaranteed to fail at runtime:"
+          ]
+        , console
+          """
+java.lang.ClassCastException: class java.lang.Integer cannot be cast to class
+java.lang.String (java.lang.Integer and java.lang.String are in module
+java.base of loader 'bootstrap')
+  ... 43 elided
+"""
+        ]
+      )
+    )
+  , active = ( \model -> List.isEmpty model.languagesAndCounts )
+  }
+
+
 safeKotlinSmart : UnindexedSlideModel
 safeKotlinSmart =
   let
@@ -685,7 +764,9 @@ text.uppercase()
         , console
           """
 % kotlinc -script safe_type_cast/unsafe.kts
-java.lang.ClassCastException: class java.lang.Integer cannot be cast to class java.lang.String (java.lang.Integer and java.lang.String are in module java.base of loader 'bootstrap')
+java.lang.ClassCastException: class java.lang.Integer cannot be cast to class
+java.lang.String (java.lang.Integer and java.lang.String are in module
+java.base of loader 'bootstrap')
     at Unsafe.<init>(unsafe.kts:1)
 """
         ]

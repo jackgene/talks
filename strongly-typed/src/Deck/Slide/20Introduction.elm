@@ -20,7 +20,7 @@ import Html.Styled.Attributes exposing (css)
 
 -- Constants
 heading : String
-heading = "What is “Strongly Typed”?"
+heading = "What is “Strong Typing”?"
 
 
 -- Slides
