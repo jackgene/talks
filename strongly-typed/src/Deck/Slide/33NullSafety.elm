@@ -306,7 +306,6 @@ alert(text.toUpperCase());
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 

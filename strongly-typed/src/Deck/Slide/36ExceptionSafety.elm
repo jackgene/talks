@@ -347,7 +347,6 @@ global code@exception_safety/unsafe.js:1:20
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -382,7 +381,6 @@ if (urlOrErr instanceof string)
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -426,7 +424,6 @@ console.log(urlOrErr.toLowerCase());
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -464,7 +461,6 @@ escape (%) pattern - Error at index 0 in: "ur"
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -499,7 +495,6 @@ urlRes.fold(
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -538,7 +533,6 @@ urlRes.fold(
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 

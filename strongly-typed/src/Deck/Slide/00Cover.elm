@@ -38,7 +38,7 @@ cover =
           [ css [ margin2 (em 2.8) zero, fontSize (vw 2.5) ] ]
           [ text "Jack Leow"
           , br [] []
-          , span [ css [ fontSize (vw 2.0) ] ] [ text "December 7, 2022" ]
+          , span [ css [ fontSize (vw 2.0) ] ] [ text "January 4, 2023" ]
           ]
         ]
       ]

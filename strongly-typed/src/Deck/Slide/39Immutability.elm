@@ -88,7 +88,6 @@ func (c *Circle) Area() float64 {
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -121,7 +120,6 @@ func main() {
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
