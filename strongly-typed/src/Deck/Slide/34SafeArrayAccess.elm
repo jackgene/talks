@@ -89,7 +89,6 @@ func main() {
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -113,7 +112,6 @@ main.main()
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -148,7 +146,6 @@ IndexError: list index out of range
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -183,7 +180,6 @@ if word is not None:
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -330,7 +326,6 @@ java.lang.IndexOutOfBoundsException: -1
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -362,7 +357,6 @@ val word: Option[String] = words.lift(-1).map(_.toUpperCase)
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -398,7 +392,6 @@ java.lang.ArrayIndexOutOfBoundsException: Index -1 out of bounds for length 3
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -430,7 +423,6 @@ val word: String? = words.getOrNull(-1)?.uppercase()
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -465,7 +457,6 @@ zsh: illegal hardware instruction  ./safe_array_access
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
 
 
@@ -510,5 +501,4 @@ let word: String? = words[safe: -1]
         ]
       )
     )
-  , active = ( \model -> List.isEmpty model.languagesAndCounts )
   }
