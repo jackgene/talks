@@ -86,33 +86,37 @@ unindexedSlideModels =
       , Just (TypeSystemProperties.tableOfContent (Just 0))
       , Just TypeSafety.introduction
       , unindexedSlideModelForLang "Go" TypeSafety.safeGo
-      , unindexedSlideModelForLang "Go" TypeSafety.invalidSafeGo 
-      , unindexedSlideModelForLang "Go" TypeSafety.invalidUnsafeGo 
+      , unindexedSlideModelForLang "Go" TypeSafety.safeGoInvalid
+      , unindexedSlideModelForLang "Go" TypeSafety.unsafeGoInvalid
       , unindexedSlideModelForLang "Go" TypeSafety.unsafeGo 
       , unindexedSlideModelForLang "Python" TypeSafety.safePython 
-      , unindexedSlideModelForLang "Python" TypeSafety.invalidSafePython 
+      , unindexedSlideModelForLang "Python" TypeSafety.safePythonInvalid
       , unindexedSlideModelForLang "Python" TypeSafety.unsafePythonUnannotated 
       , unindexedSlideModelForLang "Python" TypeSafety.unsafePythonRun 
       , unindexedSlideModelForLang "Python" TypeSafety.pythonTypeHintUnannotated
       , unindexedSlideModelForLang "Python" TypeSafety.pythonTypeHintWrong
       , unindexedSlideModelForLang "Python" TypeSafety.pythonTypeHintWrongRun
       , unindexedSlideModelForLang "TypeScript" TypeSafety.safeTypeScript 
-      , unindexedSlideModelForLang "TypeScript" TypeSafety.invalidSafeTypeScript 
+      , unindexedSlideModelForLang "TypeScript" TypeSafety.safeTypeScriptInvalid
       , unindexedSlideModelForLang "TypeScript" TypeSafety.unsafeTypeScriptAny 
       , unindexedSlideModelForLang "TypeScript" TypeSafety.unsafeTypeScriptUnannotated 
       , unindexedSlideModelForLang "TypeScript" TypeSafety.unsafeTypeScriptFuncParam 
       , unindexedSlideModelForLang "Scala" TypeSafety.safeScala 
-      , unindexedSlideModelForLang "Scala" TypeSafety.invalidSafeScala 
-      , unindexedSlideModelForLang "Scala" TypeSafety.invalidUnsafeScala 
+      , unindexedSlideModelForLang "Scala" TypeSafety.safeScalaInvalid
+      , unindexedSlideModelForLang "Scala" TypeSafety.unsafeScalaInvalid
       , unindexedSlideModelForLang "Scala" TypeSafety.unsafeScala 
       , unindexedSlideModelForLang "Kotlin" TypeSafety.safeKotlin 
-      , unindexedSlideModelForLang "Kotlin" TypeSafety.invalidSafeKotlin 
-      , unindexedSlideModelForLang "Kotlin" TypeSafety.invalidUnsafeKotlin 
+      , unindexedSlideModelForLang "Kotlin" TypeSafety.safeKotlinInvalid
+      , unindexedSlideModelForLang "Kotlin" TypeSafety.unsafeKotlinInvalid
       , unindexedSlideModelForLang "Kotlin" TypeSafety.unsafeKotlin 
       , unindexedSlideModelForLang "Swift" TypeSafety.safeSwift 
-      , unindexedSlideModelForLang "Swift" TypeSafety.invalidSafeSwift 
-      , unindexedSlideModelForLang "Swift" TypeSafety.invalidUnsafeSwift 
+      , unindexedSlideModelForLang "Swift" TypeSafety.safeSwiftInvalid
+      , unindexedSlideModelForLang "Swift" TypeSafety.unsafeSwiftInvalid
       , unindexedSlideModelForLang "Swift" TypeSafety.unsafeSwift 
+      , unindexedSlideModelForLang "Elm" TypeSafety.safeElm
+      , unindexedSlideModelForLang "Elm" TypeSafety.safeElmInvalid1
+      , unindexedSlideModelForLang "Elm" TypeSafety.safeElmInvalid2
+      , unindexedSlideModelForLang "Elm" TypeSafety.unsafeElm
       , Just (TypeSystemProperties.languageReport 0)
 
       , Just (TypeSystemProperties.tableOfContent (Just 1))
@@ -137,13 +141,18 @@ unindexedSlideModels =
       , unindexedSlideModelForLang "Swift" NullSafety.safeSwiftNullable 
       , unindexedSlideModelForLang "Swift" NullSafety.safeSwiftNullableFun 
       , unindexedSlideModelForLang "Swift" NullSafety.unsafeSwift 
+      , unindexedSlideModelForLang "Elm" NullSafety.safeElmNonNull
+      , unindexedSlideModelForLang "Elm" NullSafety.safeElmNullableInvalid
+      , unindexedSlideModelForLang "Elm" NullSafety.safeElmNullable
+      , unindexedSlideModelForLang "Elm" NullSafety.safeElmNullableFun
+      , unindexedSlideModelForLang "Elm" NullSafety.unsafeElm
       , Just (TypeSystemProperties.languageReport 1)
 
       , Just (TypeSystemProperties.tableOfContent (Just 2))
       , Just SafeArrayAccess.introduction
       , unindexedSlideModelForLang "Go" SafeArrayAccess.unsafeGo 
       , unindexedSlideModelForLang "Go" SafeArrayAccess.unsafeGoRun 
-      , unindexedSlideModelForLang "Python" SafeArrayAccess.unsafePython 
+      , unindexedSlideModelForLang "Python" SafeArrayAccess.unsafePython
       , unindexedSlideModelForLang "Python" SafeArrayAccess.safePython 
       , unindexedSlideModelForLang "TypeScript" SafeArrayAccess.unsafeTypeScript 
       , unindexedSlideModelForLang "TypeScript" SafeArrayAccess.safeTypeScriptInvalid 
@@ -154,6 +163,8 @@ unindexedSlideModels =
       , unindexedSlideModelForLang "Kotlin" SafeArrayAccess.safeKotlin 
       , unindexedSlideModelForLang "Swift" SafeArrayAccess.unsafeSwift 
       , unindexedSlideModelForLang "Swift" SafeArrayAccess.safeSwift 
+      , unindexedSlideModelForLang "Elm" SafeArrayAccess.safeElm
+      , unindexedSlideModelForLang "Elm" SafeArrayAccess.unsafeElm
       , Just (TypeSystemProperties.languageReport 2)
 
       , Just (TypeSystemProperties.tableOfContent (Just 3))
@@ -180,6 +191,7 @@ unindexedSlideModels =
       , unindexedSlideModelForLang "Kotlin" SafeTypeConversion.unsafeKotlin 
       , unindexedSlideModelForLang "Swift" SafeTypeConversion.safeSwift 
       , unindexedSlideModelForLang "Swift" SafeTypeConversion.unsafeSwift 
+      , unindexedSlideModelForLang "Elm" SafeTypeConversion.safeElm
       , Just (TypeSystemProperties.languageReport 3)
 
       , Just (TypeSystemProperties.tableOfContent (Just 4))
@@ -206,6 +218,8 @@ unindexedSlideModels =
       , unindexedSlideModelForLang "Swift" ExceptionSafety.unsafeSwift 
       , unindexedSlideModelForLang "Swift" ExceptionSafety.safeSwiftMonadic 
       , unindexedSlideModelForLang "Swift" ExceptionSafety.safeSwiftMonadicInvalid 
+      , unindexedSlideModelForLang "Elm" ExceptionSafety.safeElm
+      , unindexedSlideModelForLang "Elm" ExceptionSafety.safeElmInvalid
       , Just (TypeSystemProperties.languageReport 4)
 
       , Just (TypeSystemProperties.tableOfContent (Just 5))
@@ -226,17 +240,22 @@ unindexedSlideModels =
       , unindexedSlideModelForLang "Swift" ExhaustivenessChecking.safeSwift 
       , unindexedSlideModelForLang "Swift" ExhaustivenessChecking.safeSwiftInvalid 
       , unindexedSlideModelForLang "Swift" ExhaustivenessChecking.safeSwiftAlt 
+      , unindexedSlideModelForLang "Elm" ExhaustivenessChecking.safeElm
+      , unindexedSlideModelForLang "Elm" ExhaustivenessChecking.safeElmInvalid
+      , unindexedSlideModelForLang "Elm" ExhaustivenessChecking.safeElmAlt
       , Just (TypeSystemProperties.languageReport 5)
 
       , Just (TypeSystemProperties.tableOfContent (Just 6))
       , Just Encapsulation.introduction
       , unindexedSlideModelForLang "Go" Encapsulation.safeGoPrep 
-      , unindexedSlideModelForLang "Go" Encapsulation.safeGo 
-      , unindexedSlideModelForLang "Python" Encapsulation.safePython 
-      , unindexedSlideModelForLang "TypeScript" Encapsulation.safeTypeScript 
-      , unindexedSlideModelForLang "Scala" Encapsulation.safeScala 
-      , unindexedSlideModelForLang "Kotlin" Encapsulation.safeKotlin 
-      , unindexedSlideModelForLang "Swift" Encapsulation.safeSwift 
+      , unindexedSlideModelForLang "Go" Encapsulation.safeGoInvalid
+      , unindexedSlideModelForLang "Python" Encapsulation.safePythonInvalid
+      , unindexedSlideModelForLang "TypeScript" Encapsulation.safeTypeScriptInvalid
+      , unindexedSlideModelForLang "Scala" Encapsulation.safeScalaInvalid
+      , unindexedSlideModelForLang "Kotlin" Encapsulation.safeKotlinInvalid
+      , unindexedSlideModelForLang "Swift" Encapsulation.safeSwiftInvalid
+      , unindexedSlideModelForLang "Elm" Encapsulation.safeElmPrep
+      , unindexedSlideModelForLang "Elm" Encapsulation.safeElmInvalid
       , Just (TypeSystemProperties.languageReport 6)
 
       , Just (TypeSystemProperties.tableOfContent (Just 7))
@@ -244,15 +263,16 @@ unindexedSlideModels =
       , unindexedSlideModelForLang "Go" Immutability.unsafeGoPrep 
       , unindexedSlideModelForLang "Go" Immutability.unsafeGo 
       , unindexedSlideModelForLang "Go" Immutability.safeGoPrep 
-      , unindexedSlideModelForLang "Go" Immutability.safeGo 
+      , unindexedSlideModelForLang "Go" Immutability.safeGoInvalid
       , unindexedSlideModelForLang "Python" Immutability.safePythonPrep 
-      , unindexedSlideModelForLang "Python" Immutability.safePython 
+      , unindexedSlideModelForLang "Python" Immutability.safePythonInvalid
       , unindexedSlideModelForLang "Python" Immutability.unsafePythonFrozenMutation 
       , unindexedSlideModelForLang "Python" Immutability.unsafePythonConstantMutation 
-      , unindexedSlideModelForLang "TypeScript" Immutability.safeTypeScript 
-      , unindexedSlideModelForLang "Scala" Immutability.safeScala 
-      , unindexedSlideModelForLang "Kotlin" Immutability.safeKotlin 
-      , unindexedSlideModelForLang "Swift" Immutability.safeSwift 
+      , unindexedSlideModelForLang "TypeScript" Immutability.safeTypeScriptInvalid
+      , unindexedSlideModelForLang "Scala" Immutability.safeScalaInvalid
+      , unindexedSlideModelForLang "Kotlin" Immutability.safeKotlinInvalid
+      , unindexedSlideModelForLang "Swift" Immutability.safeSwiftInvalid
+      , unindexedSlideModelForLang "Elm" Immutability.safeElmInvalid
       , Just (TypeSystemProperties.languageReport 7)
       ]
     )
@@ -266,6 +286,7 @@ unindexedSlideModels =
       , errorPreventionReport "Scala"
       , errorPreventionReport "Kotlin"
       , errorPreventionReport "Swift"
+      , errorPreventionReport "Elm"
       , Just Conclusion.introduction
       , Just Conclusion.enableStricterTypeChecking
       , Just Conclusion.codeGeneration

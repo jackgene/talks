@@ -6,6 +6,7 @@ module Deck.Slide.SafeArrayAccess exposing
   , unsafeScala, safeScala
   , unsafeKotlin, safeKotlin
   , unsafeSwift, safeSwift
+  , safeElm, unsafeElm
   )
 
 import Deck.Slide.Common exposing (..)
@@ -40,6 +41,9 @@ subheadingKotlin = "Kotlin Has Safe Array Access (But With Options to Be Unsafe)
 
 subheadingSwift : String
 subheadingSwift = "Swift Does Not Have Safe Array Access (But Can Be Made Safer)"
+
+subheadingElm : String
+subheadingElm = "Elm Array Access Is Safe"
 
 
 -- Slides
@@ -498,6 +502,57 @@ let word: String? = words[safe: -1]
           , a [ href "https://stackoverflow.com/a/30593673/31506", target "_blank" ]
             [ text "https://stackoverflow.com/a/30593673/31506" ]
           ]
+        ]
+      )
+    )
+  }
+
+
+safeElm : UnindexedSlideModel
+safeElm =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm Dict.empty Dict.empty []
+      """
+module SafeArrayAccess exposing (..)
+import Array exposing (Array)
+
+words : Array String
+words = Array.fromList ["one", "two", "three"]
+
+word : Maybe String
+word = words
+  |> Array.get -1
+  |> Maybe.map String.toUpper
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Elm collections return elements wrapped in "
+          , syntaxHighlightedCodeSnippet Elm "Maybe"
+          , text "s to account for the fact that an element may not be there:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+unsafeElm : UnindexedSlideModel
+unsafeElm =
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Elm does not allow the programmer to unsafely access arrays or any other collection types." ]
         ]
       )
     )

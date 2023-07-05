@@ -16,7 +16,7 @@ import Css exposing
 import Css.Transitions exposing (easeInOut, transition)
 import Deck.Slide.Common exposing (..)
 import Deck.Slide.Graphics exposing
-  ( languageGoLogo, languageKotlinLogo, languagePythonLogo
+  ( languageElmLogo, languageGoLogo, languageKotlinLogo, languagePythonLogo
   , languageScalaLogo, languageSwiftLogo, languageTypeScriptLogo
   )
 import Dict exposing (Dict)
@@ -51,7 +51,7 @@ type alias CodeBlockError msg =
   }
 
 
-type Language = Go | Kotlin | Python | Scala | Swift | TypeScript | XML
+type Language = Elm | Go | Kotlin | Python | Scala | Swift | TypeScript | XML
 
 
 -- Functions
@@ -62,6 +62,7 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
       parser : String -> Result Parser.Error Block
       parser =
         case language of
+          Elm -> Language.elm
           Go -> Language.go
           Kotlin -> Language.kotlin
           Python -> Language.python
@@ -103,6 +104,7 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
         languageLogo : Svg msg
         languageLogo =
           case language of
+            Elm -> languageElmLogo
             Go -> languageGoLogo
             Kotlin -> languageKotlinLogo
             Python -> languagePythonLogo
@@ -113,7 +115,8 @@ syntaxHighlightedCodeBlock language lineEmphases columnEmphases errors source =
       in
       div
       [ css [ position relative, marginTop (em -0.75), fontSize (vw codeFontSizeVw) ] ]
-      ( [ if language == Go then codeBlock else emptyPlaceholder
+      ( [ if language == Elm then codeBlock else emptyPlaceholder
+        , if language == Go then codeBlock else emptyPlaceholder
         , if language == Kotlin then codeBlock else emptyPlaceholder
         , if language == Python then codeBlock else emptyPlaceholder
         , if language == Scala then codeBlock else emptyPlaceholder
@@ -158,6 +161,7 @@ syntaxHighlightedCodeSnippet language source =
       parser : String -> Result Parser.Error Block -- TODO line parser in syntax highlight library? This or the next TODO
       parser =
         case language of
+          Elm -> Language.elm
           Go -> Language.go
           Kotlin -> Language.kotlin
           Python -> Language.python

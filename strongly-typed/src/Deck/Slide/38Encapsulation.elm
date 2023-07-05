@@ -1,11 +1,12 @@
 module Deck.Slide.Encapsulation exposing
   ( introduction
-  , safeGoPrep, safeGo
-  , safePython
-  , safeTypeScript
-  , safeScala
-  , safeKotlin
-  , safeSwift
+  , safeGoPrep, safeGoInvalid
+  , safePythonInvalid
+  , safeTypeScriptInvalid
+  , safeScalaInvalid
+  , safeKotlinInvalid
+  , safeSwiftInvalid
+  , safeElmPrep, safeElmInvalid
   )
 
 import Deck.Slide.Common exposing (..)
@@ -13,7 +14,7 @@ import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Deck.Slide.TypeSystemProperties as TypeSystemProperties
 import Dict exposing (Dict)
-import Html.Styled exposing (Html, div, p, text)
+import Html.Styled exposing (Html, br, code, div, p, text, u)
 import SyntaxHighlight.Model exposing
   ( ColumnEmphasis, ColumnEmphasisType(..), LineEmphasis(..) )
 
@@ -39,6 +40,9 @@ subheadingKotlin = "Kotlin Can Enforce Encapsulation"
 
 subheadingSwift : String
 subheadingSwift = "Swift Can Enforce Encapsulation"
+
+subheadingElm : String
+subheadingElm = "Elm Can Enforce Encapsulation"
 
 
 -- Slides
@@ -95,8 +99,8 @@ func (c *Counter) Increment() { c.count ++ }
   }
 
 
-safeGo : UnindexedSlideModel
-safeGo =
+safeGoInvalid : UnindexedSlideModel
+safeGoInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -140,8 +144,8 @@ func main() {
   }
 
 
-safePython : UnindexedSlideModel
-safePython =
+safePythonInvalid : UnindexedSlideModel
+safePythonInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -184,8 +188,8 @@ print("Count", c.count())
   }
 
 
-safeTypeScript : UnindexedSlideModel
-safeTypeScript =
+safeTypeScriptInvalid : UnindexedSlideModel
+safeTypeScriptInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -227,8 +231,8 @@ console.log("Count:", c.count)
   }
 
 
-safeScala : UnindexedSlideModel
-safeScala =
+safeScalaInvalid : UnindexedSlideModel
+safeScalaInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -270,8 +274,8 @@ println("Count: " + c.count)
   }
 
 
-safeKotlin : UnindexedSlideModel
-safeKotlin =
+safeKotlinInvalid : UnindexedSlideModel
+safeKotlinInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -313,8 +317,8 @@ println("Count: " + c.count)
   }
 
 
-safeSwift : UnindexedSlideModel
-safeSwift =
+safeSwiftInvalid : UnindexedSlideModel
+safeSwiftInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -349,6 +353,107 @@ print("Count:", c.count)
       ( div []
         [ p []
           [ text "Swift prevents external access to private members::" ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmPrep : UnindexedSlideModel
+safeElmPrep =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm Dict.empty Dict.empty []
+      """
+module Counter exposing (Counter, zero, increment, getCount)
+
+type Counter = PrivateCounter Int
+
+zero : Counter
+zero = PrivateCounter 0
+
+increment : Counter -> Counter
+increment (PrivateCounter count) = PrivateCounter (count + 1)
+
+getCount : Counter -> Int
+getCount (PrivateCounter count) = count
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Consider the following counter, noting we exposed "
+          , syntaxHighlightedCodeSnippet Elm "Counter"
+          , text ", not "
+          , syntaxHighlightedCodeSnippet Elm "Counter(..)"
+          , text ":"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmInvalid : UnindexedSlideModel
+safeElmInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm Dict.empty
+      ( Dict.fromList
+        [ (7, [ ColumnEmphasis Error 17 22 ] )
+        ]
+      )
+      [ CodeBlockError 7 28
+        [ div []
+          [ text "I cannot find a "
+          , code [] [ text "Counter.PrivateCounter" ]
+          , text " variant:"
+          ]
+        , div []
+          [ text "The "
+          , code [] [ text "Counter" ]
+          , text " module does not expose a "
+          , code [] [ text "PrivateCounter" ]
+          , text " variant."
+          , br [] []
+          , text "These names seem close though: ..."
+          ]
+        , div []
+          [ u [] [ text "Hint" ]
+          , text ": ..."
+          ]
+        ]
+      ]
+      """
+module Encapsulation exposing (..)
+import Counter exposing (Counter)
+
+counter : Counter
+counter = Counter.zero
+
+negativeCounter : Counter -> Counter
+negativeCounter (Counter.PrivateCounter count) =
+  Counter.PrivateCounter -1
+\xAD
+\xAD
+\xAD
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Elm only allows access to exposed elements:"
+          ]
         , div [] [ codeBlock ]
         ]
       )

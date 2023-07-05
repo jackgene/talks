@@ -8,6 +8,7 @@ module Deck.Slide.SafeTypeConversion exposing
   , safeScala, unsafeScala
   , safeKotlinSmart, safeKotlinExplicit, unsafeKotlin
   , safeSwift, unsafeSwift
+  , safeElm
   )
 
 import Deck.Slide.Common exposing (..)
@@ -41,6 +42,9 @@ subheadingKotlin = "Kotlin Is Type Conversion Safe (With Options to Be Unsafe)"
 
 subheadingSwift : String
 subheadingSwift = "Swift Is Type Conversion Safe (With Options to Be Unsafe)"
+
+subheadingElm : String
+subheadingElm = "Elm Is Type Conversion Safe"
 
 
 -- Slides
@@ -828,6 +832,32 @@ text.uppercased()
 % ./safe_type_cast
 zsh: illegal hardware instruction  ./safe_type_cast
 """
+        ]
+      )
+    )
+  }
+
+
+safeElm : UnindexedSlideModel
+safeElm =
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Elm only allows the programmer to work with type information known at compile time." ]
+        , p []
+          [ text "It does not allow type conversion to a more specific type at runtime. For instance, programmers cannot see if a "
+          , syntaxHighlightedCodeSnippet Elm "comparable"
+          , text " reference refers to a "
+          , syntaxHighlightedCodeSnippet Elm "String"
+          , text " at runtime, and perform "
+          , syntaxHighlightedCodeSnippet Elm "String"
+          , text "-specific operations on it."
+          ]
+        , p []
+          [ text "By only allowing type conversion to a more general type, Elm type conversions are always safe." ]
         ]
       )
     )
