@@ -99,6 +99,7 @@ typeSystemProperties =
       --    , ( "TypeScript", scoreRequired )
       --    , ( "Kotlin", scoreRequired )
       --    , ( "Swift", scoreDefeatable )
+      --    , ( "Elm", scoreRequired )
       --    ]
       --  )
       [ ( "Type Safety", "Type Mismatch"
@@ -109,6 +110,7 @@ typeSystemProperties =
           , ( "Scala", scoreRequired )
           , ( "Kotlin", scoreRequired )
           , ( "Swift", scoreRequired )
+          , ( "Elm", scoreRequired )
           ]
         )
       , ( "Null Safety", "Null Pointer Dereference"
@@ -119,6 +121,7 @@ typeSystemProperties =
           , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreDefeatable )
           , ( "Swift", scoreDefeatable )
+          , ( "Elm", scoreRequired )
           ]
         )
       , ( "Safe Array Access", "Out Of Bounds Array Access"
@@ -129,6 +132,7 @@ typeSystemProperties =
           , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scorePartialAndOptional )
+          , ( "Elm", scoreRequired )
           ]
         )
       , ( "Safe Type Conversion", "Type Conversion Failure"
@@ -139,6 +143,7 @@ typeSystemProperties =
           , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreDefeatable )
           , ( "Swift", scoreDefeatable )
+          , ( "Elm", scoreRequired )
           ]
         )
       , ( "Exception Safety", "Unhandled Recoverable Error"
@@ -149,6 +154,7 @@ typeSystemProperties =
           , ( "Scala", scorePartialAndOptional )
           , ( "Kotlin", scorePartialAndOptional )
           , ( "Swift", scoreDefeatable )
+          , ( "Elm", scoreRequired )
           ]
         )
       , ( "Exhaustiveness Checking", "Inexhaustive Match"
@@ -159,6 +165,7 @@ typeSystemProperties =
           , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scoreOptional )
+          , ( "Elm", scoreOptional )
           ]
         )
       , ( "Encapsulation", "State Data Corruption"
@@ -169,6 +176,7 @@ typeSystemProperties =
           , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scoreOptional )
+          , ( "Elm", scoreOptional )
           ]
         )
       , ( "Immutability", "Unintended State Mutation"
@@ -179,6 +187,7 @@ typeSystemProperties =
           , ( "Scala", scoreOptional )
           , ( "Kotlin", scoreOptional )
           , ( "Swift", scoreOptional )
+          , ( "Elm", scoreRequired )
           ]
         )
       --, ( "Data Race Freedom", "Data Race"
@@ -188,6 +197,7 @@ typeSystemProperties =
       --    , ( "TypeScript", scoreRequired )
       --    , ( "Kotlin", scoreUnsupported )
       --    , ( "Swift", scoreUnsupported )
+      --    , ( "Elm", scoreRequired )
       --    ]
       --  )
       ]
@@ -425,6 +435,18 @@ languageReport propertyIndex =
       propertyHeading =
         if propertyIndex < 0 || propertyIndex >= List.length typeSystemProperties then heading
         else heading ++ ": " ++ property.name
+
+      numLanguages : Float
+      numLanguages = toFloat (Dict.size property.cumulativeScores)
+
+      chartAreaHeightVw : Float
+      chartAreaHeightVw = 4.75 * (min 6.0 numLanguages)
+
+      barFromTopVw : Float
+      barFromTopVw = chartAreaHeightVw / numLanguages
+
+      barHeightVw : Float
+      barHeightVw = barFromTopVw * 0.55
     in
     ( \page model ->
       standardSlideView page propertyHeading
@@ -432,7 +454,7 @@ languageReport propertyIndex =
       ( div []
         [ p [] [ text "Type system strengths of the languages we are evaluating:" ]
         , div [ css [ width (pct 90), margin2 zero auto ] ]
-          [ div [ css [ position relative, height (em (2 * toFloat (Dict.size property.cumulativeScores))) ] ]
+          [ div [ css [ position relative, height (vw chartAreaHeightVw) ] ]
             ( -- Vertical lines
               List.map
               ( \score ->
@@ -459,7 +481,7 @@ languageReport propertyIndex =
                 div
                 [ css
                   [ position absolute
-                  , top (em (0.25 + toFloat (score.rank * 2)))
+                  , top (vw (0.5 + toFloat score.rank * barFromTopVw))
                   , width (pct 100)
                   , transition [ Css.Transitions.top3 (transitionDurationMs * 2) 0 easeInOut ]
                   ]
@@ -481,7 +503,7 @@ languageReport propertyIndex =
                       [ position absolute
                       , right (pct (-0.375 + 100 * (toFloat numTypeSystemProperties - score.upper) / toFloat numTypeSystemProperties))
                       , width (pct (0.75 + 100 * (score.range / toFloat numTypeSystemProperties)))
-                      , height (vw 2.5)
+                      , height (vw barHeightVw)
                       , backgroundColor primary, opacity (num 0.75)
                       , transition
                         [ Css.Transitions.right3 (transitionDurationMs * 2) 0 easeInOut
@@ -544,7 +566,7 @@ errorPreventionReport language =
               )
               typeSystemProperties
             )
-          ++[ ("Data Race", if language == "TypeScript" then scoreRequired else scoreUnsupported)
+          ++[ ("Data Race", if language == "Elm" || language == "TypeScript" then scoreRequired else scoreUnsupported)
             , ("Arithmetic Error", scoreUnsupported)
             , ("Infinite Loop", scoreUnsupported)
             , ("Functional Error", scoreUnsupported)

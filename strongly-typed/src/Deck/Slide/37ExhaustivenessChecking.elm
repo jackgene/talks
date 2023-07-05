@@ -6,6 +6,7 @@ module Deck.Slide.ExhaustivenessChecking exposing
   , safeScalaPrep, safeScala, safeScalaInvalid, safeScalaAlt
   , safeKotlin, safeKotlinInvalid
   , safeSwiftPrep, safeSwift, safeSwiftInvalid, safeSwiftAlt
+  , safeElm, safeElmInvalid, safeElmAlt
   )
 
 import Deck.Slide.Common exposing (..)
@@ -13,7 +14,7 @@ import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Deck.Slide.TypeSystemProperties as TypeSystemProperties
 import Dict exposing (Dict)
-import Html.Styled exposing (Html, br, div, em, p, text)
+import Html.Styled exposing (Html, br, code, div, em, p, text, u)
 import SyntaxHighlight.Model exposing
   ( ColumnEmphasis, ColumnEmphasisType(..), LineEmphasis(..) )
 
@@ -39,6 +40,9 @@ subheadingKotlin = "Kotlin Can Have Exhaustiveness Checking"
 
 subheadingSwift : String
 subheadingSwift = "Swift Can Have Exhaustiveness Checking"
+
+subheadingElm : String
+subheadingElm = "Elm Can Have Exhaustiveness Checking"
 
 
 -- Slides
@@ -675,6 +679,138 @@ func doWork(status: Status, membership: Membership) -> String {
       ( div []
         [ p []
           [ text "The Swift compiler even accounts for wildcards when checking exhaustiveness:" ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElm : UnindexedSlideModel
+safeElm =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm Dict.empty Dict.empty []
+      """
+module Exhaustiveness exposing (..)
+
+type Status = Active | Inactive
+type Membership = Basic | Premium
+
+doWork : Status -> Membership -> String
+doWork status membership =
+  case (status, membership) of
+    (Active, Basic) -> "Perform basic API calls..."
+    (Active, Premium) -> "Perform premium API calls..."
+    (Inactive, Basic) -> "Skipping..."
+    (Inactive, Premium) -> "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Exhaustivess is a fundamental aspect of Elm and is extremely comprehensive:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmInvalid : UnindexedSlideModel
+safeElmInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm
+      ( Dict.fromList [ (11, Deletion) ] )
+      ( Dict.fromList [ (7, [ ColumnEmphasis Error 2 4 ] ) ] )
+      [ CodeBlockError 6 8
+        [ div []
+          [ text "This "
+          , code [] [ text "case" ]
+          , text " does not have branches for all possibilities:"
+          ]
+        , div []
+          [ text "Missing possibilities include: "
+          , code [] [ text "( Inactive, Premium )" ]
+          ]
+        , div []
+          [ text "I would have to crash if I saw one of those. Add branches for them!"
+          ]
+        , div []
+          [ u [] [ text "Hint" ]
+          , text ": ..."
+          ]
+        ]
+      ]
+      """
+module Exhaustiveness exposing (..)
+
+type Status = Active | Inactive
+type Membership = Basic | Premium
+
+doWork : Status -> Membership -> String
+doWork status membership =
+  case (status, membership) of
+    (Active, Basic) -> "Perform basic API calls..."
+    (Active, Premium) -> "Perform premium API calls..."
+    (Inactive, Basic) -> "Skipping..."
+    (Inactive, Premium) -> "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Removing a branch in the "
+          , syntaxHighlightedCodeSnippet Elm "case"
+          , text " results in a compile error:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmAlt : UnindexedSlideModel
+safeElmAlt =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm
+      ( Dict.fromList [ (10, Deletion), (11, Addition) ] )
+      Dict.empty []
+      """
+module Exhaustiveness exposing (..)
+
+type Status = Active | Inactive
+type Membership = Basic | Premium
+
+doWork : Status -> Membership -> String
+doWork status membership =
+  case (status, membership) of
+    (Active, Basic) -> "Perform basic API calls..."
+    (Active, Premium) -> "Perform premium API calls..."
+    (Inactive, Basic) -> "Skipping..."
+    (Inactive, _) -> "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "The Elm compiler accounts for wildcards when checking exhaustiveness:" ]
         , div [] [ codeBlock ]
         ]
       )

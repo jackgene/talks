@@ -1,7 +1,7 @@
 module Deck.Slide.Graphics exposing
   ( coverBackgroundGraphic, numberedDisc
   , logosByLanguage
-  , languageGoLogo, languageKotlinLogo, languagePythonLogo
+  , languageElmLogo, languageGoLogo, languageKotlinLogo, languagePythonLogo
   , languageScalaLogo, languageSwiftLogo, languageTypeScriptLogo
   )
 
@@ -53,6 +53,26 @@ numberedDisc num fontSizePct attributes =
     , css [ numberFontFamily, Css.fill black, fontSize (px fontSizePct) ]
     ]
     [ text num ]
+  ]
+
+
+languageElmLogo : Svg msg
+languageElmLogo =
+  svg [ height "2.4vw", viewBox "0 0 355 322.95" ]
+  [ g []
+    [ polygon [ fill "#F0AD00", points "161.649,152.782 231.514,82.916 91.783,82.916" ] []
+    , polygon [ fill "#7FD13B", points "8.867,0 79.241,70.375 232.213,70.375 161.838,0" ] []
+    , rect
+      [ fill "#7FD13B", x "192.99", y "107.392"
+      , transform "matrix(0.7071 0.7071 -0.7071 0.7071 186.4727 -127.2386)"
+      , width "107.676", height "108.167"
+      ]
+      []
+    , polygon [ fill "#60B5CC", points "323.298,143.724 323.298,0 179.573,0" ] []
+    , polygon [ fill "#5A6378", points "152.781,161.649 0,8.868 0,314.432" ] []
+    , polygon [ fill "#F0AD00", points "255.522,246.655 323.298,314.432 323.298,178.879" ] []
+    , polygon [ fill "#60B5CC", points "161.649,170.517 8.869,323.298 314.43,323.298" ] []
+    ]
   ]
 
 
@@ -378,6 +398,7 @@ logosByLanguage =
         []
       ]
     )
+  , ( "Elm", languageElmLogo ) -- Not used for poll, where Elm maps to ML
   , ( "Go", languageGoLogo )
   , ( "Java"
     , svg [ height "2.6vw", viewBox "0 0 304 346" ]
@@ -507,23 +528,7 @@ logosByLanguage =
     )
   , ( "ML"
     , span []
-      [ -- Elm
-        svg [ height "2.4vw", viewBox "0 0 355 322.95" ]
-        [ g []
-          [ polygon [ fill "#F0AD00", points "161.649,152.782 231.514,82.916 91.783,82.916" ] []
-          , polygon [ fill "#7FD13B", points "8.867,0 79.241,70.375 232.213,70.375 161.838,0" ] []
-          , rect
-            [ fill "#7FD13B", x "192.99", y "107.392"
-            , transform "matrix(0.7071 0.7071 -0.7071 0.7071 186.4727 -127.2386)"
-            , width "107.676", height "108.167"
-            ]
-            []
-          , polygon [ fill "#60B5CC", points "323.298,143.724 323.298,0 179.573,0" ] []
-          , polygon [ fill "#5A6378", points "152.781,161.649 0,8.868 0,314.432" ] []
-          , polygon [ fill "#F0AD00", points "255.522,246.655 323.298,314.432 323.298,178.879" ] []
-          , polygon [ fill "#60B5CC", points "161.649,170.517 8.869,323.298 314.43,323.298" ] []
-          ]
-        ]
+      [ languageElmLogo
       , -- Haskell
         svg [ height "2.4vw", viewBox "0 0 175 120" ]
         [ g [ attribute "style" "fill: rgb(102,102,102);" ]

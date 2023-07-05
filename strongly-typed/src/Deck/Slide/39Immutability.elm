@@ -1,19 +1,22 @@
 module Deck.Slide.Immutability exposing
   ( introduction
-  , unsafeGoPrep, unsafeGo, safeGoPrep, safeGo
-  , safePythonPrep, safePython, unsafePythonFrozenMutation, unsafePythonConstantMutation
-  , safeTypeScript
-  , safeScala
-  , safeKotlin
-  , safeSwift
+  , unsafeGoPrep, unsafeGo, safeGoPrep, safeGoInvalid
+  , safePythonPrep, safePythonInvalid, unsafePythonFrozenMutation, unsafePythonConstantMutation
+  , safeTypeScriptInvalid
+  , safeScalaInvalid
+  , safeKotlinInvalid
+  , safeSwiftInvalid
+  , safeElmInvalid
   )
 
+import Css exposing (marginTop, em)
 import Deck.Slide.Common exposing (..)
 import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Deck.Slide.TypeSystemProperties as TypeSystemProperties
 import Dict exposing (Dict)
-import Html.Styled exposing (Html, div, p, text)
+import Html.Styled exposing (Html, div, i, p, text)
+import Html.Styled.Attributes exposing (css)
 import SyntaxHighlight.Model exposing
   ( ColumnEmphasis, ColumnEmphasisType(..), LineEmphasis(..) )
 
@@ -39,6 +42,9 @@ subheadingKotlin = "Kotlin Can Have Immutability"
 
 subheadingSwift : String
 subheadingSwift = "Swift Can Have Immutability"
+
+subheadingElm : String
+subheadingElm = "Elm Requires Immutability"
 
 
 -- Slides
@@ -160,8 +166,8 @@ func New(radius float64) *Circle { return &Circle{r: radius} }
   }
 
 
-safeGo : UnindexedSlideModel
-safeGo =
+safeGoInvalid : UnindexedSlideModel
+safeGoInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -246,8 +252,8 @@ class Circle:
   }
 
 
-safePython : UnindexedSlideModel
-safePython =
+safePythonInvalid : UnindexedSlideModel
+safePythonInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -359,8 +365,8 @@ r: 123 , a: 0.0
   }
 
 
-safeTypeScript : UnindexedSlideModel
-safeTypeScript =
+safeTypeScriptInvalid : UnindexedSlideModel
+safeTypeScriptInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -411,8 +417,8 @@ Math.PI = 0.0;
   }
 
 
-safeScala : UnindexedSlideModel
-safeScala =
+safeScalaInvalid : UnindexedSlideModel
+safeScalaInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -463,8 +469,8 @@ Pi = 0.0
   }
 
 
-safeKotlin : UnindexedSlideModel
-safeKotlin =
+safeKotlinInvalid : UnindexedSlideModel
+safeKotlinInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -515,8 +521,8 @@ PI = 0.0
   }
 
 
-safeSwift : UnindexedSlideModel
-safeSwift =
+safeSwiftInvalid : UnindexedSlideModel
+safeSwiftInvalid =
   let
     codeBlock : Html msg
     codeBlock =
@@ -562,6 +568,62 @@ Double.pi = 0.0
           , text "s are inevitable:"
           ]
         , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmInvalid : UnindexedSlideModel
+safeElmInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm Dict.empty
+      ( Dict.fromList
+        [ (3, [ ColumnEmphasis Error 0 6 ] )
+        , (4, [ ColumnEmphasis Error 0 6 ] )
+        ]
+      )
+      [ CodeBlockError 1 12
+        [ div []
+          [ text "This file has multiple `answer` declarations."
+          ]
+        , div [ css [ marginTop (em 0.1) ] ]
+          [ text "← One here"
+          ]
+        , div [ css [ marginTop (em 0.3) ] ]
+          [ text "← And another one here"
+          ]
+        , div []
+          [ text "How can I know which one you want? Rename one of them!"
+          ]
+        ]
+      ]
+      """
+module Immutability exposing (..)
+
+answer : Int
+answer = 42
+answer = 123
+\xAD
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "In contrast to some languages that have no concept of immutability, "
+          , i [] [ text "Elm has no concept of mutability, no syntax for mutating state" ]
+          , text ":"
+          ]
+        , div [] [ codeBlock ]
+        , p []
+          [ text "State mutation happens external to an Elm application, or within the framework. "
+          , text "This eliminates classes of problems related to mutable data, freeing the programmer to focus on solving application problems."
+          ]
         ]
       )
     )

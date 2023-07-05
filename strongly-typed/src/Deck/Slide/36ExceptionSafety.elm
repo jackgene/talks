@@ -7,6 +7,7 @@ module Deck.Slide.ExceptionSafety exposing
   , unsafeKotlin, safeKotlin, safeKotlinInvalid
   , safeSwift, safeSwiftInvalid, safeSwiftInvocation, unsafeSwift
   , safeSwiftMonadic, safeSwiftMonadicInvalid
+  , safeElm, safeElmInvalid
   )
 
 import Deck.Slide.Common exposing (..)
@@ -14,7 +15,7 @@ import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Deck.Slide.TypeSystemProperties as TypeSystemProperties
 import Dict exposing (Dict)
-import Html.Styled exposing (Html, div, em, p, text)
+import Html.Styled exposing (Html, code, div, em, p, text, u)
 import SyntaxHighlight.Model exposing
   ( ColumnEmphasis, ColumnEmphasisType(..), LineEmphasis(..) )
 
@@ -40,6 +41,9 @@ subheadingKotlin = "Kotlin Is Not Exception Safe (But Includes a Safer Option)"
 
 subheadingSwift : String
 subheadingSwift = "Swift Is Exception Safe (With Options to Be Unsafe)"
+
+subheadingElm : String
+subheadingElm = "Elm Is Exception Safe"
 
 
 -- Slides
@@ -878,6 +882,101 @@ case .failure(_): print("Unable to decode URI")
           [ text "Failing to account for both success and failure cases result in a compile error:"
           ]
         , div [] [] -- No transition
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElm : UnindexedSlideModel
+safeElm =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm Dict.empty Dict.empty []
+      """
+module ExceptionSafety exposing (..)
+import Json.Decode
+
+decodedInt : Result Json.Decode.Error Int
+decodedInt = Json.Decode.decodeString Json.Decode.int "42"
+
+squared : Int
+squared = case decodedInt of
+  Ok num -> num * num
+  Err _ -> -1
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Operations in Elm that may fail return "
+          , syntaxHighlightedCodeSnippet Elm "Result"
+          , text "s that may be an "
+          , syntaxHighlightedCodeSnippet Elm "Ok _"
+          , text " if the operation succeeds, or an "
+          , syntaxHighlightedCodeSnippet Elm "Err _"
+          , text " if it fails:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmInvalid : UnindexedSlideModel
+safeElmInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm
+      ( Dict.fromList [ (9, Deletion) ] )
+      ( Dict.fromList [ (7, [ ColumnEmphasis Error 10 4 ] ) ] )
+      [ CodeBlockError 5 16
+        [ div []
+          [ text "This "
+          , code [] [ text "case" ]
+          , text " does not have branches for all possibilities:"
+          ]
+        , div []
+          [ text "Missing possibilities include: "
+          , code [] [ text "Err _" ]
+          ]
+        , div []
+          [ text "I would have to crash if I saw one of those. Add branches for them!"
+          ]
+        , div []
+          [ u [] [ text "Hint" ]
+          , text ": ..."
+          ]
+        ]
+      ]
+      """
+module ExceptionSafety exposing (..)
+import Json.Decode
+
+decodedInt : Result Json.Decode.Error Int
+decodedInt = Json.Decode.decodeString Json.Decode.int "42"
+
+squared : Int
+squared = case decodedInt of
+  Ok num -> num * num
+  Err _ -> -1
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "The Elm compiler requires programmers to account for both success and failure cases. Not doing so results in a compile error:"
+          ]
         , div [] [ codeBlock ]
         ]
       )

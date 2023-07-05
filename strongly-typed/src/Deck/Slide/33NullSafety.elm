@@ -6,6 +6,7 @@ module Deck.Slide.NullSafety exposing
   , safeScalaNullableInvalid, safeScalaNullable, safeScalaNullableFun, safeScalaNullableFor, unsafeScala
   , safeKotlinNullable, unsafeKotlin
   , safeSwiftNullable, safeSwiftNullableFun, unsafeSwift
+  , safeElmNonNull, safeElmNullableInvalid, safeElmNullable, safeElmNullableFun, unsafeElm
   )
 
 import Deck.Slide.Common exposing (..)
@@ -13,7 +14,7 @@ import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Deck.Slide.TypeSystemProperties as TypeSystemProperties
 import Dict exposing (Dict)
-import Html.Styled exposing (Html, div, p, text)
+import Html.Styled exposing (Html, code, div, em, p, text, u)
 import SyntaxHighlight.Model exposing
   ( ColumnEmphasis, ColumnEmphasisType(..), LineEmphasis(..) )
 
@@ -39,6 +40,9 @@ subheadingKotlin = "Kotlin Is Null Safe (With Options to Be Unsafe)"
 
 subheadingSwift : String
 subheadingSwift = "Swift Is Null Safe (With Options to Be Unsafe)"
+
+subheadingElm : String
+subheadingElm = "Elm Is Null Safe"
 
 
 -- Slides
@@ -831,6 +835,219 @@ print(unsafeText.uppercased())
           [ text "There’s arguably no reason to use them these days, but they are there:"
           ]
         , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmNonNull : UnindexedSlideModel
+safeElmNonNull =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm Dict.empty Dict.empty []
+      """
+module NullSafety exposing (..)
+
+text : String
+text = "Lorem Ipsum"
+
+upperText : String
+upperText = String.toUpper text
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Elm does not have the concept of null, everything must have a value. In this example, "
+          , syntaxHighlightedCodeSnippet Elm "text"
+          , text " "
+          , em [] [ text "must" ]
+          , text " be assigned a valid string:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmNullableInvalid : UnindexedSlideModel
+safeElmNullableInvalid =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm
+      ( Dict.fromList
+        [ (2, Deletion), (3, Deletion), (4, Addition), (5, Addition)
+        ]
+      )
+      ( Dict.fromList [ (8, [ ColumnEmphasis Error 27 4 ] ) ] )
+      [ CodeBlockError 5 32
+        [ div []
+        [ div []
+          [ text "The 1st argument to "
+          , code [] [ text "toUpper" ]
+          , text " is not what I expect:"
+          ]
+        , div []
+          [ text "This "
+          , code [] [ text "text" ]
+          , text " value is a: Maybe String"
+          ]
+        , div []
+          [ text "But "
+          , code [] [ text "toUpper" ]
+          , text " needs the 1st argument to be: String"
+          ]
+        , div []
+          [ u [] [ text "Hint" ]
+          , text ": Use "
+          , code [] [ text "Maybe.withDefault" ]
+          , text " to handle possible errors. Longer term, it is"
+          , text " usually better to write out the full "
+          , code [] [ text "case" ]
+          , text " though!"
+          ]
+        ]
+        ]
+      ]
+      """
+module NullSafety exposing (..)
+
+text : String
+text = "Lorem Ipsum"
+text : Maybe String
+text = Nothing
+
+upperText : String
+upperText = String.toUpper text
+\xAD
+\xAD
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Elm represents "
+          , syntaxHighlightedCodeSnippet Elm "String"
+          , text "s that may be absent using "
+          , syntaxHighlightedCodeSnippet Elm "Maybe String"
+          , text ". And in this case, can no longer be treated as a plain "
+          , syntaxHighlightedCodeSnippet Elm "String"
+          , text ":"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmNullable : UnindexedSlideModel
+safeElmNullable =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm
+      ( Dict.fromList
+        [ (6, Deletion), (7, Addition), (8, Addition), (9, Addition)
+        ]
+      )
+      Dict.empty []
+      """
+module NullSafety exposing (..)
+
+text : Maybe String
+text = Nothing
+
+upperText : String
+upperText = String.toUpper text
+upperText = case text of
+  Just val -> String.toUpper val
+  Nothing -> "(text was absent)"
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "The Elm compiler knows that a "
+          , syntaxHighlightedCodeSnippet Elm "Maybe"
+          , text " may have two possible values ("
+          , syntaxHighlightedCodeSnippet Elm "Just _"
+          , text " or "
+          , syntaxHighlightedCodeSnippet Elm "Nothing"
+          , text ") and requires programmers to account for both:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+safeElmNullableFun : UnindexedSlideModel
+safeElmNullableFun =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm
+      ( Dict.fromList
+        [ (6, Deletion), (7, Deletion), (8, Deletion), (9, Addition), (10, Addition), (11, Addition)
+        ]
+      )
+      Dict.empty []
+      """
+module NullSafety exposing (..)
+
+text : Maybe String
+text = Nothing
+
+upperText : String
+upperText = case text of
+  Just val -> String.toUpper val
+  Nothing -> "(text was absent)"
+upperText = text
+  |> Maybe.map String.toUpper
+  |> Maybe.withDefault "(text was absent)"
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "The same thing can also be accomplished using "
+          , syntaxHighlightedCodeSnippet Elm "Maybe"
+          , text " functions:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+unsafeElm : UnindexedSlideModel
+unsafeElm =
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "Elm does not allow the programmer to get around null safety." ]
         ]
       )
     )
