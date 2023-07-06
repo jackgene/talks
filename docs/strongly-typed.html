@@ -40723,30 +40723,14 @@ var _jackgene$talks$Deck_Slide_NullSafety$safeElmNullableInvalid = function () {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _rtfeldman$elm_css$Html_Styled$text('Elm represents '),
+										_0: _rtfeldman$elm_css$Html_Styled$text('Elm represents values that may be absent by wrapping them in a '),
 										_1: {
 											ctor: '::',
-											_0: A2(_jackgene$talks$Deck_Slide_SyntaxHighlight$syntaxHighlightedCodeSnippet, _jackgene$talks$Deck_Slide_SyntaxHighlight$Elm, 'String'),
+											_0: A2(_jackgene$talks$Deck_Slide_SyntaxHighlight$syntaxHighlightedCodeSnippet, _jackgene$talks$Deck_Slide_SyntaxHighlight$Elm, 'Maybe T'),
 											_1: {
 												ctor: '::',
-												_0: _rtfeldman$elm_css$Html_Styled$text('s that may be absent using '),
-												_1: {
-													ctor: '::',
-													_0: A2(_jackgene$talks$Deck_Slide_SyntaxHighlight$syntaxHighlightedCodeSnippet, _jackgene$talks$Deck_Slide_SyntaxHighlight$Elm, 'Maybe String'),
-													_1: {
-														ctor: '::',
-														_0: _rtfeldman$elm_css$Html_Styled$text('. And in this case, can no longer be treated as a plain '),
-														_1: {
-															ctor: '::',
-															_0: A2(_jackgene$talks$Deck_Slide_SyntaxHighlight$syntaxHighlightedCodeSnippet, _jackgene$talks$Deck_Slide_SyntaxHighlight$Elm, 'String'),
-															_1: {
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Html_Styled$text(':'),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
+												_0: _rtfeldman$elm_css$Html_Styled$text('. In this case, the values may no longer be accessed without first unwrapping them:'),
+												_1: {ctor: '[]'}
 											}
 										}
 									}),
@@ -45357,7 +45341,7 @@ var _jackgene$talks$Deck_Slide_SafeArrayAccess$unsafeElm = _elm_lang$core$Native
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _rtfeldman$elm_css$Html_Styled$text('Elm does not allow the programmer to unsafely access arrays or any other collection types.'),
+									_0: _rtfeldman$elm_css$Html_Styled$text('Elm does not allow the programmer to unsafely access elements of an array or of collections of any other type.'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
@@ -48090,10 +48074,10 @@ var _jackgene$talks$Deck_Slide_Immutability$safeElmInvalid = function () {
 											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _rtfeldman$elm_css$Html_Styled$text('State mutation happens external to an Elm application, or within the framework. '),
+												_0: _rtfeldman$elm_css$Html_Styled$text('State mutation generally happens external to an Elm application. '),
 												_1: {
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Html_Styled$text('This eliminates classes of problems related to mutable data, freeing the programmer to focus on solving application problems.'),
+													_0: _rtfeldman$elm_css$Html_Styled$text('This eliminates classes of problems related to mutable data within the Elm codebase, freeing the programmer to focus on solving application problems.'),
 													_1: {ctor: '[]'}
 												}
 											}),

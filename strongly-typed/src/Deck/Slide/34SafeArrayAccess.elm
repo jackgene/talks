@@ -552,7 +552,7 @@ unsafeElm =
       standardSlideView page heading subheadingElm
       ( div []
         [ p []
-          [ text "Elm does not allow the programmer to unsafely access arrays or any other collection types." ]
+          [ text "Elm does not allow the programmer to unsafely access elements of an array or of collections of any other type." ]
         ]
       )
     )
