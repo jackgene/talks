@@ -621,8 +621,8 @@ answer = 123
           ]
         , div [] [ codeBlock ]
         , p []
-          [ text "State mutation happens external to an Elm application, or within the framework. "
-          , text "This eliminates classes of problems related to mutable data, freeing the programmer to focus on solving application problems."
+          [ text "State mutation generally happens external to an Elm application. "
+          , text "This eliminates classes of problems related to mutable data within the Elm codebase, freeing the programmer to focus on solving application problems."
           ]
         ]
       )

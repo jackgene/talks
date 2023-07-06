@@ -936,13 +936,9 @@ upperText = String.toUpper text
       standardSlideView page heading subheadingElm
       ( div []
         [ p []
-          [ text "Elm represents "
-          , syntaxHighlightedCodeSnippet Elm "String"
-          , text "s that may be absent using "
-          , syntaxHighlightedCodeSnippet Elm "Maybe String"
-          , text ". And in this case, can no longer be treated as a plain "
-          , syntaxHighlightedCodeSnippet Elm "String"
-          , text ":"
+          [ text "Elm represents values that may be absent by wrapping them in a "
+          , syntaxHighlightedCodeSnippet Elm "Maybe T"
+          , text ". In this case, the values may no longer be accessed without first unwrapping them:"
           ]
         , div [] [ codeBlock ]
         ]
