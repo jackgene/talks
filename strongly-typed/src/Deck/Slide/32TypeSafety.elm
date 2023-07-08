@@ -1119,7 +1119,7 @@ product = multiply 42 2.718
       standardSlideView page heading subheadingElm
       ( div []
         [ p []
-          [ text "Function parameters and return values have known types, and must be called using inputs of the correct types:" ]
+          [ text "Function parameters and return values have known types at compile-time, and must be called using inputs of the correct types:" ]
         , div [] [ codeBlock ]
         ]
       )
