@@ -4,7 +4,7 @@ import Css exposing
   -- Container
   ( left, position, top, width, margin, margin2
   -- Content
-  , fontSize
+  , color, fontSize
   -- Units
   , em, vw, zero
   -- Alignments & Positions
@@ -22,12 +22,13 @@ cover =
   { baseSlideModel
   | view =
     ( \_ _ ->
-      div []
+      div [ css [ coverStyle ] ]
       [ coverBackgroundGraphic
       , div
         [ css
           [ position absolute
-          , top (vw 17), left (vw 35), width (vw 58)
+          , top (vw 16), left (vw 35), width (vw 58)
+          , color themeForegroundColor
           ]
         ]
         [ h1 [ css [ margin zero, headerFontFamily, fontSize (vw 4.5) ] ]
@@ -38,7 +39,7 @@ cover =
           , text "with Kotlin Flow"
           ]
         , p
-          [ css [ margin2 (em 2.5) zero, fontSize (em 0.875) ] ]
+          [ css [ margin2 (em 2) zero, fontSize (em 0.875) ] ]
           [ text "Jack Leow"
           , br [] []
           , text "November 1, 2023"]

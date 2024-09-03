@@ -247,16 +247,10 @@ diagramView input operation output animate =
   ]
   [ div -- static background
     [ css [ position absolute, top zero ] ]
-    ( ( case input.value of
-        Stream _ -> [ streamLineView input.horizontalPosition 18 ]
-        Single _ -> []
-      )
-    ++[ operationView operation.horizontalPosition True operation.operatorCode ]
-    ++( case output.value of
-        Stream _ -> [ streamLineView output.horizontalPosition 18 ]
-        Single _ -> []
-      )
-    )
+    [ streamLineView input.horizontalPosition 18
+    , operationView operation.horizontalPosition True operation.operatorCode
+    , streamLineView output.horizontalPosition 18
+    ]
   -- animated foreground
   , operandView input lastElementTime animate
   , operandView output lastElementTime animate
