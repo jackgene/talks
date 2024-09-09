@@ -14,6 +14,60 @@ import SyntaxHighlight.Model exposing (Token, TokenType(..))
 
 -- Author: brandly (https://github.com/brandly)
 -- TODO field declaration, reference
+topLevelLoop : Bool -> Maybe Char -> Parser (List Token)
+topLevelLoop includeTypeReference groupClose =
+  oneOf
+  [ whitespaceOrComment
+  , stringLiteral
+  , oneOf (if includeTypeReference then [ symbol ":", symbol "->" ] else [])
+    |> source
+    |> andThen typeReferenceLoop
+  , symbol "@"
+    |> source
+    |> andThen decoratorLoop
+  , symbol "{"
+    |> source
+    |> andThen
+      ( \c ->
+        topLevelLoop False (Just '}')
+        |> repeat zeroOrMore
+        |> consThenRevConcat [ ( Operator, c ) ]
+      )
+  , symbol "["
+    |> source
+    |> andThen
+      ( \c ->
+        topLevelLoop False (Just ']')
+        |> repeat zeroOrMore
+        |> consThenRevConcat [ ( Operator, c ) ]
+      )
+  , symbol "("
+    |> source
+    |> andThen
+      ( \c ->
+        topLevelLoop False (Just ')')
+        |> repeat zeroOrMore
+        |> consThenRevConcat [ ( Operator, c ) ]
+      )
+  , oneOf
+    [ operatorChar
+    , groupChar
+      ( case groupClose of
+        Just c -> Set.singleton c
+        Nothing -> Set.empty
+      )
+    , number
+    ]
+    |> map List.singleton
+  , keep oneOrMore isIdentifierNameChar
+    |> andThen keywordParser
+  ]
+
+
+mainLoop : Parser (List Token)
+mainLoop = topLevelLoop True Nothing
+
+
 parseTokensReversed : String -> Result Error (List Token)
 parseTokensReversed =
   Parser.run
@@ -21,28 +75,6 @@ parseTokensReversed =
     ( List.reverse >> List.concat )
     ( repeat zeroOrMore mainLoop )
   )
-
-
-mainLoop : Parser (List Token)
-mainLoop =
-  oneOf
-  [ whitespaceOrComment
-  , stringLiteral
-  , oneOf [ symbol ":", symbol "->" ]
-    |> source
-    |> andThen typeReferenceLoop
-  , symbol "@"
-    |> source
-    |> andThen decoratorLoop
-  , oneOf
-    [ operatorChar
-    , groupChar
-    , number
-    ]
-    |> map List.singleton
-  , keep oneOrMore isIdentifierNameChar
-    |> andThen keywordParser
-  ]
 
 
 keywordParser : String -> Parser (List Token)
@@ -53,6 +85,10 @@ keywordParser n =
     |> consThenRevConcat [ ( DeclarationKeyword, n ) ]
   else if n == "class" then
     classDeclarationLoop
+    |> repeat zeroOrMore
+    |> consThenRevConcat [ ( DeclarationKeyword, n ) ]
+  else if n == "lambda" then
+    lambdaDeclarationArgLoop
     |> repeat zeroOrMore
     |> consThenRevConcat [ ( DeclarationKeyword, n ) ]
   else if isKeyword n then
@@ -78,15 +114,15 @@ functionDeclarationLoop =
   , symbol "("
     |> andThen
       ( \_ ->
-        argLoop
+        functionDeclarationArgLoop
         |> repeat zeroOrMore
         |> consThenRevConcat [ ( Operator, "(" ) ]
       )
   ]
 
 
-argLoop : Parser (List Token)
-argLoop =
+functionDeclarationArgLoop : Parser (List Token)
+functionDeclarationArgLoop =
   oneOf
   [ whitespaceOrComment
   , keep oneOrMore (\c -> not (isCommentChar c || isWhitespace c || c == ':' || c == ',' || c == ')'))
@@ -95,6 +131,17 @@ argLoop =
     |> source
     |> andThen typeReferenceLoop
   , keep oneOrMore (\c -> c == ',')
+    |> map (\sep -> [ ( Operator, sep ) ])
+  ]
+
+
+lambdaDeclarationArgLoop : Parser (List Token)
+lambdaDeclarationArgLoop =
+  oneOf
+  [ whitespaceOrComment
+  , keep oneOrMore isIdentifierNameChar
+    |> map (\name -> [ ( FunctionArgument, name ) ])
+  , keep oneOrMore (\c -> c == ',' || c == ':')
     |> map (\sep -> [ ( Operator, sep ) ])
   ]
 
@@ -143,7 +190,7 @@ typeReferenceInnerLoop groupCloses =
         if isBuiltIn name then [ ( BuiltIn, name ) ]
         else [ ( TypeReference, name ) ]
       )
-  , oneOf [ symbol "|" ]
+  , oneOf [ symbol "|", symbol "." ]
     |> source
     |> map ( \op -> [ ( Operator, op ) ] )
   , symbol "["
@@ -234,7 +281,7 @@ isBuiltIn str = Set.member str builtInSet
 
 builtInSet : Set String
 builtInSet =
-  Set.fromList [ "bool", "dict", "float", "int", "list", "object", "str" ]
+  Set.fromList [ "bool", "dict", "float", "int", "list", "object", "set", "str" ]
 
 
 isPunctuation : Char -> Bool
@@ -280,15 +327,15 @@ operatorSet =
   ]
 
 
-groupChar : Parser Token
-groupChar =
-  keep oneOrMore isGroupChar
+groupChar : Set Char -> Parser Token
+groupChar except =
+  keep oneOrMore (isGroupChar except)
   |> map (\c -> ( Operator, c ))
 
 
-isGroupChar : Char -> Bool
-isGroupChar c =
-  Set.member c groupSet
+isGroupChar : Set Char -> Char -> Bool
+isGroupChar except c =
+  Set.member c (Set.diff groupSet except)
 
 
 groupSet : Set Char
@@ -388,6 +435,14 @@ multilineComment =
   }
 
 
+backspace : Parser (List Token)
+backspace =
+  symbol "\\"
+  |. ignore zeroOrMore (not << isLineBreak)
+  |> source
+  |> map ( \c -> [ ( Comment, c ) ] )
+
+
 isCommentChar : Char -> Bool
 isCommentChar c = c == '#'
 
@@ -401,6 +456,7 @@ whitespaceOrComment =
     |> map ( \c -> [ ( Normal, c ) ] )
   , lineBreak
   , comment
+  , backspace
   ]
 
 
