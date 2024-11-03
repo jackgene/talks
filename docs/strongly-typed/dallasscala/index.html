@@ -16407,12 +16407,6 @@ var _jackgene$talks$Deck_Slide_Common$contentContainerStyle = A2(
 	_rtfeldman$elm_css$Css$margin2,
 	_rtfeldman$elm_css$Css$zero,
 	_rtfeldman$elm_css$Css$vw(7));
-var _jackgene$talks$Deck_Slide_Common$textWithShadow = A4(
-	_rtfeldman$elm_css$Css$textShadow4,
-	_rtfeldman$elm_css$Css$zero,
-	_rtfeldman$elm_css$Css$em(0.125),
-	_rtfeldman$elm_css$Css$em(0.375),
-	A3(_rtfeldman$elm_css$Css$rgb, 64, 64, 64));
 var _jackgene$talks$Deck_Slide_Common$codeFontFamily = _rtfeldman$elm_css$Css$batch(
 	{
 		ctor: '::',
@@ -16551,20 +16545,6 @@ var _jackgene$talks$Deck_Slide_Common$console = function (output) {
 		});
 };
 var _jackgene$talks$Deck_Slide_Common$white = A3(_rtfeldman$elm_css$Css$rgb, 255, 255, 255);
-var _jackgene$talks$Deck_Slide_Common$coverStyle = _rtfeldman$elm_css$Css$batch(
-	{
-		ctor: '::',
-		_0: _jackgene$talks$Deck_Slide_Common$textWithShadow,
-		_1: {
-			ctor: '::',
-			_0: _rtfeldman$elm_css$Css$color(_jackgene$talks$Deck_Slide_Common$white),
-			_1: {
-				ctor: '::',
-				_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$talks$Deck_Slide_Common$primary),
-				_1: {ctor: '[]'}
-			}
-		}
-	});
 var _jackgene$talks$Deck_Slide_Common$languages = _elm_lang$core$Set$fromList(
 	{
 		ctor: '::',
@@ -16577,8 +16557,20 @@ var _jackgene$talks$Deck_Slide_Common$languages = _elm_lang$core$Set$fromList(
 				_0: 'Python',
 				_1: {
 					ctor: '::',
-					_0: 'Scala',
-					_1: {ctor: '[]'}
+					_0: 'TypeScript',
+					_1: {
+						ctor: '::',
+						_0: 'Scala',
+						_1: {
+							ctor: '::',
+							_0: 'Kotlin',
+							_1: {
+								ctor: '::',
+								_0: 'Swift',
+								_1: {ctor: '[]'}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -23726,16 +23718,12 @@ var _jackgene$talks$Deck_Slide_Graphics$numberedDisc = F3(
 												_0: _jackgene$talks$Deck_Slide_Common$numberFontFamily,
 												_1: {
 													ctor: '::',
-													_0: _jackgene$talks$Deck_Slide_Common$textWithShadow,
+													_0: _rtfeldman$elm_css$Css$fill(_jackgene$talks$Deck_Slide_Common$white),
 													_1: {
 														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$fill(_jackgene$talks$Deck_Slide_Common$white),
-														_1: {
-															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$fontSize(
-																_rtfeldman$elm_css$Css$px(fontSizePct)),
-															_1: {ctor: '[]'}
-														}
+														_0: _rtfeldman$elm_css$Css$fontSize(
+															_rtfeldman$elm_css$Css$px(fontSizePct)),
+														_1: {ctor: '[]'}
 													}
 												}
 											}),
@@ -23891,8 +23879,7 @@ var _jackgene$talks$Deck_Slide_Template$standardSlideView = F4(
 																_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
 																_1: {
 																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$right(
-																		_rtfeldman$elm_css$Css$em(0.25)),
+																	_0: _rtfeldman$elm_css$Css$right(_rtfeldman$elm_css$Css$zero),
 																	_1: {ctor: '[]'}
 																}
 															}
@@ -23954,7 +23941,7 @@ var _jackgene$talks$Deck_Slide_Template$sectionCoverSlideView = F2(
 				_0: _rtfeldman$elm_css$Svg_Styled_Attributes$css(
 					{
 						ctor: '::',
-						_0: _jackgene$talks$Deck_Slide_Common$coverStyle,
+						_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$talks$Deck_Slide_Common$primary),
 						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
@@ -23982,18 +23969,22 @@ var _jackgene$talks$Deck_Slide_Template$sectionCoverSlideView = F2(
 											_1: {
 												ctor: '::',
 												_0: _rtfeldman$elm_css$Css$left(
-													_rtfeldman$elm_css$Css$vw(3.6)),
+													_rtfeldman$elm_css$Css$vw(1.5)),
 												_1: {
 													ctor: '::',
-													_0: _jackgene$talks$Deck_Slide_Common$numberFontFamily,
+													_0: _rtfeldman$elm_css$Css$color(_jackgene$talks$Deck_Slide_Common$black),
 													_1: {
 														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$fontWeight(_rtfeldman$elm_css$Css$normal),
+														_0: _jackgene$talks$Deck_Slide_Common$numberFontFamily,
 														_1: {
 															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$fontSize(
-																_rtfeldman$elm_css$Css$vw(30)),
-															_1: {ctor: '[]'}
+															_0: _rtfeldman$elm_css$Css$fontWeight(_rtfeldman$elm_css$Css$normal),
+															_1: {
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Css$fontSize(
+																	_rtfeldman$elm_css$Css$vw(35)),
+																_1: {ctor: '[]'}
+															}
 														}
 													}
 												}
@@ -24026,7 +24017,7 @@ var _jackgene$talks$Deck_Slide_Template$sectionCoverSlideView = F2(
 											_1: {
 												ctor: '::',
 												_0: _rtfeldman$elm_css$Css$left(
-													_rtfeldman$elm_css$Css$vw(32)),
+													_rtfeldman$elm_css$Css$vw(35)),
 												_1: {
 													ctor: '::',
 													_0: _rtfeldman$elm_css$Css$width(
@@ -24208,7 +24199,7 @@ var _jackgene$talks$Deck_Slide_Cover$cover = _elm_lang$core$Native_Utils.update(
 						_0: _rtfeldman$elm_css$Html_Styled_Attributes$css(
 							{
 								ctor: '::',
-								_0: _jackgene$talks$Deck_Slide_Common$coverStyle,
+								_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$talks$Deck_Slide_Common$primary),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -24233,7 +24224,7 @@ var _jackgene$talks$Deck_Slide_Cover$cover = _elm_lang$core$Native_Utils.update(
 												_1: {
 													ctor: '::',
 													_0: _rtfeldman$elm_css$Css$left(
-														_rtfeldman$elm_css$Css$vw(30)),
+														_rtfeldman$elm_css$Css$vw(35)),
 													_1: {
 														ctor: '::',
 														_0: _rtfeldman$elm_css$Css$width(
@@ -27596,7 +27587,7 @@ var _jackgene$talks$Deck_Slide_TypeSystemProperties$tableOfContent = function (m
 																	ctor: '::',
 																	_0: A2(
 																		_rtfeldman$elm_css$Css$margin2,
-																		_rtfeldman$elm_css$Css$em(0.25),
+																		_rtfeldman$elm_css$Css$em(0.125),
 																		_rtfeldman$elm_css$Css$zero),
 																	_1: {
 																		ctor: '::',

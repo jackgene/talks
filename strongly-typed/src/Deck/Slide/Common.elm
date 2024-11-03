@@ -60,7 +60,11 @@ black = rgb 0 0 0
 
 
 primary : Color
-primary = rgb 224 229 249
+primary = rgb 255 0 0
+
+
+secondary : Color
+secondary = rgb 196 0 0
 
 
 blackTranslucent : Color
@@ -71,8 +75,8 @@ darkGray : Color
 darkGray = rgb 192 192 192
 
 
-lightGrey : Color
-lightGrey = rgb 238 238 238
+lightGray : Color
+lightGray = rgb 238 238 238
 
 
 consoleText : Color
