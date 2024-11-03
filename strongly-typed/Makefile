@@ -4,7 +4,7 @@ default: build
 ## Assumes elm-make is Elm 0.18
 .PHONY: build
 build:
-	@elm-make $(shell find src -name "*.elm") --warn --output ../docs/strongly-typed.html --yes
+	@elm-make $(shell find src -name "*.elm") --warn --output ../docs/strongly-typed/dallasscala/index.html --yes
 
 .PHONY: clean
 clean:

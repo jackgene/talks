@@ -1,12 +1,12 @@
 module Deck.Slide.Graphics exposing
-  ( coverBackgroundGraphic, numberedDisc
+  ( coverBackgroundGraphic, numberedDisc, languageScalaLogoBig
   , logosByLanguage
   , languageElmLogo, languageGoLogo, languageKotlinLogo, languagePythonLogo
   , languageScalaLogo, languageSwiftLogo, languageTypeScriptLogo
   )
 
 import Css exposing (fontSize, px, vw)
-import Deck.Slide.Common exposing (black, numberFontFamily, primary)
+import Deck.Slide.Common exposing (numberFontFamily, primary, white)
 import Dict exposing (Dict)
 import Html.Styled exposing (span)
 import Html.Styled.Attributes exposing (attribute)
@@ -35,12 +35,7 @@ coverBackgroundViewBox = 52
 
 
 coverBackgroundGraphic : Svg msg
-coverBackgroundGraphic =
-  svg
-  [ css [ Css.width (vw (coverBackgroundViewBox * 100 / 160)) ]
-  , viewBox ("0 0 " ++ (toString coverBackgroundViewBox) ++ " 90")
-  ]
-  [ rect [ width "52", height "90", css [ Css.fill primary ] ] [] ]
+coverBackgroundGraphic = languageScalaLogoBig
 
 
 numberedDisc : String -> Float -> List (Attribute msg) -> Svg msg
@@ -50,7 +45,7 @@ numberedDisc num fontSizePct attributes =
   [ circle [ r "50", css [ Css.fill primary ] ] []
   , text_
     [ alignmentBaseline "middle", textAnchor "middle", y "5"
-    , css [ numberFontFamily, Css.fill black, fontSize (px fontSizePct) ]
+    , css [ numberFontFamily, Css.fill white, fontSize (px fontSizePct) ]
     ]
     [ text num ]
   ]
@@ -212,9 +207,9 @@ languagePythonLogo =
   ]
 
 
-languageScalaLogo : Svg msg
-languageScalaLogo =
-  svg [ width "2.5vw", height "2.5vw", viewBox "0 0 256 416" ]
+languageScalaLogoWithSize : String -> Svg msg
+languageScalaLogoWithSize size =
+  svg [ width size, height size, viewBox "0 0 256 416" ]
   [ defs []
     [ linearGradient
       [ x1 "0%", y1 "50%", x2 "100%", y2 "50%", id "scalaLinearGradient-1" ]
@@ -256,6 +251,14 @@ languageScalaLogo =
       []
     ]
   ]
+
+
+languageScalaLogo : Svg msg
+languageScalaLogo = languageScalaLogoWithSize "2.5vw"
+
+
+languageScalaLogoBig : Svg msg
+languageScalaLogoBig = languageScalaLogoWithSize "121vw"
 
 
 languageSwiftLogo : Svg msg

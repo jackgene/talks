@@ -463,7 +463,7 @@ languageReport propertyIndex =
                   [ position absolute
                   , left (pct (labelWidthPct - 0.05 + toFloat score * (100 - labelWidthPct) / toFloat numTypeSystemProperties))
                   , height (pct 96)
-                  , borderLeft3 (vw 0.1) solid lightGrey
+                  , borderLeft3 (vw 0.1) solid lightGray
                   ]
                 ]
                 []
@@ -597,7 +597,7 @@ errorPreventionReport language =
             (0.0, 0.0) ->
               [ color (rgb 143 37 4), backgroundColor (rgb 255 213 200) ]
             _ ->
-              [ color darkGray, backgroundColor lightGrey]
+              [ color darkGray, backgroundColor lightGray]
           )
 
       in
