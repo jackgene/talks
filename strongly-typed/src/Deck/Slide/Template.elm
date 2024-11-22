@@ -26,8 +26,8 @@ sectionCoverSlideView number title =
   , h1
     [ css
       [ position absolute, margin zero
-      , top (vw 5), left (vw 1.5)
-      , numberFontFamily, fontWeight normal, fontSize (vw 35)
+      , top (vw 5), left (vw 3.6)
+      , numberFontFamily, fontWeight normal, fontSize (vw 30)
       ]
     ]
     [ text (toString number) ]
