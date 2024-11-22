@@ -21,13 +21,13 @@ import Svg.Styled.Attributes exposing (css)
 
 sectionCoverSlideView : Int -> String -> Html msg
 sectionCoverSlideView number title =
-  div [ css [ backgroundColor primary ] ]
+  div [ css [ color white, backgroundColor primary ] ]
   [ coverBackgroundGraphic
   , h1
     [ css
       [ position absolute, margin zero
       , top (vw 5), left (vw 1.5)
-      , color black, numberFontFamily, fontWeight normal, fontSize (vw 35)
+      , numberFontFamily, fontWeight normal, fontSize (vw 35)
       ]
     ]
     [ text (toString number) ]
