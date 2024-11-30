@@ -99,12 +99,12 @@ codeFontFamily : Style
 codeFontFamily = Css.batch [ fontFamilies [ "Fira Code" ], fontWeight (int 500) ]
 
 
+textWithShadow : Style
+textWithShadow = textShadow4 zero (em 0.125) (em 0.375) (rgb 64 64 64)
+
+
 coverStyle : Style
-coverStyle =
-  Css.batch
-  [ textShadow4 zero (em 0.125) (em 0.375) (rgb 64 64 64)
-  , color white, backgroundColor primary
-  ]
+coverStyle = Css.batch [ textWithShadow, color white, backgroundColor primary ]
 
 
 headerStyle : Style

@@ -58,7 +58,7 @@ standardSlideView page heading subheading content =
         , paragraphFontFamily, fontSize (vw 1.3), color darkGray
         ]
       ]
-      [ div [ css [ display inlineBlock, position absolute, right zero ] ]
+      [ div [ css [ display inlineBlock, position absolute, right (em 0.25) ] ]
         [ text "Strong Typing and the Errors It Prevents"
         , numberedDisc (toString page) 50
           [ css [ width (vw 2.5), margin4 zero zero (em 0.1) (em 0.4), verticalAlign middle ] ]
