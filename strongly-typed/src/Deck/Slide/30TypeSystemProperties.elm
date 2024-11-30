@@ -334,7 +334,7 @@ tableOfContent maybePropertyIndex =
           ( \idx { name } ->
             div
             [ css
-              [ display inlineBlock, width (vw 40), margin2 (em 0.125) zero
+              [ display inlineBlock, width (vw 40), margin2 (em 0.25) zero
               , opacity
                 ( num
                   ( case maybePropertyIndex of
