@@ -11,7 +11,6 @@ webSocketUrl = "ws://localhost:9673?debug=true"
 
 type alias ChatMessage =
   { sender : String
-  , recipient : String
   , text : String
   }
 
@@ -39,9 +38,8 @@ type alias WordCounts =
 
 chatMessageDecoder : Decoder ChatMessage
 chatMessageDecoder =
-  Decode.map3 ChatMessage
+  Decode.map2 ChatMessage
   ( Decode.field "s" Decode.string )
-  ( Decode.field "r" Decode.string )
   ( Decode.field "t" Decode.string )
 
 

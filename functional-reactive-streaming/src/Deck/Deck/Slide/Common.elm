@@ -56,15 +56,11 @@ black = rgb 0 0 0
 
 
 themeForegroundColor : Color
-themeForegroundColor = rgb 167 188 249
+themeForegroundColor = rgb 0x30 0x69 0x98
 
 
 themeBackgroundColor : Color
-themeBackgroundColor = rgb 224 229 249
-
-
-blackTranslucent : Color
-blackTranslucent = rgba 32 31 27 0.15
+themeBackgroundColor = rgb 0x4B 0x8B 0xBE
 
 
 darkGray : Color
@@ -93,6 +89,11 @@ paragraphFontFamily = fontFamilies [ "Open Sans" ]
 
 codeFontFamily : Style
 codeFontFamily = Css.batch [ fontFamilies [ "Fira Code" ], fontWeight (int 500) ]
+
+
+coverStyle : Style
+coverStyle =
+  Css.batch [ backgroundColor themeBackgroundColor ]
 
 
 headerStyle : Style

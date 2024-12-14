@@ -27,7 +27,7 @@ sectionCoverSlideView number title =
     [ css
       [ position absolute, margin zero
       , top (vw 5), left (vw 6)
-      , color blackTranslucent, numberFontFamily, fontWeight normal, fontSize (vw 35)
+      , color white, numberFontFamily, fontWeight normal, fontSize (vw 35)
       ]
     ]
     [ text (toString number) ]
@@ -59,7 +59,7 @@ standardSlideView page heading subheading content =
         ]
       ]
       [ div [ css [ display inlineBlock, position absolute, right zero ] ]
-        [ text "Functional Reactive Streaming with Kotlin Flow"
+        [ text "Functional Reactive Streaming with RxPY"
         , numberedDisc (toString page) 50
           [ css [ width (vw 2.5), margin4 zero zero (em 0.1) (em 0.4), verticalAlign middle ] ]
         ]

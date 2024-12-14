@@ -44,20 +44,20 @@ functional =
       ( div []
         [ ul []
           [ li []
-            [ text "Application is implemented by applying operations on immutable messages, making it easy to reason about" ]
+            [ text "Application is implemented by applying operations on immutable messages" ]
           , li []
             [ text "The operators are based on functional collection processing primitives, such as "
-            , syntaxHighlightedCodeSnippet Kotlin "map(T -> R)"
+            , syntaxHighlightedCodeSnippet Python "map(mapper: Callable[[A], B])"
             , text ", and "
-            , syntaxHighlightedCodeSnippet Kotlin "filter(T -> Boolean)"
+            , syntaxHighlightedCodeSnippet Python "filter(predicate: Callable[[A], bool])"
             , text ", and are functionally pure"
             ]
           , li []
             [ text "As long as only pure functions are applied to these operators, the application too will be functionally pure" ]
           , li []
-            [ text "Error handling is done by returning discriminated union types such as Kotlin’s built-in "
-            , syntaxHighlightedCodeSnippet Kotlin ": Result<T>"
-            , text " (or third-party equivalent)"
+            [ text "Errors are handled by representing messages as discriminated union of the desired type or exception "
+            , syntaxHighlightedCodeSnippet Python ": T | Exception"
+            , text " (or a custom error type)"
             ]
           , li []
             [ text "Not a silver bullet: Programmers get the most out of it when they conform to functional programming practices" ]
@@ -96,13 +96,13 @@ streaming =
       "Streaming: Models Application Events as Message Streams"
       ( div []
         [ ul []
-          [ li [] [ text "Streams (known as Flows in Kotlin) behave a lot like iterators, but with one key difference: elements come to be asynchronously - an element can come immediately after the last element, or it can come days later" ]
+          [ li [] [ text "Streams (known as Observables in RxPY) behave a lot like iterators, but with one key difference: elements come to be asynchronously - an element can come immediately after the last element, or it can come days later" ]
           , li [] [ text "May have an infinite number of elements, are processed lazily on demand, possibly concurrently" ]
           , li []
             [ text "Processed by applying operations using operators such as "
-            , syntaxHighlightedCodeSnippet Kotlin "map(T -> R)"
+            , syntaxHighlightedCodeSnippet Python "map(...)"
             , text ", and "
-            , syntaxHighlightedCodeSnippet Kotlin "filter(T -> Boolean)"
+            , syntaxHighlightedCodeSnippet Python "filter(...)"
             ]
           , li [] [ text "Operators are the foundation of functional reactive streaming" ]
           ]

@@ -17,7 +17,7 @@ import Deck.Slide.MarbleDiagram exposing (..)
 import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Dict
-import Html.Styled exposing (Html, br, div, i, p, text, ul)
+import Html.Styled exposing (Html, div, i, p, text, ul)
 import Html.Styled.Attributes exposing (css)
 
 
@@ -37,19 +37,9 @@ introduction =
         [ p []
           [ text "There are functional reactive streaming implementations for all major languages, all conforming to \"the functional reactive streaming API\" at a high level." ]
         , p []
-          [ text "Each implementation is slightly different however, tailoring to the semantics of each language. "
-          , text "For instance: Kotlin has safe "
-          , syntaxHighlightedCodeSnippet Kotlin "null"
-          , text "-handling, and has additional operators such as "
-          , syntaxHighlightedCodeSnippet Kotlin "mapNotNull((T) -> R?)"
-          , text ", "
-          , syntaxHighlightedCodeSnippet Kotlin "filterNotNull()"
-          , text " to handle "
-          , syntaxHighlightedCodeSnippet Kotlin "null"
-          , text " values."
-          ]
+          [ text "Each implementation is slightly different however, tailoring to the semantics of each language. " ]
         , p []
-          [ text "Let’s have a closer look at eight common and useful operators." ]
+          [ text "Let’s have a closer look at seven common and useful operators." ]
         ]
       )
     )
@@ -81,12 +71,11 @@ operator subheading textView input operation output animate code showCode =
 
 operatorMap : Bool -> Bool -> UnindexedSlideModel
 operatorMap showCode animate =
-  operator "map: Transform Flow Elements"
+  operator "map: Transform Observable Elements"
   ( div []
     [ p []
-      [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "map((T) -> R)"
-      , text " operator accepts a transformation function, and returns a new Flow of the transformed elements of the original Flow."
+      [ syntaxHighlightedCodeSnippet Python "reactivex.operators.map(...)"
+      , text " accepts a transformation function, and returns a new Observable of the transformed elements of the original Observable."
       ]
     , p []
       [ text "Properties:"
@@ -406,7 +395,11 @@ operatorMap showCode animate =
     }
   }
   { horizontalPosition = { leftEm = 4.5, widthEm = 7.5 }
-  , operatorCode = [ "map { it * 2L }" ]
+  , operatorCode =
+    [ "ops.map("
+    , "\xA0\xA0lambda n: n*2"
+    , ")"
+    ]
   }
   { horizontalPosition = { leftEm = 12, widthEm = 3 }
   , value =
@@ -718,14 +711,14 @@ operatorMap showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.map {
-    it * 2L
-}.collect()
+import reactivex as rx
+import reactivex.operators as ops
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+mapped: rx.Observable[int] = numbers >> ops.map(
+    lambda n: n*2
+)
+mapped.run()
 """ showCode
 
 
@@ -734,9 +727,8 @@ operatorFilter showCode animate =
   operator "filter: Conditionally Remove Elements"
   ( div []
     [ p []
-      [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "filter((T) -> Boolean)"
-      , text " operator accepts a predicate function, and returns a new Flow of elements that match the predicate."
+      [ syntaxHighlightedCodeSnippet Python "reactivex.operators.filter(...)"
+      , text " accepts a predicate function, and returns a new Observable of elements that match the predicate."
       ]
     , p []
       [ text "Properties:"
@@ -747,7 +739,7 @@ operatorFilter showCode animate =
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 2, widthEm = 3 }
+  { horizontalPosition = { leftEm = 0.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -1055,10 +1047,14 @@ operatorFilter showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 5, widthEm = 6.5 }
-  , operatorCode = [ "filter {", "\xA0\xA0it % 2 == 0", "}" ]
+  { horizontalPosition = { leftEm = 3.25, widthEm = 9.5 }
+  , operatorCode =
+    [ "ops.filter("
+    , "\xA0\xA0lambda n: n%2 == 0"
+    , ")"
+    ]
   }
-  { horizontalPosition = { leftEm = 11.5, widthEm = 3 }
+  { horizontalPosition = { leftEm = 13, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -1218,14 +1214,14 @@ operatorFilter showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.filter {
-    it % 2 == 0
-}.collect()
+import reactivex as rx
+import reactivex.operators as ops
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+filtered: rx.Observable[int] = numbers >> ops.filter(
+    lambda n: n%2 == 0
+)
+filtered.run()
 """ showCode
 
 
@@ -1234,12 +1230,11 @@ operatorTake showCode animate =
   operator "take: Retain the First Few Elements"
   ( div []
     [ p []
-      [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "take(Int)"
-      , text " operator accepts a count, and returns a new Flow with up to that number of elements."
+      [ syntaxHighlightedCodeSnippet Python "reactivex.operators.take(...)"
+      , text " accepts a count, and returns an Observable with up to that number of elements."
       ]
     , p []
-      [ text "It is often used to turn an infinite Flow into a finite Flow."
+      [ text "It is often used to turn an infinite Observable into a finite Observable."
       ]
     , p []
       [ text "Properties:"
@@ -1250,7 +1245,7 @@ operatorTake showCode animate =
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 3, widthEm = 3 }
+  { horizontalPosition = { leftEm = 2, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -1268,10 +1263,10 @@ operatorTake showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 6, widthEm = 4 }
-  , operatorCode = [ "take(10)" ]
+  { horizontalPosition = { leftEm = 5, widthEm = 6 }
+  , operatorCode = [ "ops.take(10)" ]
   }
-  { horizontalPosition = { leftEm = 11, widthEm = 3 }
+  { horizontalPosition = { leftEm = 12, widthEm = 3 }
   , value =
     Stream
     { terminal = True
@@ -1291,23 +1286,22 @@ operatorTake showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.take(10).collect()
+import reactivex as rx
+import reactivex.operators as ops
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+first10: rx.Observable[int] = numbers >> ops.take(10)
+first10.run()
 """ showCode
 
 
 operatorFlatMapMerge : Bool -> Bool -> UnindexedSlideModel
 operatorFlatMapMerge showCode animate =
-  operator "flatMapMerge: Transform into flows, flatten concurrently"
+  operator "flat_map: Map to Observables, flatten concurrently"
   ( div []
     [ p []
-      [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "flatMapMerge(T -> Flow<R>)"
-      , text " operator takes a function that transforms elements into Flows, applying it to each element, and returns a new Flow with the resultant Flows flattened, "
+      [ syntaxHighlightedCodeSnippet Python "reactivex.operators.flat_map(...)"
+      , text " takes a function that transforms elements into Observables, applying it to each element, and returns an Observable with the resultant Observable flattened, "
       , i [] [ text "concurrently" ]
       , text "."
       ]
@@ -1320,7 +1314,7 @@ operatorFlatMapMerge showCode animate =
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 1, widthEm = 3 }
+  { horizontalPosition = { leftEm = 1.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -1628,15 +1622,16 @@ operatorFlatMapMerge showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 4, widthEm = 11 }
+  { horizontalPosition = { leftEm = 4.5, widthEm = 11 }
   , operatorCode =
-    [ "flatMapMerge {"
-    , "\xA0\xA0 flow {"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0\xA0\xA0 delay(3.seconds)"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0}"
-    , "}"
+    [ "ops.flat_map("
+    , "\xA0\xA0lambda n: \\"
+    , "\xA0\xA0\xA0\xA0rx.concat("
+    , "\xA0\xA0\xA0\xA0\xA0\xA0rx.just(n),"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0rx.just(n) >> \\"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0ops.delay(3)"
+    , "\xA0\xA0)"
+    , ")"
     ]
   }
   { horizontalPosition = { leftEm = 15, widthEm = 3 }
@@ -2249,29 +2244,27 @@ operatorFlatMapMerge showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.flatMapMerge {
-    flow {
-        emit(it.toLong())
-        delay(3.seconds)
-        emit(it.toLong())
-    }
-}.collect()
+import reactivex as rx
+import reactivex.operators as ops
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+mapped: rx.Observable[int] = numbers >> ops.flat_map(
+    lambda n: rx.concat(
+        rx.just(n),
+        rx.just(n) >> ops.delay(3)
+    )
+)
+mapped.run()
 """ showCode
 
 
 operatorFlatMapConcat : Bool -> Bool -> UnindexedSlideModel
 operatorFlatMapConcat showCode animate =
-  operator "flatMapConcat: Transform into flows, flatten sequentially"
+  operator "concat_map: Map to Observables, flatten sequentially"
   ( div []
     [ p []
-      [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "flatMapConcat(T -> Flow<R>)"
-      , text " operator accepts a function that transforms elements into Flows, applying it to each element, and returns a new Flow with the resultant Flows flattened, "
+      [ syntaxHighlightedCodeSnippet Python "reactivex.operators.concat_map(...)"
+      , text " accepts a function that transforms elements into Observables, applying it to each element, and returns an Observable with the resultant Observables flattened, "
       , i [] [ text "sequentially" ]
       , text "."
       ]
@@ -2284,7 +2277,7 @@ operatorFlatMapConcat showCode animate =
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 1, widthEm = 3 }
+  { horizontalPosition = { leftEm = 1.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -2592,15 +2585,16 @@ operatorFlatMapConcat showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 4, widthEm = 11 }
+  { horizontalPosition = { leftEm = 4.5, widthEm = 10 }
   , operatorCode =
-    [ "flatMapConcat {"
-    , "\xA0\xA0 flow {"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0\xA0\xA0 delay(3.seconds)"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0}"
-    , "}"
+    [ "ops.concat_map("
+    , "\xA0\xA0lambda n: \\"
+    , "\xA0\xA0\xA0\xA0rx.concat("
+    , "\xA0\xA0\xA0\xA0\xA0\xA0rx.just(n),"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0rx.just(n) >> \\"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0ops.delay(3)"
+    , "\xA0\xA0)"
+    , ")"
     ]
   }
   { horizontalPosition = { leftEm = 15, widthEm = 3 }
@@ -3213,36 +3207,34 @@ operatorFlatMapConcat showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.flatMapConcat {
-    flow {
-        emit(it.toLong())
-        delay(3.seconds)
-        emit(it.toLong())
-    }
-}.collect()
+import reactivex as rx
+import reactivex.operators as ops
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+mapped: rx.Observable[int] = numbers >> ops.concat_map(
+    lambda n: rx.concat(
+        rx.just(n),
+        rx.just(n) >> ops.delay(3)
+    )
+)
+mapped.run()
 """ showCode
 
 
 operatorFold : Bool -> Bool -> UnindexedSlideModel
 operatorFold showCode animate =
-  operator "fold: Combine all elements of a Flow into a single element"
+  operator "reduce: Combine all elements of an Observable"
   ( div []
     [ p []
-      [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "fold(R, (R, T) -> R)"
-      , text " operator accepts an initial value, and a combining function, combining the initial value and all elements of the flow into a single element."
+      [ syntaxHighlightedCodeSnippet Python "reactivex.operators.reduce(...)"
+      , text " accepts a seed value, and a combining function, combining the seed value and all elements of the Observable into a single element."
       ]
     , p []
       [ text "It is used for general aggregation operations." ]
     , p []
       [ text "Properties:"
       , ul []
-        [ li [] [ text "Output is a single element, not a flow" ]
+        [ li [] [ text "Output is a single element" ]
         , li [] [ text "Does not return if input is infinite" ]
         ]
       ]
@@ -3268,44 +3260,46 @@ operatorFold showCode animate =
   }
   { horizontalPosition = { leftEm = 4, widthEm = 9 }
   , operatorCode =
-    [ "fold(0L) {"
-    , "\xA0\xA0 accum, next ->"
-    , "\xA0\xA0\xA0\xA0 accum + next"
-    , "}"
+    [ "reduce("
+    , "\xA0\xA0lambda x,y: x+y,"
+    , "\xA0\xA0seed=0"
+    , ")"
     ]
   }
   { horizontalPosition = { leftEm = 13, widthEm = 3 }
-  , value = Single (Element 45 Square 2 20078)
+  , value =
+    Stream
+    { terminal = True
+    , elements = [ Element 45 Square 2 20078 ]
+    }
   }
   animate
   """
-flow {
-    repeat(10) {
-        delay(2.seconds)
-        emit(it)
-    }
-}.fold(0L) { accum, next ->
-    accum + next
-}
+import reactivex as rx
+import reactivex.operators as ops
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+reduced: rx.Observable[int] = numbers >> ops.take(10) >> ops.reduce(
+    lambda x,y: x+y,
+    seed=0
+)
+reduced.run()
 """ showCode
 
 
 operatorRunningFold : Bool -> Bool -> UnindexedSlideModel
 operatorRunningFold showCode animate =
-  operator "runningFold: fold that emits the value of each step"
+  operator "scan: reduce that emits the value of each step"
   ( div []
     [ p []
-      [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "runningFold(R, (R, T) -> R)"
-      , text " operator (and its better known alias "
-      , syntaxHighlightedCodeSnippet Kotlin "scan(R, (R, T) -> R)"
-      , text ") is just a fold that emits the accumulated value on every combining step."
+      [ syntaxHighlightedCodeSnippet Python "reactivex.operators.scan(...)"
+      , text " is just a reduce that emits the accumulated value on every combining step."
       ]
     , p []
       [ text "Properties:"
       , ul []
         [ li [] [ text "Output has one more element than input" ]
-        , li [] [ text "Output type can be anything (determined by combining function’s initial value)" ]
+        , li [] [ text "Output type can be anything (determined by combining function’s seed value)" ]
         ]
       ]
     ]
@@ -3620,10 +3614,10 @@ operatorRunningFold showCode animate =
   }
   { horizontalPosition = { leftEm = 4, widthEm = 9 }
   , operatorCode =
-    [ "runningFold(0L) {"
-    , "\xA0\xA0 accum, next ->"
-    , "\xA0\xA0\xA0\xA0 accum + next"
-    , "}"
+    [ "scan("
+    , "\xA0\xA0lambda x,y: x+y,"
+    , "\xA0\xA0seed=0"
+    , ")"
     ]
   }
   { horizontalPosition = { leftEm = 13, widthEm = 3 }
@@ -3937,14 +3931,15 @@ operatorRunningFold showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.runningFold(0L) { accum, next ->
-    accum + next
-}.collect()
+import reactivex as rx
+import reactivex.operators as ops
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+scanned: rx.Observable[int] = numbers >> ops.scan(
+    lambda x,y: (x+y),
+    seed=0
+)
+scanned.run()
 """ showCode
 
 
@@ -3953,64 +3948,25 @@ operatorCollect =
   { baseSlideModel
   | view =
     ( \page _ -> standardSlideView page heading
-      "collect: Run the flow, collect emitted elements"
+      "Running the Observable"
       ( div []
         [ p []
-          [ text "In the previous code snippets, you may have noticed that some of the Flows end with a call to "
-          , syntaxHighlightedCodeSnippet Kotlin "collect()"
-          , text ". This is because Flows are cold, and only start running on a "
-          , i [] [ text "terminal operation" ]
-          , text " (such as "
-          , syntaxHighlightedCodeSnippet Kotlin "fold(R, (R, T) -> R)"
-          , text ")."
+          [ text "In the previous code snippets, you may have noticed that they all end with a call to "
+          , syntaxHighlightedCodeSnippet Python "run()"
+          , text ". This is because Observables are cold, and does not start running otherwise."
           ]
         , p []
-          [ syntaxHighlightedCodeSnippet Kotlin "collect(FlowCollector<T>)"
-          , text " is another terminal operator, and is the most general of them. All other terminal operators are implemented in terms of it."
+          [ syntaxHighlightedCodeSnippet Python "subscribe(...)"
+          , text " is another way to start the Observable, and preferred as it is asynchronous."
           ]
         , p []
-          [ syntaxHighlightedCodeBlock Kotlin Dict.empty Dict.empty []
+          [ syntaxHighlightedCodeBlock Python Dict.empty Dict.empty []
       """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.collect { println(it) }
+import reactivex as rx
+
+numbers: rx.Observable[int] = rx.timer(2, 2)
+numbers.run()
 """
-          ]
-        ]
-      )
-    )
-  }
-
-
-terminalOperators : UnindexedSlideModel
-terminalOperators =
-  { baseSlideModel
-  | view =
-    ( \page _ -> standardSlideView page heading
-      "Terminal vs Non-Terminal Operators"
-      ( div []
-        [ p []
-          [ text "We have seen a number of common operators, some of them terminal and some not. It is useful to understand the differences between them:"
-          , ul []
-            [ li []
-              [ text "Terminal operators run the flow; "
-              , br [] []
-              , text "Non-terminal operators are lazily applied to it"
-              ]
-            , li []
-              [ text "Terminal operators can return anything; "
-              , br [] []
-              , text "Non-terminal operators must return another Flow"
-              ]
-            , li []
-              [ text "Terminal operators suspend; "
-              , br [] []
-              , text "Non-terminal operators do not"
-              ]
-            ]
           ]
         ]
       )
@@ -4039,4 +3995,4 @@ slides =
         )
     )
   )
-  ++[ operatorCollect, terminalOperators ]
+  ++[ operatorCollect ]

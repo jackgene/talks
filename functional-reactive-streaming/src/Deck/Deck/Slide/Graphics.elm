@@ -3,15 +3,18 @@ module Deck.Slide.Graphics exposing
   , logosByLanguage
   , languageGoLogo, languageKotlinLogo, languagePythonLogo
   , languageSwiftLogo, languageTypeScriptLogo
+  , wordSubmitterAppQrCode
   )
 
 import Css exposing (fontSize, px, vw)
 import Deck.Slide.Common exposing
-  ( themeBackgroundColor, themeForegroundColor, black, numberFontFamily
+  ( themeBackgroundColor, themeForegroundColor, numberFontFamily, white
   )
 import Dict exposing (Dict)
-import Html.Styled exposing (span)
+import Html.Styled as Html exposing (Html, span)
 import Html.Styled.Attributes exposing (attribute)
+import QRCode
+import QRCode.ECLevel exposing (ECLevel(H))
 import Svg.Styled exposing (..)
 import Svg.Styled.Attributes as Attributes exposing
   ( class, css, d, id, transform
@@ -52,7 +55,7 @@ numberedDisc num fontSizePct attributes =
   [ circle [ r "50", css [ Css.fill themeBackgroundColor ] ] []
   , text_
     [ alignmentBaseline "middle", textAnchor "middle", y "5"
-    , css [ numberFontFamily, Css.fill black, fontSize (px fontSizePct) ]
+    , css [ numberFontFamily, Css.fill white, fontSize (px fontSizePct) ]
     ]
     [ text num ]
   ]
@@ -1008,4 +1011,8 @@ logosByLanguage =
   , ( "TypeScript", languageTypeScriptLogo )
   ]
 
-
+wordSubmitterAppQrCode : String -> Svg msg
+wordSubmitterAppQrCode size =
+  QRCode.encodeWithECLevel "http://wordcloud.jackleow.com" H
+  |> Result.map (QRCode.toSvgWithSize size >> fromUnstyled)
+  |> Result.withDefault (Html.text "Error while encoding to QRCode.")

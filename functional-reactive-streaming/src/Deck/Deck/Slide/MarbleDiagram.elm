@@ -24,7 +24,7 @@ import Css exposing
 import Css.Transitions exposing (easeInOut, linear, transition)
 import Deck.Slide.Common exposing (..)
 import Deck.Slide.SyntaxHighlight exposing
-  ( Language(Kotlin), syntaxHighlightedCodeBlock )
+  ( Language(Python), syntaxHighlightedCodeBlock )
 import Dict
 import Html.Styled exposing (Html, br, div, text)
 import Html.Styled.Attributes exposing (css)
@@ -278,4 +278,4 @@ slideOutCodeBlock code show =
       )
     )
   ]
-  [ syntaxHighlightedCodeBlock Kotlin Dict.empty Dict.empty [] code ]
+  [ syntaxHighlightedCodeBlock Python Dict.empty Dict.empty [] code ]
