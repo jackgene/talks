@@ -170,19 +170,13 @@ variableOrFunctionReferenceLoop opt identifier revTokens =
         ++[ ( FunctionReference, identifier ) ]
         )
       )
-  , symbol " {"
+  , symbol "{"
     |> map
       ( \_ ->
-        ( ( Operator, " {" ) :: revTokens
+        ( ( Operator, "{" ) :: revTokens
         ++[ ( FunctionReference, identifier ) ]
         )
       )
-  , symbol "<"
-    |> andThen
-    ( \_ ->
-      typeReferenceInnerLoop opt [ symbol ">" ]
-      |> consThenRevConcat [ (Operator, "<"), (FunctionReference, identifier) ]
-    )
   , succeed (revTokens ++ [ ( Normal, identifier ) ])
   ]
 
