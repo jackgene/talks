@@ -46,11 +46,12 @@ kotlin =
     , "super"
     , "this"
     , "throw"
+    , "to"
     , "try"
     , "typealias"
     , "typeof"
     , "val"
-    , "value"
+    --, "value"
     , "var"
     , "when"
     , "where"
@@ -71,7 +72,7 @@ kotlin =
   , builtIns =
     Set.fromList
     [ "Any", "Array"
-    , "Boolean", "Char", "String"
+    , "Boolean", "Char"--, "String"
     , "Byte", "Short", "Int", "Long"
     , "UByte", "UShort", "UInt", "ULong"
     , "Float", "Double"

@@ -50,9 +50,6 @@ mainLoop opt =
   , opt.annotation
     |> source
     |> andThen annotationLoop
-  , opt.typeCheckCastOperator
-    |> source
-    |> andThen (typeReferenceLoop opt)
   , oneOf
     [ operatorChar
     , groupChar
@@ -61,6 +58,9 @@ mainLoop opt =
     |> map List.singleton
   , keep oneOrMore isIdentifierNameChar
     |> andThen (keywordParser opt)
+  , opt.typeCheckCastOperator
+    |> source
+    |> andThen (typeReferenceLoop opt)
   ]
 
 
@@ -161,8 +161,23 @@ variableOrFunctionReferenceLoop opt identifier revTokens =
     |> source
     |> andThen (typeReferenceLoop opt)
     |> map ( \typeRef -> typeRef ++ [ ( Normal, identifier ) ] )
-  --, whitespaceOrComment
-  --  |> addThen (variableOrFunctionReferenceLoop opt identifier) revTokens
+  , oneOf
+    ( List.map
+      ( \(open, close) ->
+        open
+        |> source
+        |> map ( \op -> [ ( Operator, op ), ( FunctionReference, identifier ) ] )
+        |> andThen
+          ( \openGroupOp ->
+            typeReferenceInnerLoop opt [ close ]
+            |> consThenRevConcat openGroupOp
+          )
+      )
+      opt.typeReferenceGroupingSymbols
+    )
+  -- Allows for space between function/method name and open parenthesis/brace
+  , nonBreakingWhitespaceOrComment
+    |> andThen (variableOrFunctionReferenceLoop opt identifier)
   , symbol "("
     |> map
       ( \_ ->
