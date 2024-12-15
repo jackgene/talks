@@ -56,7 +56,7 @@ functional =
             [ text "As long as only pure functions are applied to these operators, the application too will be functionally pure" ]
           , li []
             [ text "Error handling is done by returning discriminated union types such as Kotlin’s built-in "
-            , syntaxHighlightedCodeSnippet Kotlin ": Result<T>"
+            , syntaxHighlightedCodeSnippet Kotlin "_: Result<T>"
             , text " (or third-party equivalent)"
             ]
           , li []
