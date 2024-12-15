@@ -190,7 +190,7 @@ typeReferenceInnerLoop groupCloses =
         if isBuiltIn name then [ ( BuiltIn, name ) ]
         else [ ( TypeReference, name ) ]
       )
-  , oneOf [ symbol "|", symbol "." ]
+  , oneOf [ symbol "|", symbol ".", symbol ",", symbol "[", symbol "]" ]
     |> source
     |> map ( \op -> [ ( Operator, op ) ] )
   , symbol "["
