@@ -16407,6 +16407,12 @@ var _jackgene$talks$Deck_Slide_Common$contentContainerStyle = A2(
 	_rtfeldman$elm_css$Css$margin2,
 	_rtfeldman$elm_css$Css$zero,
 	_rtfeldman$elm_css$Css$vw(7));
+var _jackgene$talks$Deck_Slide_Common$textWithShadow = A4(
+	_rtfeldman$elm_css$Css$textShadow4,
+	_rtfeldman$elm_css$Css$zero,
+	_rtfeldman$elm_css$Css$em(0.125),
+	_rtfeldman$elm_css$Css$em(0.375),
+	A3(_rtfeldman$elm_css$Css$rgb, 64, 64, 64));
 var _jackgene$talks$Deck_Slide_Common$codeFontFamily = _rtfeldman$elm_css$Css$batch(
 	{
 		ctor: '::',
@@ -16545,6 +16551,20 @@ var _jackgene$talks$Deck_Slide_Common$console = function (output) {
 		});
 };
 var _jackgene$talks$Deck_Slide_Common$white = A3(_rtfeldman$elm_css$Css$rgb, 255, 255, 255);
+var _jackgene$talks$Deck_Slide_Common$coverStyle = _rtfeldman$elm_css$Css$batch(
+	{
+		ctor: '::',
+		_0: _jackgene$talks$Deck_Slide_Common$textWithShadow,
+		_1: {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css$color(_jackgene$talks$Deck_Slide_Common$white),
+			_1: {
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$talks$Deck_Slide_Common$primary),
+				_1: {ctor: '[]'}
+			}
+		}
+	});
 var _jackgene$talks$Deck_Slide_Common$languages = _elm_lang$core$Set$fromList(
 	{
 		ctor: '::',
@@ -16557,20 +16577,8 @@ var _jackgene$talks$Deck_Slide_Common$languages = _elm_lang$core$Set$fromList(
 				_0: 'Python',
 				_1: {
 					ctor: '::',
-					_0: 'TypeScript',
-					_1: {
-						ctor: '::',
-						_0: 'Scala',
-						_1: {
-							ctor: '::',
-							_0: 'Kotlin',
-							_1: {
-								ctor: '::',
-								_0: 'Swift',
-								_1: {ctor: '[]'}
-							}
-						}
-					}
+					_0: 'Scala',
+					_1: {ctor: '[]'}
 				}
 			}
 		}
@@ -23718,12 +23726,16 @@ var _jackgene$talks$Deck_Slide_Graphics$numberedDisc = F3(
 												_0: _jackgene$talks$Deck_Slide_Common$numberFontFamily,
 												_1: {
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$fill(_jackgene$talks$Deck_Slide_Common$white),
+													_0: _jackgene$talks$Deck_Slide_Common$textWithShadow,
 													_1: {
 														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$fontSize(
-															_rtfeldman$elm_css$Css$px(fontSizePct)),
-														_1: {ctor: '[]'}
+														_0: _rtfeldman$elm_css$Css$fill(_jackgene$talks$Deck_Slide_Common$white),
+														_1: {
+															ctor: '::',
+															_0: _rtfeldman$elm_css$Css$fontSize(
+																_rtfeldman$elm_css$Css$px(fontSizePct)),
+															_1: {ctor: '[]'}
+														}
 													}
 												}
 											}),
@@ -23879,7 +23891,8 @@ var _jackgene$talks$Deck_Slide_Template$standardSlideView = F4(
 																_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
 																_1: {
 																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$right(_rtfeldman$elm_css$Css$zero),
+																	_0: _rtfeldman$elm_css$Css$right(
+																		_rtfeldman$elm_css$Css$em(0.25)),
 																	_1: {ctor: '[]'}
 																}
 															}
@@ -23941,7 +23954,7 @@ var _jackgene$talks$Deck_Slide_Template$sectionCoverSlideView = F2(
 				_0: _rtfeldman$elm_css$Svg_Styled_Attributes$css(
 					{
 						ctor: '::',
-						_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$talks$Deck_Slide_Common$primary),
+						_0: _jackgene$talks$Deck_Slide_Common$coverStyle,
 						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
@@ -23969,22 +23982,18 @@ var _jackgene$talks$Deck_Slide_Template$sectionCoverSlideView = F2(
 											_1: {
 												ctor: '::',
 												_0: _rtfeldman$elm_css$Css$left(
-													_rtfeldman$elm_css$Css$vw(1.5)),
+													_rtfeldman$elm_css$Css$vw(3.6)),
 												_1: {
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$color(_jackgene$talks$Deck_Slide_Common$black),
+													_0: _jackgene$talks$Deck_Slide_Common$numberFontFamily,
 													_1: {
 														ctor: '::',
-														_0: _jackgene$talks$Deck_Slide_Common$numberFontFamily,
+														_0: _rtfeldman$elm_css$Css$fontWeight(_rtfeldman$elm_css$Css$normal),
 														_1: {
 															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$fontWeight(_rtfeldman$elm_css$Css$normal),
-															_1: {
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$fontSize(
-																	_rtfeldman$elm_css$Css$vw(35)),
-																_1: {ctor: '[]'}
-															}
+															_0: _rtfeldman$elm_css$Css$fontSize(
+																_rtfeldman$elm_css$Css$vw(30)),
+															_1: {ctor: '[]'}
 														}
 													}
 												}
@@ -24017,7 +24026,7 @@ var _jackgene$talks$Deck_Slide_Template$sectionCoverSlideView = F2(
 											_1: {
 												ctor: '::',
 												_0: _rtfeldman$elm_css$Css$left(
-													_rtfeldman$elm_css$Css$vw(35)),
+													_rtfeldman$elm_css$Css$vw(32)),
 												_1: {
 													ctor: '::',
 													_0: _rtfeldman$elm_css$Css$width(
@@ -24199,7 +24208,7 @@ var _jackgene$talks$Deck_Slide_Cover$cover = _elm_lang$core$Native_Utils.update(
 						_0: _rtfeldman$elm_css$Html_Styled_Attributes$css(
 							{
 								ctor: '::',
-								_0: _rtfeldman$elm_css$Css$backgroundColor(_jackgene$talks$Deck_Slide_Common$primary),
+								_0: _jackgene$talks$Deck_Slide_Common$coverStyle,
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -24224,7 +24233,7 @@ var _jackgene$talks$Deck_Slide_Cover$cover = _elm_lang$core$Native_Utils.update(
 												_1: {
 													ctor: '::',
 													_0: _rtfeldman$elm_css$Css$left(
-														_rtfeldman$elm_css$Css$vw(35)),
+														_rtfeldman$elm_css$Css$vw(30)),
 													_1: {
 														ctor: '::',
 														_0: _rtfeldman$elm_css$Css$width(
@@ -26220,159 +26229,11 @@ var _jackgene$talks$Deck_Slide_Introduction$ourDefinition = _elm_lang$core$Nativ
 						}));
 			})
 	});
-var _jackgene$talks$Deck_Slide_Introduction$outOfScope = _elm_lang$core$Native_Utils.update(
-	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
-	{
-		view: F2(
-			function (page, _p3) {
-				return A4(
-					_jackgene$talks$Deck_Slide_Template$standardSlideView,
-					page,
-					_jackgene$talks$Deck_Slide_Introduction$heading,
-					'Not All Errors Can Be Detected Before Runtime',
-					A2(
-						_rtfeldman$elm_css$Html_Styled$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A2(
-								_rtfeldman$elm_css$Html_Styled$p,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _rtfeldman$elm_css$Html_Styled$text('Let’s start by talking about the kinds of errors no type system could detect:'),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_rtfeldman$elm_css$Html_Styled$ul,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: A2(
-													_jackgene$talks$Deck_Slide_Common$li,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: A2(
-															_rtfeldman$elm_css$Html_Styled$b,
-															{ctor: '[]'},
-															{
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Html_Styled$text('Infinite Loops'),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
-															_0: _rtfeldman$elm_css$Html_Styled$text(' - or in general, if a program will terminate'),
-															_1: {ctor: '[]'}
-														}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_jackgene$talks$Deck_Slide_Common$li,
-														{ctor: '[]'},
-														{
-															ctor: '::',
-															_0: A2(
-																_rtfeldman$elm_css$Html_Styled$b,
-																{ctor: '[]'},
-																{
-																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Html_Styled$text('Stack Overflow'),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Html_Styled$text(' - exceeding the call stack, typically due to recursive functions'),
-																_1: {ctor: '[]'}
-															}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_jackgene$talks$Deck_Slide_Common$li,
-															{ctor: '[]'},
-															{
-																ctor: '::',
-																_0: A2(
-																	_rtfeldman$elm_css$Html_Styled$b,
-																	{ctor: '[]'},
-																	{
-																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Html_Styled$text('Out of Memory Error'),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Html_Styled$text(' - error allocating new memory'),
-																	_1: {ctor: '[]'}
-																}
-															}),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_jackgene$talks$Deck_Slide_Common$li,
-																{ctor: '[]'},
-																{
-																	ctor: '::',
-																	_0: A2(
-																		_rtfeldman$elm_css$Html_Styled$b,
-																		{ctor: '[]'},
-																		{
-																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Html_Styled$text('Arithmetic Errors'),
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Html_Styled$text(' - division by zero, overflows, underflows'),
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_jackgene$talks$Deck_Slide_Common$li,
-																	{ctor: '[]'},
-																	{
-																		ctor: '::',
-																		_0: A2(
-																			_rtfeldman$elm_css$Html_Styled$b,
-																			{ctor: '[]'},
-																			{
-																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Html_Styled$text('Functional Errors / Incorrectness'),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {
-																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Html_Styled$text(' - program not meeting functional requirements'),
-																			_1: {
-																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Html_Styled$text(' e.g., font is the wrong color, using floating point numbers for monetary calculations'),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}));
-			})
-	});
 var _jackgene$talks$Deck_Slide_Introduction$inScope = _elm_lang$core$Native_Utils.update(
 	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 	{
 		view: F2(
-			function (page, _p4) {
+			function (page, _p3) {
 				return A4(
 					_jackgene$talks$Deck_Slide_Template$standardSlideView,
 					page,
@@ -27587,7 +27448,7 @@ var _jackgene$talks$Deck_Slide_TypeSystemProperties$tableOfContent = function (m
 																	ctor: '::',
 																	_0: A2(
 																		_rtfeldman$elm_css$Css$margin2,
-																		_rtfeldman$elm_css$Css$em(0.125),
+																		_rtfeldman$elm_css$Css$em(0.25),
 																		_rtfeldman$elm_css$Css$zero),
 																	_1: {
 																		ctor: '::',
@@ -30943,54 +30804,100 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$var
 								_elm_lang$core$String$fromChar(opt.valueTypeAnnotationOperator))))),
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_tools$parser$Parser$map,
-						function (_p4) {
-							return {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: '('},
-								_1: A2(
-									_elm_lang$core$Basics_ops['++'],
-									revTokens,
-									{
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$FunctionReference, _1: identifier},
-										_1: {ctor: '[]'}
-									})
-							};
-						},
-						_elm_tools$parser$Parser$symbol('(')),
+					_0: _elm_tools$parser$Parser$oneOf(
+						A2(
+							_elm_lang$core$List$map,
+							function (_p4) {
+								var _p5 = _p4;
+								return A2(
+									_elm_tools$parser$Parser$andThen,
+									function (openGroupOp) {
+										return A2(
+											_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$consThenRevConcat,
+											openGroupOp,
+											A2(
+												_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$typeReferenceInnerLoop,
+												opt,
+												{
+													ctor: '::',
+													_0: _p5._1,
+													_1: {ctor: '[]'}
+												}));
+									},
+									A2(
+										_elm_tools$parser$Parser$map,
+										function (op) {
+											return {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: op},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$FunctionReference, _1: identifier},
+													_1: {ctor: '[]'}
+												}
+											};
+										},
+										_elm_tools$parser$Parser$source(_p5._0)));
+							},
+							opt.typeReferenceGroupingSymbols)),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_tools$parser$Parser$map,
-							function (_p5) {
-								return {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: '{'},
-									_1: A2(
-										_elm_lang$core$Basics_ops['++'],
-										revTokens,
-										{
-											ctor: '::',
-											_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$FunctionReference, _1: identifier},
-											_1: {ctor: '[]'}
-										})
-								};
-							},
-							_elm_tools$parser$Parser$symbol('{')),
+							_elm_tools$parser$Parser$andThen,
+							A2(_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$variableOrFunctionReferenceLoop, opt, identifier),
+							_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$nonBreakingWhitespaceOrComment),
 						_1: {
 							ctor: '::',
-							_0: _elm_tools$parser$Parser$succeed(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									revTokens,
-									{
+							_0: A2(
+								_elm_tools$parser$Parser$map,
+								function (_p6) {
+									return {
 										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Normal, _1: identifier},
-										_1: {ctor: '[]'}
-									})),
-							_1: {ctor: '[]'}
+										_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: '('},
+										_1: A2(
+											_elm_lang$core$Basics_ops['++'],
+											revTokens,
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$FunctionReference, _1: identifier},
+												_1: {ctor: '[]'}
+											})
+									};
+								},
+								_elm_tools$parser$Parser$symbol('(')),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_tools$parser$Parser$map,
+									function (_p7) {
+										return {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: '{'},
+											_1: A2(
+												_elm_lang$core$Basics_ops['++'],
+												revTokens,
+												{
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$FunctionReference, _1: identifier},
+													_1: {ctor: '[]'}
+												})
+										};
+									},
+									_elm_tools$parser$Parser$symbol('{')),
+								_1: {
+									ctor: '::',
+									_0: _elm_tools$parser$Parser$succeed(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											revTokens,
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Normal, _1: identifier},
+												_1: {ctor: '[]'}
+											})),
+									_1: {ctor: '[]'}
+								}
+							}
 						}
 					}
 				}
@@ -31083,7 +30990,7 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$fun
 					ctor: '::',
 					_0: A2(
 						_elm_tools$parser$Parser$andThen,
-						function (_p6) {
+						function (_p8) {
 							return A2(
 								_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$consThenRevConcat,
 								{
@@ -31209,34 +31116,34 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$mai
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_tools$parser$Parser$andThen,
-							_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$typeReferenceLoop(opt),
-							_elm_tools$parser$Parser$source(opt.typeCheckCastOperator)),
+							_elm_tools$parser$Parser$map,
+							_elm_lang$core$List$singleton,
+							_elm_tools$parser$Parser$oneOf(
+								{
+									ctor: '::',
+									_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$operatorChar,
+									_1: {
+										ctor: '::',
+										_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$groupChar,
+										_1: {
+											ctor: '::',
+											_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$number,
+											_1: {ctor: '[]'}
+										}
+									}
+								})),
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_tools$parser$Parser$map,
-								_elm_lang$core$List$singleton,
-								_elm_tools$parser$Parser$oneOf(
-									{
-										ctor: '::',
-										_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$operatorChar,
-										_1: {
-											ctor: '::',
-											_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$groupChar,
-											_1: {
-												ctor: '::',
-												_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$number,
-												_1: {ctor: '[]'}
-											}
-										}
-									})),
+								_elm_tools$parser$Parser$andThen,
+								_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$keywordParser(opt),
+								A2(_elm_tools$parser$Parser$keep, _elm_tools$parser$Parser$oneOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$isIdentifierNameChar)),
 							_1: {
 								ctor: '::',
 								_0: A2(
 									_elm_tools$parser$Parser$andThen,
-									_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$keywordParser(opt),
-									A2(_elm_tools$parser$Parser$keep, _elm_tools$parser$Parser$oneOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$isIdentifierNameChar)),
+									_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$typeReferenceLoop(opt),
+									_elm_tools$parser$Parser$source(opt.typeCheckCastOperator)),
 								_1: {ctor: '[]'}
 							}
 						}
@@ -31249,9 +31156,9 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_CLikeCommon$par
 	return _elm_tools$parser$Parser$run(
 		A2(
 			_elm_tools$parser$Parser$map,
-			function (_p7) {
+			function (_p9) {
 				return _elm_lang$core$List$concat(
-					_elm_lang$core$List$reverse(_p7));
+					_elm_lang$core$List$reverse(_p9));
 			},
 			A2(
 				_elm_tools$parser$Parser$repeat,
@@ -31688,19 +31595,19 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Kotlin$kotlin =
 																																							_0: 'throw',
 																																							_1: {
 																																								ctor: '::',
-																																								_0: 'try',
+																																								_0: 'to',
 																																								_1: {
 																																									ctor: '::',
-																																									_0: 'typealias',
+																																									_0: 'try',
 																																									_1: {
 																																										ctor: '::',
-																																										_0: 'typeof',
+																																										_0: 'typealias',
 																																										_1: {
 																																											ctor: '::',
-																																											_0: 'val',
+																																											_0: 'typeof',
 																																											_1: {
 																																												ctor: '::',
-																																												_0: 'value',
+																																												_0: 'val',
 																																												_1: {
 																																													ctor: '::',
 																																													_0: 'var',
@@ -31923,78 +31830,74 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Kotlin$kotlin =
 						_0: 'Char',
 						_1: {
 							ctor: '::',
-							_0: 'String',
+							_0: 'Byte',
 							_1: {
 								ctor: '::',
-								_0: 'Byte',
+								_0: 'Short',
 								_1: {
 									ctor: '::',
-									_0: 'Short',
+									_0: 'Int',
 									_1: {
 										ctor: '::',
-										_0: 'Int',
+										_0: 'Long',
 										_1: {
 											ctor: '::',
-											_0: 'Long',
+											_0: 'UByte',
 											_1: {
 												ctor: '::',
-												_0: 'UByte',
+												_0: 'UShort',
 												_1: {
 													ctor: '::',
-													_0: 'UShort',
+													_0: 'UInt',
 													_1: {
 														ctor: '::',
-														_0: 'UInt',
+														_0: 'ULong',
 														_1: {
 															ctor: '::',
-															_0: 'ULong',
+															_0: 'Float',
 															_1: {
 																ctor: '::',
-																_0: 'Float',
+																_0: 'Double',
 																_1: {
 																	ctor: '::',
-																	_0: 'Double',
+																	_0: 'BooleanArray',
 																	_1: {
 																		ctor: '::',
-																		_0: 'BooleanArray',
+																		_0: 'CharArray',
 																		_1: {
 																			ctor: '::',
-																			_0: 'CharArray',
+																			_0: 'StringArray',
 																			_1: {
 																				ctor: '::',
-																				_0: 'StringArray',
+																				_0: 'ByteArray',
 																				_1: {
 																					ctor: '::',
-																					_0: 'ByteArray',
+																					_0: 'ShortArray',
 																					_1: {
 																						ctor: '::',
-																						_0: 'ShortArray',
+																						_0: 'IntArray',
 																						_1: {
 																							ctor: '::',
-																							_0: 'IntArray',
+																							_0: 'LongArray',
 																							_1: {
 																								ctor: '::',
-																								_0: 'LongArray',
+																								_0: 'UByteArray',
 																								_1: {
 																									ctor: '::',
-																									_0: 'UByteArray',
+																									_0: 'UShortArray',
 																									_1: {
 																										ctor: '::',
-																										_0: 'UShortArray',
+																										_0: 'UIntArray',
 																										_1: {
 																											ctor: '::',
-																											_0: 'UIntArray',
+																											_0: 'ULongArray',
 																											_1: {
 																												ctor: '::',
-																												_0: 'ULongArray',
+																												_0: 'FloatArray',
 																												_1: {
 																													ctor: '::',
-																													_0: 'FloatArray',
-																													_1: {
-																														ctor: '::',
-																														_0: 'DoubleArray',
-																														_1: {ctor: '[]'}
-																													}
+																													_0: 'DoubleArray',
+																													_1: {ctor: '[]'}
 																												}
 																											}
 																										}
@@ -32091,6 +31994,25 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isCommen
 		c,
 		_elm_lang$core$Native_Utils.chr('#'));
 };
+var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$backspace = A2(
+	_elm_tools$parser$Parser$map,
+	function (c) {
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Comment, _1: c},
+			_1: {ctor: '[]'}
+		};
+	},
+	_elm_tools$parser$Parser$source(
+		A2(
+			_elm_tools$parser$Parser_ops['|.'],
+			_elm_tools$parser$Parser$symbol('\\'),
+			A2(
+				_elm_tools$parser$Parser$ignore,
+				_elm_tools$parser$Parser$zeroOrMore,
+				function (_p0) {
+					return !_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$isLineBreak(_p0);
+				}))));
 var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$multilineComment = _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$delimited(
 	{
 		start: '\'\'\'',
@@ -32124,8 +32046,8 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$inlineCo
 			A2(
 				_elm_tools$parser$Parser$ignore,
 				_elm_tools$parser$Parser$zeroOrMore,
-				function (_p0) {
-					return !_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$isLineBreak(_p0);
+				function (_p1) {
+					return !_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$isLineBreak(_p1);
 				}))));
 var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$comment = _elm_tools$parser$Parser$oneOf(
 	{
@@ -32156,7 +32078,11 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$whitespa
 			_1: {
 				ctor: '::',
 				_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$comment,
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$backspace,
+					_1: {ctor: '[]'}
+				}
 			}
 		}
 	});
@@ -32257,15 +32183,24 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$groupSet
 			}
 		}
 	});
-var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isGroupChar = function (c) {
-	return A2(_elm_lang$core$Set$member, c, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$groupSet);
+var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isGroupChar = F2(
+	function (except, c) {
+		return A2(
+			_elm_lang$core$Set$member,
+			c,
+			A2(_elm_lang$core$Set$diff, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$groupSet, except));
+	});
+var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$groupChar = function (except) {
+	return A2(
+		_elm_tools$parser$Parser$map,
+		function (c) {
+			return {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: c};
+		},
+		A2(
+			_elm_tools$parser$Parser$keep,
+			_elm_tools$parser$Parser$oneOrMore,
+			_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isGroupChar(except)));
 };
-var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$groupChar = A2(
-	_elm_tools$parser$Parser$map,
-	function (c) {
-		return {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: c};
-	},
-	A2(_elm_tools$parser$Parser$keep, _elm_tools$parser$Parser$oneOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isGroupChar));
 var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$operatorSet = _elm_lang$core$Set$fromList(
 	{
 		ctor: '::',
@@ -32366,8 +32301,12 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$builtInS
 							_0: 'object',
 							_1: {
 								ctor: '::',
-								_0: 'str',
-								_1: {ctor: '[]'}
+								_0: 'set',
+								_1: {
+									ctor: '::',
+									_0: 'str',
+									_1: {ctor: '[]'}
+								}
 							}
 						}
 					}
@@ -32579,7 +32518,23 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$typeRefe
 									{
 										ctor: '::',
 										_0: _elm_tools$parser$Parser$symbol('|'),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: _elm_tools$parser$Parser$symbol('.'),
+											_1: {
+												ctor: '::',
+												_0: _elm_tools$parser$Parser$symbol(','),
+												_1: {
+													ctor: '::',
+													_0: _elm_tools$parser$Parser$symbol('['),
+													_1: {
+														ctor: '::',
+														_0: _elm_tools$parser$Parser$symbol(']'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
 									}))),
 						_1: {
 							ctor: '::',
@@ -32704,7 +32659,7 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$function
 					ctor: '::',
 					_0: A2(
 						_elm_tools$parser$Parser$andThen,
-						function (_p1) {
+						function (_p2) {
 							return _elm_tools$parser$Parser$succeed(
 								A2(
 									_elm_lang$core$Basics_ops['++'],
@@ -32736,7 +32691,48 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$function
 				}
 			});
 	});
-var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$argLoop = _elm_tools$parser$Parser$oneOf(
+var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$lambdaDeclarationArgLoop = _elm_tools$parser$Parser$oneOf(
+	{
+		ctor: '::',
+		_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$whitespaceOrComment,
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_tools$parser$Parser$map,
+				function (name) {
+					return {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$FunctionArgument, _1: name},
+						_1: {ctor: '[]'}
+					};
+				},
+				A2(_elm_tools$parser$Parser$keep, _elm_tools$parser$Parser$oneOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isIdentifierNameChar)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_tools$parser$Parser$map,
+					function (sep) {
+						return {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: sep},
+							_1: {ctor: '[]'}
+						};
+					},
+					A2(
+						_elm_tools$parser$Parser$keep,
+						_elm_tools$parser$Parser$oneOrMore,
+						function (c) {
+							return _elm_lang$core$Native_Utils.eq(
+								c,
+								_elm_lang$core$Native_Utils.chr(',')) || _elm_lang$core$Native_Utils.eq(
+								c,
+								_elm_lang$core$Native_Utils.chr(':'));
+						})),
+				_1: {ctor: '[]'}
+			}
+		}
+	});
+var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$functionDeclarationArgLoop = _elm_tools$parser$Parser$oneOf(
 	{
 		ctor: '::',
 		_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$whitespaceOrComment,
@@ -32814,7 +32810,7 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$function
 				ctor: '::',
 				_0: A2(
 					_elm_tools$parser$Parser$andThen,
-					function (_p2) {
+					function (_p3) {
 						return A2(
 							_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$consThenRevConcat,
 							{
@@ -32822,7 +32818,7 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$function
 								_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: '('},
 								_1: {ctor: '[]'}
 							},
-							A2(_elm_tools$parser$Parser$repeat, _elm_tools$parser$Parser$zeroOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$argLoop));
+							A2(_elm_tools$parser$Parser$repeat, _elm_tools$parser$Parser$zeroOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$functionDeclarationArgLoop));
 					},
 					_elm_tools$parser$Parser$symbol('(')),
 				_1: {ctor: '[]'}
@@ -32844,7 +32840,14 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$keywordP
 			_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$DeclarationKeyword, _1: n},
 			_1: {ctor: '[]'}
 		},
-		A2(_elm_tools$parser$Parser$repeat, _elm_tools$parser$Parser$zeroOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$classDeclarationLoop)) : (_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isKeyword(n) ? _elm_tools$parser$Parser$succeed(
+		A2(_elm_tools$parser$Parser$repeat, _elm_tools$parser$Parser$zeroOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$classDeclarationLoop)) : (_elm_lang$core$Native_Utils.eq(n, 'lambda') ? A2(
+		_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$consThenRevConcat,
+		{
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$DeclarationKeyword, _1: n},
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_tools$parser$Parser$repeat, _elm_tools$parser$Parser$zeroOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$lambdaDeclarationArgLoop)) : (_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isKeyword(n) ? _elm_tools$parser$Parser$succeed(
 		{
 			ctor: '::',
 			_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Keyword, _1: n},
@@ -32869,76 +32872,160 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$keywordP
 		A2(_elm_tools$parser$Parser$repeat, _elm_tools$parser$Parser$zeroOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$stringLiteral)) : A2(
 		_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$functionEvalLoop,
 		n,
-		{ctor: '[]'}))))));
+		{ctor: '[]'})))))));
 };
-var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$mainLoop = _elm_tools$parser$Parser$oneOf(
-	{
-		ctor: '::',
-		_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$whitespaceOrComment,
-		_1: {
-			ctor: '::',
-			_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$stringLiteral,
-			_1: {
+var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$topLevelLoop = F2(
+	function (includeTypeReference, groupClose) {
+		return _elm_tools$parser$Parser$oneOf(
+			{
 				ctor: '::',
-				_0: A2(
-					_elm_tools$parser$Parser$andThen,
-					_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$typeReferenceLoop,
-					_elm_tools$parser$Parser$source(
-						_elm_tools$parser$Parser$oneOf(
-							{
-								ctor: '::',
-								_0: _elm_tools$parser$Parser$symbol(':'),
-								_1: {
-									ctor: '::',
-									_0: _elm_tools$parser$Parser$symbol('->'),
-									_1: {ctor: '[]'}
-								}
-							}))),
+				_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$whitespaceOrComment,
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_tools$parser$Parser$andThen,
-						_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$decoratorLoop,
-						_elm_tools$parser$Parser$source(
-							_elm_tools$parser$Parser$symbol('@'))),
+					_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$stringLiteral,
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_tools$parser$Parser$map,
-							_elm_lang$core$List$singleton,
-							_elm_tools$parser$Parser$oneOf(
-								{
-									ctor: '::',
-									_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$operatorChar,
-									_1: {
+							_elm_tools$parser$Parser$andThen,
+							_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$typeReferenceLoop,
+							_elm_tools$parser$Parser$source(
+								_elm_tools$parser$Parser$oneOf(
+									includeTypeReference ? {
 										ctor: '::',
-										_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$groupChar,
+										_0: _elm_tools$parser$Parser$symbol(':'),
 										_1: {
 											ctor: '::',
-											_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$number,
+											_0: _elm_tools$parser$Parser$symbol('->'),
 											_1: {ctor: '[]'}
 										}
-									}
-								})),
+									} : {ctor: '[]'}))),
 						_1: {
 							ctor: '::',
 							_0: A2(
 								_elm_tools$parser$Parser$andThen,
-								_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$keywordParser,
-								A2(_elm_tools$parser$Parser$keep, _elm_tools$parser$Parser$oneOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isIdentifierNameChar)),
-							_1: {ctor: '[]'}
+								_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$decoratorLoop,
+								_elm_tools$parser$Parser$source(
+									_elm_tools$parser$Parser$symbol('@'))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_tools$parser$Parser$andThen,
+									function (c) {
+										return A2(
+											_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$consThenRevConcat,
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: c},
+												_1: {ctor: '[]'}
+											},
+											A2(
+												_elm_tools$parser$Parser$repeat,
+												_elm_tools$parser$Parser$zeroOrMore,
+												A2(
+													_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$topLevelLoop,
+													false,
+													_elm_lang$core$Maybe$Just(
+														_elm_lang$core$Native_Utils.chr('}')))));
+									},
+									_elm_tools$parser$Parser$source(
+										_elm_tools$parser$Parser$symbol('{'))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_tools$parser$Parser$andThen,
+										function (c) {
+											return A2(
+												_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$consThenRevConcat,
+												{
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: c},
+													_1: {ctor: '[]'}
+												},
+												A2(
+													_elm_tools$parser$Parser$repeat,
+													_elm_tools$parser$Parser$zeroOrMore,
+													A2(
+														_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$topLevelLoop,
+														false,
+														_elm_lang$core$Maybe$Just(
+															_elm_lang$core$Native_Utils.chr(']')))));
+										},
+										_elm_tools$parser$Parser$source(
+											_elm_tools$parser$Parser$symbol('['))),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_tools$parser$Parser$andThen,
+											function (c) {
+												return A2(
+													_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Common$consThenRevConcat,
+													{
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Model$Operator, _1: c},
+														_1: {ctor: '[]'}
+													},
+													A2(
+														_elm_tools$parser$Parser$repeat,
+														_elm_tools$parser$Parser$zeroOrMore,
+														A2(
+															_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$topLevelLoop,
+															false,
+															_elm_lang$core$Maybe$Just(
+																_elm_lang$core$Native_Utils.chr(')')))));
+											},
+											_elm_tools$parser$Parser$source(
+												_elm_tools$parser$Parser$symbol('('))),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_tools$parser$Parser$map,
+												_elm_lang$core$List$singleton,
+												_elm_tools$parser$Parser$oneOf(
+													{
+														ctor: '::',
+														_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$operatorChar,
+														_1: {
+															ctor: '::',
+															_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$groupChar(
+																function () {
+																	var _p4 = groupClose;
+																	if (_p4.ctor === 'Just') {
+																		return _elm_lang$core$Set$singleton(_p4._0);
+																	} else {
+																		return _elm_lang$core$Set$empty;
+																	}
+																}()),
+															_1: {
+																ctor: '::',
+																_0: _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$number,
+																_1: {ctor: '[]'}
+															}
+														}
+													})),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_tools$parser$Parser$andThen,
+													_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$keywordParser,
+													A2(_elm_tools$parser$Parser$keep, _elm_tools$parser$Parser$oneOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$isIdentifierNameChar)),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
 						}
 					}
 				}
-			}
-		}
+			});
 	});
+var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$mainLoop = A2(_pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$topLevelLoop, true, _elm_lang$core$Maybe$Nothing);
 var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$parseTokensReversed = _elm_tools$parser$Parser$run(
 	A2(
 		_elm_tools$parser$Parser$map,
-		function (_p3) {
+		function (_p5) {
 			return _elm_lang$core$List$concat(
-				_elm_lang$core$List$reverse(_p3));
+				_elm_lang$core$List$reverse(_p5));
 		},
 		A2(_elm_tools$parser$Parser$repeat, _elm_tools$parser$Parser$zeroOrMore, _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Python$mainLoop)));
 var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Scala$scala = {
@@ -33120,7 +33207,15 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Scala$scala = {
 																			_1: {
 																				ctor: '::',
 																				_0: 'vararg',
-																				_1: {ctor: '[]'}
+																				_1: {
+																					ctor: '::',
+																					_0: 'given',
+																					_1: {
+																						ctor: '::',
+																						_0: 'using',
+																						_1: {ctor: '[]'}
+																					}
+																				}
 																			}
 																		}
 																	}
@@ -33187,27 +33282,7 @@ var _pablohirafuji$elm_syntax_highlight$SyntaxHighlight_Language_Scala$scala = {
 												_1: {
 													ctor: '::',
 													_0: 'Double',
-													_1: {
-														ctor: '::',
-														_0: 'Array',
-														_1: {
-															ctor: '::',
-															_0: 'List',
-															_1: {
-																ctor: '::',
-																_0: 'Seq',
-																_1: {
-																	ctor: '::',
-																	_0: 'Set',
-																	_1: {
-																		ctor: '::',
-																		_0: 'Option',
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}
-													}
+													_1: {ctor: '[]'}
 												}
 											}
 										}
@@ -48874,11 +48949,159 @@ var _jackgene$talks$Deck_Slide_Encapsulation$safeElmInvalid = function () {
 		});
 }();
 var _jackgene$talks$Deck_Slide_Conclusion$heading = 'Strong Typing & Quality Software';
-var _jackgene$talks$Deck_Slide_Conclusion$introduction = _elm_lang$core$Native_Utils.update(
+var _jackgene$talks$Deck_Slide_Conclusion$outOfScope = _elm_lang$core$Native_Utils.update(
 	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 	{
 		view: F2(
 			function (page, _p0) {
+				return A4(
+					_jackgene$talks$Deck_Slide_Template$standardSlideView,
+					page,
+					_jackgene$talks$Deck_Slide_Conclusion$heading,
+					'Not All Errors Can Be Detected Before Runtime',
+					A2(
+						_rtfeldman$elm_css$Html_Styled$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rtfeldman$elm_css$Html_Styled$p,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Html_Styled$text('You may have noticed that there are certain kinds of errors we have not covered:'),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rtfeldman$elm_css$Html_Styled$ul,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_jackgene$talks$Deck_Slide_Common$li,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A2(
+															_rtfeldman$elm_css$Html_Styled$b,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Html_Styled$text('Infinite Loops'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: _rtfeldman$elm_css$Html_Styled$text(' - or in general, if a program will terminate'),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_jackgene$talks$Deck_Slide_Common$li,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: A2(
+																_rtfeldman$elm_css$Html_Styled$b,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: _rtfeldman$elm_css$Html_Styled$text('Stack Overflow'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Html_Styled$text(' - exceeding the call stack, typically due to recursive functions'),
+																_1: {ctor: '[]'}
+															}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_jackgene$talks$Deck_Slide_Common$li,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: A2(
+																	_rtfeldman$elm_css$Html_Styled$b,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _rtfeldman$elm_css$Html_Styled$text('Out of Memory Error'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {
+																	ctor: '::',
+																	_0: _rtfeldman$elm_css$Html_Styled$text(' - error allocating new memory'),
+																	_1: {ctor: '[]'}
+																}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_jackgene$talks$Deck_Slide_Common$li,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_rtfeldman$elm_css$Html_Styled$b,
+																		{ctor: '[]'},
+																		{
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Html_Styled$text('Arithmetic Errors'),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: _rtfeldman$elm_css$Html_Styled$text(' - division by zero, overflows, underflows'),
+																		_1: {ctor: '[]'}
+																	}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_jackgene$talks$Deck_Slide_Common$li,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: A2(
+																			_rtfeldman$elm_css$Html_Styled$b,
+																			{ctor: '[]'},
+																			{
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Html_Styled$text('Functional Errors / Incorrectness'),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Html_Styled$text(' - program not meeting functional requirements'),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Html_Styled$text(' e.g., font is the wrong color, using floating point numbers for monetary calculations'),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}));
+			})
+	});
+var _jackgene$talks$Deck_Slide_Conclusion$introduction = _elm_lang$core$Native_Utils.update(
+	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
+	{
+		view: F2(
+			function (page, _p1) {
 				return A4(
 					_jackgene$talks$Deck_Slide_Template$standardSlideView,
 					page,
@@ -48945,7 +49168,7 @@ var _jackgene$talks$Deck_Slide_Conclusion$enableStricterTypeChecking = _elm_lang
 	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 	{
 		view: F2(
-			function (page, _p1) {
+			function (page, _p2) {
 				return A4(
 					_jackgene$talks$Deck_Slide_Template$standardSlideView,
 					page,
@@ -49119,7 +49342,7 @@ var _jackgene$talks$Deck_Slide_Conclusion$codeGeneration = _elm_lang$core$Native
 	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 	{
 		view: F2(
-			function (page, _p2) {
+			function (page, _p3) {
 				return A4(
 					_jackgene$talks$Deck_Slide_Template$standardSlideView,
 					page,
@@ -49183,7 +49406,7 @@ var _jackgene$talks$Deck_Slide_Conclusion$preCompileChecks = _elm_lang$core$Nati
 	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 	{
 		view: F2(
-			function (page, _p3) {
+			function (page, _p4) {
 				return A4(
 					_jackgene$talks$Deck_Slide_Template$standardSlideView,
 					page,
@@ -49300,7 +49523,7 @@ var _jackgene$talks$Deck_Slide_Conclusion$testing = _elm_lang$core$Native_Utils.
 	_jackgene$talks$Deck_Slide_Common$baseSlideModel,
 	{
 		view: F2(
-			function (page, _p4) {
+			function (page, _p5) {
 				return A4(
 					_jackgene$talks$Deck_Slide_Template$standardSlideView,
 					page,
@@ -49677,12 +49900,8 @@ var _jackgene$talks$Deck_Slide$unindexedSlideModels = A2(
 							_0: _jackgene$talks$Deck_Slide_Introduction$ourDefinition,
 							_1: {
 								ctor: '::',
-								_0: _jackgene$talks$Deck_Slide_Introduction$outOfScope,
-								_1: {
-									ctor: '::',
-									_0: _jackgene$talks$Deck_Slide_Introduction$inScope,
-									_1: {ctor: '[]'}
-								}
+								_0: _jackgene$talks$Deck_Slide_Introduction$inScope,
+								_1: {ctor: '[]'}
 							}
 						}
 					}
@@ -50215,32 +50434,36 @@ var _jackgene$talks$Deck_Slide$unindexedSlideModels = A2(
 					_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_SectionCover$conclusion),
 					_1: {
 						ctor: '::',
-						_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Go'),
+						_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$outOfScope),
 						_1: {
 							ctor: '::',
-							_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Python'),
+							_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Go'),
 							_1: {
 								ctor: '::',
-								_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Scala'),
+								_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Python'),
 								_1: {
 									ctor: '::',
-									_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Elm'),
+									_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Scala'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$introduction),
+										_0: _jackgene$talks$Deck_Slide$errorPreventionReport('Elm'),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$enableStricterTypeChecking),
+											_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$introduction),
 											_1: {
 												ctor: '::',
-												_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$codeGeneration),
+												_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$enableStricterTypeChecking),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$preCompileChecks),
+													_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$codeGeneration),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$testing),
-														_1: {ctor: '[]'}
+														_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$preCompileChecks),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$core$Maybe$Just(_jackgene$talks$Deck_Slide_Conclusion$testing),
+															_1: {ctor: '[]'}
+														}
 													}
 												}
 											}
