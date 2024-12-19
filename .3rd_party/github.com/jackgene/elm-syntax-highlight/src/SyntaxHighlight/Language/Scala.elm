@@ -48,6 +48,8 @@ scala =
     , "def", "class", "abstract", "enum", "import", "package"
     , "annotation", "final", "object", "override"
     , "sealed", "tailrec", "trait", "type", "vararg"
+    -- Scala 3
+    , "given", "using"
     ]
   , literalKeywords =
     Set.fromList [ "true", "false", "null" ]
@@ -57,7 +59,7 @@ scala =
     , "Boolean", "Char", "String"
     , "Byte", "Short", "Int", "Long"
     , "Float", "Double"
-    , "Array", "List", "Seq", "Set", "Option"
+    --, "Array", "List", "Seq", "Set", "Option"
     ]
   , valueTypeAnnotationOperator = ':'
   , functionTypeAnnotation = symbol ":"
