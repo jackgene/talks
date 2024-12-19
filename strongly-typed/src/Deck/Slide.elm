@@ -73,7 +73,6 @@ unindexedSlideModels =
     , Introduction.wikipediaDefinitions
     --, Introduction.typefulDefinitions
     , Introduction.ourDefinition
-    , Introduction.outOfScope
     , Introduction.inScope
     ]
 
@@ -214,6 +213,7 @@ unindexedSlideModels =
     -- Conclusion
   ++( List.filterMap identity
       [ Just SectionCover.conclusion
+      , Just Conclusion.outOfScope
       , errorPreventionReport "Go"
       , errorPreventionReport "Python"
       , errorPreventionReport "Scala"

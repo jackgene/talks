@@ -1,6 +1,5 @@
 module Deck.Slide.Introduction exposing
-  ( wikipediaDefinitions, typefulDefinitions, ourDefinition
-  , outOfScope, inScope
+  ( wikipediaDefinitions, typefulDefinitions, ourDefinition, inScope
   )
 
 import Css exposing
@@ -96,45 +95,6 @@ ourDefinition =
           , mark [] [ text "“Strongly Typed” does not mean “Statically Typed.”" ]
           , text " Dynamically Typed languages can be Strongly Typed, "
           , text "conversely Statically Typed languages aren't necessarily Strongly Typed."
-          ]
-        ]
-      )
-    )
-  }
-
-
-outOfScope : UnindexedSlideModel
-outOfScope =
-  { baseSlideModel
-  | view =
-    ( \page _ ->
-      standardSlideView page heading
-      "Not All Errors Can Be Detected Before Runtime"
-      ( div []
-        [ p []
-          [ text "Let’s start by talking about the kinds of errors no type system could detect:"
-          , ul []
-            [ li []
-              [ b [] [ text "Infinite Loops" ]
-              , text " - or in general, if a program will terminate"
-              ]
-            , li []
-              [ b [] [ text "Stack Overflow" ]
-              , text " - exceeding the call stack, typically due to recursive functions" ]
-            , li []
-              [ b [] [ text "Out of Memory Error" ]
-              , text " - error allocating new memory"
-              ]
-            , li []
-              [ b [] [ text "Arithmetic Errors" ]
-              , text " - division by zero, overflows, underflows"
-              ]
-            , li []
-              [ b [] [ text "Functional Errors / Incorrectness" ]
-              , text " - program not meeting functional requirements"
-              , text " e.g., font is the wrong color, using floating point numbers for monetary calculations"
-              ]
-            ]
           ]
         ]
       )

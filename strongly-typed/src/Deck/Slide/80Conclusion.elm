@@ -1,5 +1,5 @@
 module Deck.Slide.Conclusion exposing
-  ( introduction, enableStricterTypeChecking, codeGeneration, preCompileChecks, testing )
+  ( outOfScope, introduction, enableStricterTypeChecking, codeGeneration, preCompileChecks, testing )
 
 import Deck.Slide.Common exposing (..)
 import Deck.Slide.SyntaxHighlight exposing (..)
@@ -11,6 +11,45 @@ import Set
 
 heading : String
 heading = "Strong Typing & Quality Software"
+
+
+outOfScope : UnindexedSlideModel
+outOfScope =
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading
+      "Not All Errors Can Be Detected Before Runtime"
+      ( div []
+        [ p []
+          [ text "You may have noticed that there are certain kinds of errors we have not covered:"
+          , ul []
+            [ li []
+              [ b [] [ text "Infinite Loops" ]
+              , text " - or in general, if a program will terminate"
+              ]
+            , li []
+              [ b [] [ text "Stack Overflow" ]
+              , text " - exceeding the call stack, typically due to recursive functions" ]
+            , li []
+              [ b [] [ text "Out of Memory Error" ]
+              , text " - error allocating new memory"
+              ]
+            , li []
+              [ b [] [ text "Arithmetic Errors" ]
+              , text " - division by zero, overflows, underflows"
+              ]
+            , li []
+              [ b [] [ text "Functional Errors / Incorrectness" ]
+              , text " - program not meeting functional requirements"
+              , text " e.g., font is the wrong color, using floating point numbers for monetary calculations"
+              ]
+            ]
+          ]
+        ]
+      )
+    )
+  }
 
 
 introduction : UnindexedSlideModel
