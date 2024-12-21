@@ -5,7 +5,7 @@ import Css exposing
   ( borderTop3, bottom, display, height, left, margin, margin4
   , padding2, position, right, top, width
   -- Content
-  , color, fontSize, fontWeight, verticalAlign
+  , backgroundColor, color, fontSize, fontWeight, verticalAlign
   -- Units
   , em, vw, zero
   -- Alignments & Positions
@@ -21,20 +21,20 @@ import Svg.Styled.Attributes exposing (css)
 
 sectionCoverSlideView : Int -> String -> Html msg
 sectionCoverSlideView number title =
-  div []
+  div [ css [ coverStyle ] ]
   [ coverBackgroundGraphic
   , h1
     [ css
       [ position absolute, margin zero
-      , top (vw 5), left (vw 6)
-      , color blackTranslucent, numberFontFamily, fontWeight normal, fontSize (vw 35)
+      , top (vw 5), left (vw 3.6)
+      , numberFontFamily, fontWeight normal, fontSize (vw 30)
       ]
     ]
     [ text (toString number) ]
   , h1
     [ css
       [ position absolute
-      , top (vw 18), left (vw 35), width (vw 55)
+      , top (vw 16), left (vw 32), width (vw 55)
       , headerFontFamily, fontSize (vw 6)
       ]
     ]
@@ -58,8 +58,8 @@ standardSlideView page heading subheading content =
         , paragraphFontFamily, fontSize (vw 1.3), color darkGray
         ]
       ]
-      [ div [ css [ display inlineBlock, position absolute, right zero ] ]
-        [ text "Functional Reactive Streaming with Kotlin Flow"
+      [ div [ css [ display inlineBlock, position absolute, right (em 0.25) ] ]
+        [ text "Functional Reactive Streaming with Pekko Streams"
         , numberedDisc (toString page) 50
           [ css [ width (vw 2.5), margin4 zero zero (em 0.1) (em 0.4), verticalAlign middle ] ]
         ]

@@ -9,12 +9,10 @@ import Css exposing
   , backgroundColor, before, color
   , fontFamilies, fontSize, fontStyle, fontWeight
   -- Units
-  , em, int, vw, zero
-  -- Color
-  , rgb, rgba
+  , em, int, rgb, rgba, vw, zero
   -- Alignments & Positions
   -- Other values
-  , block, italic
+  , block, italic, textShadow4
   )
 import Deck.Common exposing (Model, Msg)
 import Html.Styled as Html exposing (Attribute, Html, text)
@@ -55,12 +53,12 @@ black : Color
 black = rgb 0 0 0
 
 
-themeForegroundColor : Color
-themeForegroundColor = rgb 167 188 249
+primary : Color
+primary = rgb 255 0 0
 
 
-themeBackgroundColor : Color
-themeBackgroundColor = rgb 224 229 249
+secondary : Color
+secondary = rgb 196 0 0
 
 
 blackTranslucent : Color
@@ -95,6 +93,14 @@ codeFontFamily : Style
 codeFontFamily = Css.batch [ fontFamilies [ "Fira Code" ], fontWeight (int 500) ]
 
 
+textWithShadow : Style
+textWithShadow = textShadow4 zero (em 0.125) (em 0.375) (rgb 64 64 64)
+
+
+coverStyle : Style
+coverStyle = Css.batch [ textWithShadow, color white, backgroundColor primary ]
+
+
 headerStyle : Style
 headerStyle =
   Css.batch
@@ -104,7 +110,7 @@ headerStyle =
     , display block, float left
     , width (em 0.2), height (em 1.2)
     , marginRight (em 1.875)
-    , backgroundColor themeForegroundColor
+    , backgroundColor primary
     ]
   ]
 

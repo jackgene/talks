@@ -66,25 +66,25 @@ collecting =
       ( div []
         [ p []
           [ text "Finally, we need to make the word counts available to some sort of front end. "
-          , text "A naïve WebSocket endpoint in ktor might look like:"
+          , text "A naïve WebSocket endpoint in Pekko HTTP might look like:"
           ]
         , div []
-          [ syntaxHighlightedCodeBlock Kotlin Dict.empty Dict.empty []
+          [ syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
       """
-routing {
-    webSocket("/") {
-        wordCounts
-            .sample(100.milliseconds)
-            .map { Json.encodeToString(it) }
-            .collect(::send)
-    }
+path("/word-counts") {
+  handleWebSocketMessages(
+    Flow.fromSinkAndSource(
+      Sink.ignore,
+      wordCounts.map { (counts: Map[String, Int]) =>
+        TextMessage(counts.toJson.compactPrint)
+      }
+    )
+  )
 }
 """
           ]
         , p []
-          [ text "Full source:"
-          , br [] []
-          , text "https://github.com/jackgene/reactive-word-cloud-kotlin/tree/presentation"
+          [ text "Full source: https://github.com/jackgene/reactive-word-cloud-scala"
           ]
         ]
       )
@@ -448,23 +448,23 @@ implementationDiagramView counts step fromLeftEm scale scaleChanged =
         [ streamLineView (horizontalPosition chatMessagesPos step) visibleHeightEm
         , operationView
           (horizontalPosition mapNormalizeTextPos step) scaleChanged
-          [ "map(", "\xA0\xA0::normalizeText", ")" ]
+          [ "map(", "\xA0 normalizeText", ")" ]
         , streamLineView (horizontalPosition normalizedTextPos step) visibleHeightEm
         , operationView
           (horizontalPosition flatMapConcatSplitIntoWordsPos step) scaleChanged
-          [ "flatMapConcat(", "\xA0\xA0::splitIntoWords", ")" ]
+          [ "flatMapConcat(", "\xA0 splitIntoWords", ")" ]
         , streamLineView (horizontalPosition rawWordsPos step) visibleHeightEm
         , operationView
           (horizontalPosition filterIsValidWordPos step) scaleChanged
-          [ "filter(", "\xA0\xA0::isValidWord", ")" ]
+          [ "filter(", "\xA0 isValidWord", ")" ]
         , streamLineView (horizontalPosition validatedWordsPos step) visibleHeightEm
         , operationView
           (horizontalPosition runningFoldUpdateWordsForSenderPos step) scaleChanged
-          [ "runningFold(", "\xA0\xA0mapOf(),", "\xA0\xA0::updateWordsForSender", ")" ]
+          [ "scan(", "\xA0\xA0Map(),", ")(", "\xA0 updateWordsForSender", ")" ]
         , streamLineView (horizontalPosition wordsBySendersPos step) visibleHeightEm
         , operationView
           (horizontalPosition mapCountSendersForWordPos step) scaleChanged
-          [ "map(", "\xA0\xA0::countSendersForWord", ")" ]
+          [ "map(", "\xA0 countSendersForWords", ")" ]
         , streamLineView (horizontalPosition senderCountsByWordPos step) visibleHeightEm
         ]
       , div [] -- chat messages
@@ -782,18 +782,16 @@ implementation1ChatMessages showCode =
   "Source Events"
   "We start with the source event messages - actual Zoom chat messages:"
   """
-val chatMessages: Flow<ChatMessage> =
-    ReceiverSettings<String, ChatMessage>(
-        bootstrapServers = "localhost:9092",
-        keyDeserializer = StringDeserializer(),
-        valueDeserializer = StringDeserializer()
-            .map(Json::decodeFromString),
-        groupId = "word-cloud-app", autoOffsetReset = Earliest
-    ).let { settings ->
-        KafkaReceiver(settings).receive("word-cloud.chat-message")
-            .map { it.value() }
-            .shareIn(CoroutineScope(Default), Lazily)
-    }
+val chatMessages: Source[ChatMessage, _] = Consumer
+  .plainSource(
+    ConsumerSettings(
+      system, new StringDeserializer, new StringDeserializer
+    ) .withBootstrapServers("localhost:9092")
+      .withGroupId("word-cloud-app")
+      .withProperty("auto.offset.reset", "earliest"),
+    Subscriptions.topics("word-cloud.chat-message")
+  )
+  .map(_.value.parseJson.convertTo[ChatMessage])
 """ showCode
   implementation1Layout.leftEm detailedMagnification False
 
@@ -804,15 +802,14 @@ implementation2MapNormalizeWords showCode =
   "Normalizing Message Text"
   "The message text is normalized, retaining the sender:"
   """
-val NON_LETTER_PATTERN = Regex(\"""[^\\p{L}]+\""")
-fun normalizeText(msg: ChatMessage): SenderAndText =
-    SenderAndText(
-        msg.sender,
-        msg.text
-            .replace(NON_LETTER_PATTERN, " ")
-            .trim()
-            .lowercase()
-    )
+val NonLetterPattern: Regex = ""\"[^\\p{L}]+""\".r
+def normalizeText(msg: ChatMessage): SenderAndText =
+  SenderAndText(
+    msg.sender,
+    NonLetterPattern.replaceAllIn(msg.text, " ")
+      .trim
+      .toLowerCase
+  )
 """ showCode
   implementation2Layout.leftEm detailedMagnification False
 
@@ -823,13 +820,17 @@ implementation3FlatMapConcatSplitIntoWords showCode =
   "Splitting Message Text Into Words"
   "The normalized text is split into words:"
   """
-fun splitIntoWords(
-    senderText: SenderAndText
-): Flow<SenderAndWord> = senderText.text
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
+
+def splitIntoWords(
+  senderAndText: SenderAndText
+): Source[SenderAndWord, NotUsed] = Source(
+  senderAndText.text
     .split(" ")
-    .map { SenderAndWord(senderText.sender, it) }
-    .reversed()
-    .asFlow()
+    .map(SenderAndWord(senderAndText.sender, _))
+    .reverse
+)
 """ showCode
   implementation3Layout.leftEm
   detailedMagnification False
@@ -841,9 +842,15 @@ implementation4FilterIsValidWord showCode =
   "Removing Invalid Words"
   "Invalid words are filtered out:"
   """
-fun isValidWord(senderWord: SenderAndWord): Boolean =
-    senderWord.word.length in minWordLength..maxWordLength
-        && !stopWords.contains(senderWord.word)
+val MinWordLen: Int = 3
+val MaxWordLen: Int = 15
+val StopWords: Set[String] = Set(
+  "about", "above", "after", "again", "against", "all", "and", //...
+)
+def isValidWord(senderAndWord: SenderAndWord): Boolean =
+  val wordLen: Int = senderAndWord.word.length
+  MinWordLen <= wordLen && wordLen <= MaxWordLen
+    && !StopWords.contains(senderAndWord.word)
 """ showCode
   (leftEmCentering rawWordsPos.base validatedWordsPos.base)
   detailedMagnification False
@@ -855,17 +862,17 @@ implementation5RunningFoldUpdateWordsForSender showCode =
   "Determine Words for Each Sender"
   "For each sender, retain their most recent three words:"
   """
-fun updateWordsForSender(
-    wordsBySender: Map<String, List<String>>,
-    senderWord: SenderAndWord
-): Map<String, List<String>> {
-    val oldWords: List<String> =
-        wordsBySender[senderWord.sender] ?: listOf()
-    val newWords: List<String> =
-        (listOf(senderWord.word) + oldWords).distinct()
-            .take(maxWordsPerSender)
-    return wordsBySender + (senderWord.sender to newWords)
-}
+val MaxWordsPerSender: Int = 3
+def updateWordsForSender(
+  wordsBySender: Map[String, Seq[String]],
+  senderAndWord: SenderAndWord,
+): Map[String, Seq[String]] =
+  val oldWords: Seq[String] =
+    wordsBySender.getOrElse(senderAndWord.sender, Seq())
+  val newWords: Seq[String] =
+    (senderAndWord.word +: oldWords).distinct
+      .take(MaxWordsPerSender)
+  wordsBySender + (senderAndWord.sender -> newWords)
 """ showCode
   (leftEmCentering validatedWordsPos.base wordsBySendersPos.base)
   detailedMagnification False
@@ -877,12 +884,15 @@ implementation6MapCountSendersForWord showCode =
   "Count Senders for Each Word"
   "For each word, count the number of senders:"
   """
-fun countWords(
-    wordsBySender: Map<String, List<String>>
-): Map<String, Int> = wordsBySender
-    .flatMap { it.value.map { word -> word to it.key } }
-    .groupBy({ it.first }, { it.second })
-    .mapValues { it.value.size }
+def countSendersForWords(
+  wordsBySender: Map[String, Seq[String]]
+): Map[String, Int] = wordsBySender.toSeq
+  .flatMap {
+    case (sender: String, words: Seq[String]) =>
+      words.map(_ -> sender)
+  }
+  .groupMap(_._1)(_._2)
+  .view.mapValues(_.size).toMap()
 """ showCode
   (leftEmCentering wordsBySendersPos.base senderCountsByWordPos.base)
   detailedMagnification False
@@ -894,13 +904,12 @@ implementation7Complete showCode =
   "Tying It All Together"
   "Composing all the operations into a single flow:"
   """
-val wordCounts: Flow<Counts> = chatMessages
-    .map(::normalizeText)
-    .flatMapConcat(::splitIntoWords)
-    .filter(::isValidWord)
-    .runningFold(mapOf(), ::updateWordsForSender)
-    .map(::countWords).map(::Counts)
-    .shareIn(CoroutineScope(Default), Eagerly, 1)
+val wordCounts = chatMessages
+  .map(normalizeText)
+  .flatMapConcat(splitIntoWords)
+  .filter(isValidWord)
+  .scan(Map())(updateWordsForSender)
+  .map(countSendersForWords)
 """ showCode
   0.0 1.0 True
 
@@ -911,15 +920,7 @@ implementationCompleteDistribution showCode =
   "Additional Considerations"
   "Considerations for Distributed Deployment"
   "Observe that some events can be re-ordered without changing the final outcome:"
-  """
-val wordCounts: Flow<Counts> = chatMessages
-    .map(::normalizeText)
-    .flatMapConcat(::splitIntoWords)
-    .filter(::isValidWord)
-    .runningFold(mapOf(), ::updateWordsForSender)
-    .map(::countWords).map(::Counts)
-    .shareIn(CoroutineScope(Default), Eagerly, 1)
-""" showCode
+  "" showCode
   0.0 1.0 True
 
 
@@ -929,15 +930,7 @@ implementationCompleteEventSourcing showCode =
   "Additional Considerations"
   "Application Source of Truth Considerations"
   "Observe that information is lost as it flows through the system:"
-  """
-val wordCounts: Flow<Counts> = chatMessages
-    .map(::normalizeText)
-    .flatMapConcat(::splitIntoWords)
-    .filter(::isValidWord)
-    .runningFold(mapOf(), ::updateWordsForSender)
-    .map(::countWords).map(::Counts)
-    .shareIn(CoroutineScope(Default), Eagerly, 1)
-""" showCode
+  "" showCode
   0.0 1.0 True
 
 

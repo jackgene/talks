@@ -85,7 +85,7 @@ wordCloud heading subheading =
                   [ div
                     [ css
                       [ padding2 (em 0.125) (em 0.25)
-                      , color themeForegroundColor, opacity (num (percentage * 0.75 + 0.25))
+                      , color secondary, opacity (num (percentage * 0.75 + 0.25))
                       , fontSize (em (3.6 * (percentage * 0.75 + 0.25)))
                       , transition [ Css.Transitions.fontSize3 transitionDurationMs 0 easeInOut ]
                       ]

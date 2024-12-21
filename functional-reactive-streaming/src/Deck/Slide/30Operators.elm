@@ -38,15 +38,13 @@ introduction =
           [ text "There are functional reactive streaming implementations for all major languages, all conforming to \"the functional reactive streaming API\" at a high level." ]
         , p []
           [ text "Each implementation is slightly different however, tailoring to the semantics of each language. "
-          , text "For instance: Kotlin has safe "
-          , syntaxHighlightedCodeSnippet Kotlin "null"
-          , text "-handling, and has additional operators such as "
-          , syntaxHighlightedCodeSnippet Kotlin "mapNotNull((T) -> R?)"
+          , text "For instance: Pekko Streams introduces operators for interoperability with Scala  "
+          , syntaxHighlightedCodeSnippet Scala "_: Future[T]"
+          , text "s, and has additional operators such as "
+          , syntaxHighlightedCodeSnippet Scala "mapAsync(Int)(Out => Future[T])"
           , text ", "
-          , syntaxHighlightedCodeSnippet Kotlin "filterNotNull()"
-          , text " to handle "
-          , syntaxHighlightedCodeSnippet Kotlin "null"
-          , text " values."
+          , syntaxHighlightedCodeSnippet Scala "foldAsync[R](T)((T, Out) => Future[T])"
+          , text ", and other operators with \"Async\" in their names."
           ]
         , p []
           [ text "Let’s have a closer look at eight common and useful operators." ]
@@ -81,12 +79,12 @@ operator subheading textView input operation output animate code showCode =
 
 operatorMap : Bool -> Bool -> UnindexedSlideModel
 operatorMap showCode animate =
-  operator "map: Transform Flow Elements"
+  operator "map: Transform Source Elements"
   ( div []
     [ p []
       [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "map((T) -> R)"
-      , text " operator accepts a transformation function, and returns a new Flow of the transformed elements of the original Flow."
+      , syntaxHighlightedCodeSnippet Scala "map(...)"
+      , text " operator accepts a transformation function, and returns a new Source of the transformed elements of the original Source."
       ]
     , p []
       [ text "Properties:"
@@ -97,7 +95,7 @@ operatorMap showCode animate =
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 1.5, widthEm = 3 }
+  { horizontalPosition = { leftEm = 2.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -405,10 +403,10 @@ operatorMap showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 4.5, widthEm = 7.5 }
-  , operatorCode = [ "map { it * 2L }" ]
+  { horizontalPosition = { leftEm = 5.5, widthEm = 5.5 }
+  , operatorCode = [ "map(_ * 2L)" ]
   }
-  { horizontalPosition = { leftEm = 12, widthEm = 3 }
+  { horizontalPosition = { leftEm = 11.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -718,25 +716,25 @@ operatorMap showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.map {
-    it * 2L
-}.collect()
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+
+numbers
+  .map(_ * 2L)
+  .run()
 """ showCode
 
 
 operatorFilter : Bool -> Bool -> UnindexedSlideModel
 operatorFilter showCode animate =
-  operator "filter: Conditionally Remove Elements"
+  operator "filter: Conditionally Exclude Elements"
   ( div []
     [ p []
       [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "filter((T) -> Boolean)"
-      , text " operator accepts a predicate function, and returns a new Flow of elements that match the predicate."
+      , syntaxHighlightedCodeSnippet Scala "filter(...)"
+      , text " operator accepts a predicate function, and returns a new Source of elements that match the predicate."
       ]
     , p []
       [ text "Properties:"
@@ -747,7 +745,7 @@ operatorFilter showCode animate =
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 2, widthEm = 3 }
+  { horizontalPosition = { leftEm = 1.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -1055,10 +1053,10 @@ operatorFilter showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 5, widthEm = 6.5 }
-  , operatorCode = [ "filter {", "\xA0\xA0it % 2 == 0", "}" ]
+  { horizontalPosition = { leftEm = 4.5, widthEm = 7.5 }
+  , operatorCode = [ "filter(_%2 == 0)" ]
   }
-  { horizontalPosition = { leftEm = 11.5, widthEm = 3 }
+  { horizontalPosition = { leftEm = 12.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -1218,14 +1216,14 @@ operatorFilter showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.filter {
-    it % 2 == 0
-}.collect()
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+
+numbers
+  .filter(_%2 == 0)
+  .run()
 """ showCode
 
 
@@ -1235,11 +1233,11 @@ operatorTake showCode animate =
   ( div []
     [ p []
       [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "take(Int)"
-      , text " operator accepts a count, and returns a new Flow with up to that number of elements."
+      , syntaxHighlightedCodeSnippet Scala "take(...)"
+      , text " operator accepts a count, and returns a new Source with up to that number of elements."
       ]
     , p []
-      [ text "It is often used to turn an infinite Flow into a finite Flow."
+      [ text "It is often used to turn an infinite Source into a finite Source."
       ]
     , p []
       [ text "Properties:"
@@ -1291,23 +1289,25 @@ operatorTake showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.take(10).collect()
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+
+numbers
+  .take(10)
+  .run()
 """ showCode
 
 
 operatorFlatMapMerge : Bool -> Bool -> UnindexedSlideModel
 operatorFlatMapMerge showCode animate =
-  operator "flatMapMerge: Transform into flows, flatten concurrently"
+  operator "flatMapMerge: Transform into Sources, Flatten Concurrently"
   ( div []
     [ p []
       [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "flatMapMerge(T -> Flow<R>)"
-      , text " operator takes a function that transforms elements into Flows, applying it to each element, and returns a new Flow with the resultant Flows flattened, "
+      , syntaxHighlightedCodeSnippet Scala "flatMapMerge(...)"
+      , text " operator takes a function that transforms elements into Sources, applying it to each element, and returns a new Source with the resultant Sources flattened, "
       , i [] [ text "concurrently" ]
       , text "."
       ]
@@ -1630,13 +1630,17 @@ operatorFlatMapMerge showCode animate =
   }
   { horizontalPosition = { leftEm = 4, widthEm = 11 }
   , operatorCode =
-    [ "flatMapMerge {"
-    , "\xA0\xA0 flow {"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0\xA0\xA0 delay(3.seconds)"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0}"
-    , "}"
+    [ "flatMapMerge("
+    , "\xA0 breadth = 2,"
+    , "\xA0\xA0(number: Int) =>"
+    , "\xA0\xA0\xA0\xA0Source"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0.tick("
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 0.seconds,"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 3.seconds,"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0number"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0.take(2)"
+    , "\xA0\xA0\xA0\xA0)"
+    , ")"
     ]
   }
   { horizontalPosition = { leftEm = 15, widthEm = 3 }
@@ -2249,29 +2253,31 @@ operatorFlatMapMerge showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.flatMapMerge {
-    flow {
-        emit(it.toLong())
-        delay(3.seconds)
-        emit(it.toLong())
-    }
-}.collect()
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+
+numbers
+  .flatMapMerge(
+    breadth = 2,
+    (number: Int) =>
+      Source
+        .tick(0.second, 3.seconds, number)
+        .take(2)
+  )
+  .run()
 """ showCode
 
 
 operatorFlatMapConcat : Bool -> Bool -> UnindexedSlideModel
 operatorFlatMapConcat showCode animate =
-  operator "flatMapConcat: Transform into flows, flatten sequentially"
+  operator "flatMapConcat: Transform into Sources, Flatten Sequentially"
   ( div []
     [ p []
       [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "flatMapConcat(T -> Flow<R>)"
-      , text " operator accepts a function that transforms elements into Flows, applying it to each element, and returns a new Flow with the resultant Flows flattened, "
+      , syntaxHighlightedCodeSnippet Scala "flatMapConcat(...)"
+      , text " operator accepts a function that transforms elements into Sources, applying it to each element, and returns a new Source with the resultant Sources flattened, "
       , i [] [ text "sequentially" ]
       , text "."
       ]
@@ -2594,13 +2600,16 @@ operatorFlatMapConcat showCode animate =
   }
   { horizontalPosition = { leftEm = 4, widthEm = 11 }
   , operatorCode =
-    [ "flatMapConcat {"
-    , "\xA0\xA0 flow {"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0\xA0\xA0 delay(3.seconds)"
-    , "\xA0\xA0\xA0\xA0 emit(it.toLong())"
-    , "\xA0\xA0}"
-    , "}"
+    [ "flatMapConcat("
+    , "\xA0\xA0(number: Int) =>"
+    , "\xA0\xA0\xA0\xA0Source"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0.tick("
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 0.seconds,"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 3.seconds,"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0number"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0.take(2)"
+    , "\xA0\xA0\xA0\xA0)"
+    , ")"
     ]
   }
   { horizontalPosition = { leftEm = 15, widthEm = 3 }
@@ -3213,42 +3222,43 @@ operatorFlatMapConcat showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.flatMapConcat {
-    flow {
-        emit(it.toLong())
-        delay(3.seconds)
-        emit(it.toLong())
-    }
-}.collect()
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+
+numbers
+  .flatMapConcat(
+    (number: Int) =>
+      Source
+        .tick(0.second, 3.seconds, number)
+        .take(2)
+  )
+  .run()
 """ showCode
 
 
 operatorFold : Bool -> Bool -> UnindexedSlideModel
 operatorFold showCode animate =
-  operator "fold: Combine all elements of a Flow into a single element"
+  operator "fold: Combine All Elements of a Source Into a Single Element"
   ( div []
     [ p []
       [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "fold(R, (R, T) -> R)"
-      , text " operator accepts an initial value, and a combining function, combining the initial value and all elements of the flow into a single element."
+      , syntaxHighlightedCodeSnippet Scala "fold(...)(...)"
+      , text " operator accepts an initial value, and a combining function, combining the initial value and all elements of the Source into a single element."
       ]
     , p []
       [ text "It is used for general aggregation operations." ]
     , p []
       [ text "Properties:"
       , ul []
-        [ li [] [ text "Output is a single element, not a flow" ]
+        [ li [] [ text "Output is a Source of a single element" ]
         , li [] [ text "Does not return if input is infinite" ]
         ]
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 1, widthEm = 3 }
+  { horizontalPosition = { leftEm = 1.5, widthEm = 3 }
   , value =
     Stream
     { terminal = True
@@ -3266,40 +3276,38 @@ operatorFold showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 4, widthEm = 9 }
-  , operatorCode =
-    [ "fold(0L) {"
-    , "\xA0\xA0 accum, next ->"
-    , "\xA0\xA0\xA0\xA0 accum + next"
-    , "}"
-    ]
+  { horizontalPosition = { leftEm = 4.5, widthEm = 8 }
+  , operatorCode = [ "fold(0L)(_ + _)" ]
   }
-  { horizontalPosition = { leftEm = 13, widthEm = 3 }
-  , value = Single (Element 45 Square 2 20078)
+  { horizontalPosition = { leftEm = 12.5, widthEm = 3 }
+  , value =
+    Stream
+    { terminal = True
+    , elements = [ Element 45 Square 2 20078 ]
+    }
   }
   animate
   """
-flow {
-    repeat(10) {
-        delay(2.seconds)
-        emit(it)
-    }
-}.fold(0L) { accum, next ->
-    accum + next
-}
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+  .take(10)
+
+numbers
+  .fold(0L)(_ + _)
+  .run()
 """ showCode
 
 
-operatorRunningFold : Bool -> Bool -> UnindexedSlideModel
-operatorRunningFold showCode animate =
-  operator "runningFold: fold that emits the value of each step"
+operatorScan : Bool -> Bool -> UnindexedSlideModel
+operatorScan showCode animate =
+  operator "scan: fold that emits the value of each step"
   ( div []
     [ p []
       [ text "The "
-      , syntaxHighlightedCodeSnippet Kotlin "runningFold(R, (R, T) -> R)"
-      , text " operator (and its better known alias "
-      , syntaxHighlightedCodeSnippet Kotlin "scan(R, (R, T) -> R)"
-      , text ") is just a fold that emits the accumulated value on every combining step."
+      , syntaxHighlightedCodeSnippet Scala "scan(...)(...)"
+      , text " operator is just a fold that emits the accumulated value on every combining step."
       ]
     , p []
       [ text "Properties:"
@@ -3310,7 +3318,7 @@ operatorRunningFold showCode animate =
       ]
     ]
   )
-  { horizontalPosition = { leftEm = 1, widthEm = 3 }
+  { horizontalPosition = { leftEm = 1.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -3618,15 +3626,10 @@ operatorRunningFold showCode animate =
       ]
     }
   }
-  { horizontalPosition = { leftEm = 4, widthEm = 9 }
-  , operatorCode =
-    [ "runningFold(0L) {"
-    , "\xA0\xA0 accum, next ->"
-    , "\xA0\xA0\xA0\xA0 accum + next"
-    , "}"
-    ]
+  { horizontalPosition = { leftEm = 4.5, widthEm = 8 }
+  , operatorCode = [ "scan(0L)(_ + _)" ]
   }
-  { horizontalPosition = { leftEm = 13, widthEm = 3 }
+  { horizontalPosition = { leftEm = 12.5, widthEm = 3 }
   , value =
     Stream
     { terminal = False
@@ -3937,80 +3940,50 @@ operatorRunningFold showCode animate =
   }
   animate
   """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.runningFold(0L) { accum, next ->
-    accum + next
-}.collect()
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+
+numbers
+  .scan(0L)(_ + _)
+  .run()
 """ showCode
 
 
-operatorCollect : UnindexedSlideModel
-operatorCollect =
+operatorRun : UnindexedSlideModel
+operatorRun =
   { baseSlideModel
   | view =
     ( \page _ -> standardSlideView page heading
-      "collect: Run the flow, collect emitted elements"
+      "Running the Stream"
       ( div []
         [ p []
-          [ text "In the previous code snippets, you may have noticed that some of the Flows end with a call to "
-          , syntaxHighlightedCodeSnippet Kotlin "collect()"
-          , text ". This is because Flows are cold, and only start running on a "
-          , i [] [ text "terminal operation" ]
-          , text " (such as "
-          , syntaxHighlightedCodeSnippet Kotlin "fold(R, (R, T) -> R)"
-          , text ")."
+          [ text "In the previous code snippets, we always call "
+          , syntaxHighlightedCodeSnippet Scala "run()"
+          , text " on the Sources. This is because Sources are cold, and only start running when they are connected to a "
+          , i [] [ text "Sink" ]
+          , text ". In Pekko Streams, this happens by calling the \"run...\" methods such as "
+          , syntaxHighlightedCodeSnippet Scala "runReduce((Out, Out) => Out)"
+          , text ", "
+          , syntaxHighlightedCodeSnippet Scala "runWith(Sink)"
+          , text ", and others. "
           ]
         , p []
-          [ syntaxHighlightedCodeSnippet Kotlin "collect(FlowCollector<T>)"
-          , text " is another terminal operator, and is the most general of them. All other terminal operators are implemented in terms of it."
+          [ text "An example using "
+          , syntaxHighlightedCodeSnippet Scala "runForeach(Out => Unit)"
+          , text " might look like this:"
           ]
         , p []
-          [ syntaxHighlightedCodeBlock Kotlin Dict.empty Dict.empty []
+          [ syntaxHighlightedCodeBlock Scala Dict.empty Dict.empty []
       """
-flow {
-    generateSequence(0) { it + 1 }.forEach {
-        delay(2.seconds)
-        emit(it)
-    }
-}.collect { println(it) }
+given ActorSystem = ActorSystem("reactive-streams-system")
+val numbers: Source[Int, _] = Source
+  .tick(2.seconds, 2.seconds, 1)
+  .scan(0)(_ + _)
+
+numbers.runForeach(println)
 """
-          ]
-        ]
-      )
-    )
-  }
-
-
-terminalOperators : UnindexedSlideModel
-terminalOperators =
-  { baseSlideModel
-  | view =
-    ( \page _ -> standardSlideView page heading
-      "Terminal vs Non-Terminal Operators"
-      ( div []
-        [ p []
-          [ text "We have seen a number of common operators, some of them terminal and some not. It is useful to understand the differences between them:"
-          , ul []
-            [ li []
-              [ text "Terminal operators run the flow; "
-              , br [] []
-              , text "Non-terminal operators are lazily applied to it"
-              ]
-            , li []
-              [ text "Terminal operators can return anything; "
-              , br [] []
-              , text "Non-terminal operators must return another Flow"
-              ]
-            , li []
-              [ text "Terminal operators suspend; "
-              , br [] []
-              , text "Non-terminal operators do not"
-              ]
-            ]
           ]
         ]
       )
@@ -4027,7 +4000,7 @@ slides =
       , operatorFlatMapMerge
       , operatorFlatMapConcat
       , operatorFold
-      , operatorRunningFold
+      , operatorScan
       ]
       |> List.concatMap
         ( \slide ->
@@ -4039,4 +4012,4 @@ slides =
         )
     )
   )
-  ++[ operatorCollect, terminalOperators ]
+  ++[ operatorRun ]
