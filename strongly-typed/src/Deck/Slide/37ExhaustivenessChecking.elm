@@ -1,12 +1,12 @@
 module Deck.Slide.ExhaustivenessChecking exposing
   ( introduction
   , unsafeGoPrep, unsafeGo
-  , safePython, safePythonInvalid
+  , safePython, safePythonInvalid, unsafePython
   , safeTypeScript, safeTypeScriptInvalid
-  , safeScalaPrep, safeScala, safeScalaInvalid, safeScalaAlt
+  , safeScalaPrep, safeScala, safeScalaInvalid, safeScalaAlt, unsafeScala
   , safeKotlin, safeKotlinInvalid
   , safeSwiftPrep, safeSwift, safeSwiftInvalid, safeSwiftAlt
-  , safeElm, safeElmInvalid, safeElmAlt
+  , safeElm, safeElmInvalid, safeElmAlt, unsafeElm
   )
 
 import Deck.Slide.Common exposing (..)
@@ -81,10 +81,10 @@ type AccountStatus interface {
 }
 
 type Active struct{}
-func (_ Active) isStatus() {}
+func (_ Active)\xA0isStatus() {}
 
 type Inactive struct{}
-func (_ Inactive) isStatus() {}
+func (_ Inactive)\xA0isStatus() {}
 """
   in
   { baseSlideModel
@@ -222,6 +222,44 @@ def do_work(status: AccountStatus):
           , text ", inexhaustive "
           , syntaxHighlightedCodeSnippet Python "match"
           , text "es fail immediately:"
+          ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+unsafePython : UnindexedSlideModel
+unsafePython =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Python
+      ( Dict.fromList [ (10, Deletion), (11, Addition) ] )
+      Dict.empty []
+      """
+from enum import Enum
+
+class AccountStatus(Enum):
+    Active = 1
+    Inactive = 2
+    Terminated = 3
+
+def do_work(status: AccountStatus):
+    match status:
+        case AccountStatus.Active: print("Perform API calls...")
+        case AccountStatus.Inactive: print("Skipping...")
+        case _: print("Skipping...")
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingPython
+      ( div []
+        [ p []
+          [ text "Unfortunately, wildcard matches effectively defeats exhaustiveness checking:"
           ]
         , div [] [ codeBlock ]
         ]
@@ -453,7 +491,41 @@ def doWork(status: Status, membership: Membership): String =
       standardSlideView page heading subheadingScala
       ( div []
         [ p []
-          [ text "The Scala compiler even accounts for wildcards when checking exhaustiveness:" ]
+          [ text "The Scala compiler accounts for wildcards when checking exhaustiveness:" ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+unsafeScala : UnindexedSlideModel
+unsafeScala =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Scala
+      ( Dict.fromList [ (7, Deletion), (8, Addition) ] )
+      Dict.empty []
+      """
+import Status._
+import Membership._
+
+def doWork(status: Status, membership: Membership): String =
+  (status, membership) match
+    case (Active, Basic) => "Perform basic API calls..."
+    case (Active, Premium) => "Perform premium API calls..."
+    case (Inactive, _) => "Skipping..."
+    case _ => "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingScala
+      ( div []
+        [ p []
+          [ text "As with Python however, wildcards defeat exhaustiveness checking, and should not be used excessively:" ]
         , div [] [ codeBlock ]
         ]
       )
@@ -811,6 +883,43 @@ doWork status membership =
       ( div []
         [ p []
           [ text "The Elm compiler accounts for wildcards when checking exhaustiveness:" ]
+        , div [] [ codeBlock ]
+        ]
+      )
+    )
+  }
+
+
+unsafeElm : UnindexedSlideModel
+unsafeElm =
+  let
+    codeBlock : Html msg
+    codeBlock =
+      syntaxHighlightedCodeBlock Elm
+      ( Dict.fromList [ (10, Deletion), (11, Addition) ] )
+      Dict.empty []
+      """
+module Exhaustiveness exposing (..)
+
+type Status = Active | Inactive
+type Membership = Basic | Premium
+
+doWork : Status -> Membership -> String
+doWork status membership =
+  case (status, membership) of
+    (Active, Basic) -> "Perform basic API calls..."
+    (Active, Premium) -> "Perform premium API calls..."
+    (Inactive, _) -> "Skipping..."
+    _ -> "Skipping..."
+"""
+  in
+  { baseSlideModel
+  | view =
+    ( \page _ ->
+      standardSlideView page heading subheadingElm
+      ( div []
+        [ p []
+          [ text "As with the other languages, wildcards should be used with care:" ]
         , div [] [ codeBlock ]
         ]
       )

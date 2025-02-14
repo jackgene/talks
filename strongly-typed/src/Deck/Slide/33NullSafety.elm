@@ -600,9 +600,9 @@ val num: Option[Int] =
         , div [] [] -- Skip transition animation
         , div [] [ codeBlockFun ]
         , p []
-          [ text "It is also possible to nest them "
-          , syntaxHighlightedCodeSnippet Scala ": Option[Option[String]]"
-          , text ", if needed."
+          [ text "It is also possible to nest them ("
+          , syntaxHighlightedCodeSnippet Scala "_: Option[Option[String]]"
+          , text "), if needed."
           ]
         ]
       )

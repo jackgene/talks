@@ -182,19 +182,6 @@ preCompileChecks =
             , li []
               [ text "go-sumtype (github.com/BurntSushi/go-sumtype) adds exhaustiveness checking"
               ]
-            , li []
-              [ text "TypeScript ESLint’s "
-              , syntaxHighlightedCodeSnippet XML "no-explicit-any"
-              , text " rule disallows the use of "
-              , syntaxHighlightedCodeSnippet TypeScript "any"
-              ]
-            , li []
-              [ text "SwiftLint can disallow “force” operators: "
-              , syntaxHighlightedCodeSnippet Swift "as!"
-              , text ", "
-              , syntaxHighlightedCodeSnippet Swift "try!"
-              , text ", and unsafe unwraps"
-              ]
             , li [] [ text "Static analysis tools find potential sources of bugs" ]
             ]
           ]

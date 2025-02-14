@@ -164,14 +164,14 @@ unsafeGoInvalid =
       ( Dict.fromList [ (4, [ ColumnEmphasis Error 11 11 ] ) ] )
       [ CodeBlockError 4 10
         [ div []
-          [ text "invalid operation: left * right (operator * not defined on interface)" ]
+          [ text "invalid operation: operator * not defined on num1 (variable of type any)" ]
         ]
       ]
       """
 package typesafety
 
 func Multiply(num1 float64, num2 float64) float64 {
-func Multiply(num1 interface{}, num1 interface{}) float64 {
+func Multiply(num1 any, num1 any) float64 {
     return num1 * num2
 }
 
@@ -207,7 +207,7 @@ unsafeGo =
       """
 package typesafety
 
-func Multiply(num1 interface{}, num2 interface{}) float64 {
+func Multiply(num1 any, num2 any) float64 {
     return num1 * num2
     num1_, _ := num1.(float64)
     num2_, _ := num2.(float64)
@@ -474,7 +474,7 @@ pythonTypeHintWrongRun =
         , p []
           [ text "Type annotations in Python are just "
           , em [] [ text "hints" ]
-          , text " to facilitate 3rd-party type checkers, such as those built into PyCharm or VSCode. "
+          , text " to facilitate 3rd-party type checkers, such as those built into PyCharm or Visual Studio Code. "
           ]
         , p []
           [ text "It is up to programming teams to incorporate these type checkers in their build process, "

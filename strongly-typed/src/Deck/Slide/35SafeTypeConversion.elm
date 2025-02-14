@@ -81,7 +81,7 @@ package main
 import "strings"
 
 func main() {
-    var thing interface{} = 42
+    var thing any = 42
     switch str := thing.(type) {
         case string:
             println(strings.ToUpper(str))
@@ -117,7 +117,7 @@ package main
 import "strings"
 
 func main() {
-    var thing interface{} = 42
+    var thing any = 42
     if str, ok := thing.(string); ok {
         println(strings.ToUpper(str))
     }
@@ -149,7 +149,7 @@ package main
 import "strings"
 
 func main() {
-    var thing interface{} = 42
+    var thing any = 42
 
     str, _ := thing.(string)      // non-panicking type assertion
     println(strings.ToUpper(str)) // let's hope zero-value is ok!
@@ -245,7 +245,7 @@ from typing import Any, TypeGuard
 def is_str_array(objs: list[Any]) -> TypeGuard[list[str]]:
     return all(isinstance(obj, str) for obj in objs)
 
-nums: list[object] = [1, 2, 3]
+nums: list[Any] = [1, 2, 3]
 if is_str_array(nums):
     for num in nums:
         print(num.upper())
@@ -283,7 +283,7 @@ def is_str_array(objs: list[Any]) -> TypeGuard[list[str]]:
     return all(isinstance(obj, str) for obj in objs)
     return True
 
-nums: list[object] = [1, 2, 3]
+nums: list[Any] = [1, 2, 3]
 if is_str_array(nums):
     for num in nums:
         print(num.upper())
