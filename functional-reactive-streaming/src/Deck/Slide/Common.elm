@@ -9,7 +9,7 @@ import Css exposing
   , backgroundColor, before, color
   , fontFamilies, fontSize, fontStyle, fontWeight
   -- Units
-  , em, int, rgb, rgba, vw, zero
+  , em, int, rgb, vw, zero
   -- Alignments & Positions
   -- Other values
   , block, italic, textShadow4
@@ -53,16 +53,16 @@ black : Color
 black = rgb 0 0 0
 
 
-primary : Color
-primary = rgb 255 0 0
+themeForegroundColor : Color
+themeForegroundColor = white
 
 
-secondary : Color
-secondary = rgb 196 0 0
+themeForegroundSecondaryColor : Color
+themeForegroundSecondaryColor = rgb 196 0 0
 
 
-blackTranslucent : Color
-blackTranslucent = rgba 32 31 27 0.15
+themeBackgroundColor : Color
+themeBackgroundColor = rgb 255 0 0
 
 
 darkGray : Color
@@ -98,7 +98,7 @@ textWithShadow = textShadow4 zero (em 0.125) (em 0.375) (rgb 64 64 64)
 
 
 coverStyle : Style
-coverStyle = Css.batch [ textWithShadow, color white, backgroundColor primary ]
+coverStyle = Css.batch [ textWithShadow, color white, backgroundColor themeBackgroundColor ]
 
 
 headerStyle : Style
@@ -110,7 +110,7 @@ headerStyle =
     , display block, float left
     , width (em 0.2), height (em 1.2)
     , marginRight (em 1.875)
-    , backgroundColor primary
+    , backgroundColor themeBackgroundColor
     ]
   ]
 

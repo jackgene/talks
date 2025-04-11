@@ -39,7 +39,7 @@ cover =
           [ css [ margin2 (em 2.5) zero, fontSize (em 0.875) ] ]
           [ text "Jack Leow"
           , br [] []
-          , text "February 17, 2025"]
+          , text "April 10, 2025"]
         ]
       ]
     )

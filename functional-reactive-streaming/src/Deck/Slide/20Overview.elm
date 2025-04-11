@@ -19,7 +19,7 @@ introduction =
       ( div []
         [ p []
           [ b [] [ text "Functional" ]
-          , text ": Based on functional programming principles, allowing you to leverage its associated benefits"
+          , text ": Based on functional programming principles, allowing you to leverage all its benefits."
           ]
         , p []
           [ b [] [ text "Reactive" ]

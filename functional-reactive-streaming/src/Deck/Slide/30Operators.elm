@@ -17,7 +17,7 @@ import Deck.Slide.MarbleDiagram exposing (..)
 import Deck.Slide.SyntaxHighlight exposing (..)
 import Deck.Slide.Template exposing (standardSlideView)
 import Dict
-import Html.Styled exposing (Html, br, div, i, p, text, ul)
+import Html.Styled exposing (Html, div, i, p, text, ul)
 import Html.Styled.Attributes exposing (css)
 
 
@@ -1637,9 +1637,9 @@ operatorFlatMapMerge showCode animate =
     , "\xA0\xA0\xA0\xA0\xA0\xA0.tick("
     , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 0.seconds,"
     , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 3.seconds,"
-    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0number"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0number.toLong"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0)"
     , "\xA0\xA0\xA0\xA0\xA0\xA0.take(2)"
-    , "\xA0\xA0\xA0\xA0)"
     , ")"
     ]
   }
@@ -2263,7 +2263,7 @@ numbers
     breadth = 2,
     (number: Int) =>
       Source
-        .tick(0.second, 3.seconds, number)
+        .tick(0.second, 3.seconds, number.toLong)
         .take(2)
   )
   .run()
@@ -2606,9 +2606,9 @@ operatorFlatMapConcat showCode animate =
     , "\xA0\xA0\xA0\xA0\xA0\xA0.tick("
     , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 0.seconds,"
     , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0 3.seconds,"
-    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0number"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0number.toLong"
+    , "\xA0\xA0\xA0\xA0\xA0\xA0)"
     , "\xA0\xA0\xA0\xA0\xA0\xA0.take(2)"
-    , "\xA0\xA0\xA0\xA0)"
     , ")"
     ]
   }
@@ -3231,7 +3231,7 @@ numbers
   .flatMapConcat(
     (number: Int) =>
       Source
-        .tick(0.second, 3.seconds, number)
+        .tick(0.second, 3.seconds, number.toLong)
         .take(2)
   )
   .run()

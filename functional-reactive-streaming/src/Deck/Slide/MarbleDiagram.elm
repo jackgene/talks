@@ -74,14 +74,6 @@ partition0Color : Color
 partition0Color = rgb 163 188 232
 
 
-partition3Color : Color
-partition3Color = rgb 250 248 132
-
-
-partition4Color : Color
-partition4Color = rgb 240 154 160
-
-
 partition1Color : Color
 partition1Color = rgb 182 232 142
 

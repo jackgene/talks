@@ -24,8 +24,8 @@ import Deck.Slide.ExampleApplication as ExampleApplication
 import Deck.Slide.Operators as Operators
 import Deck.Slide.Overview as Overview
 import Deck.Slide.QuestionAnswer as QuestionAnswer
-import Deck.Slide.WordCloud as WordCloud
 import Deck.Slide.SectionCover as SectionCover
+import Deck.Slide.WordCloud as WordCloud
 import Html.Styled exposing (Html, div, node, text)
 import Html.Styled.Attributes exposing (css, type_)
 
